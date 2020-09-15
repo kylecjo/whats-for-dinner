@@ -28,11 +28,19 @@ class MyApp extends StatelessWidget {
           accentColor: const Color(0xffb8415b),
           // accentColor: const Color(0xffb86f41),
           textTheme: ThemeData.light().textTheme.copyWith(
-            headline5: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+                headline5: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                bodyText2: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[700],
+                ),
+                bodyText1: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+              ),
         ),
 
         home: MyHomePage(title: 'Flutter Demo Home Page'),

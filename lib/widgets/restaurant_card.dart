@@ -22,7 +22,11 @@ class RestaurantCard extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Text(business.name, style: Theme.of(context).textTheme.headline5,),
+                Text(
+                  business.name,
+                  style: Theme.of(context).textTheme.headline5,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
           ),
@@ -38,19 +42,26 @@ class RestaurantCard extends StatelessWidget {
                     horizontal: 5.0,
                   ),
                   width: 180,
-                  child: FittedBox(
-                    fit: BoxFit.contain,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50.0),
+                        borderRadius: BorderRadius.circular(10.0),
                         child: Image.network(business.imageUrl)),
-                  ),
                 ),
                 Flexible(
                   flex: 3,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('${business.address1}, ${business.city}')),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${business.rating} ${business.reviewCount} reviews', style: Theme.of(context).textTheme.bodyText1),
+                        Text('${business.price}', style: Theme.of(context).textTheme.bodyText1),
+                        Text(
+                            '${business.address1}, ${business.city} ${business.state}',
+                            style: Theme.of(context).textTheme.bodyText2),
+                      ],
+                    ),
                   ),
+                ),
               ],
             ),
           ),
