@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:location/location.dart';
 
 import './data/repository.dart';
 import './models/business.dart';
@@ -39,6 +40,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Business> _businesses;
+  final Location location = Location();
+  LocationData _locationData;
 
   @override
   void initState() {
@@ -47,15 +50,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _updateData() async {
+    _locationData = await location.getLocation();
     final repository = Provider.of<Repository>(
       context,
       listen: false,
     );
-    List<Business> businesses = await repository.getBusinessData();
+    List<Business> businesses = await repository.getBusinessData(
+      lat: _locationData.latitude,
+      long: _locationData.longitude,
+    );
     setState(() {
       _businesses = businesses;
     });
-    print(_businesses.toString());
   }
 
   @override
@@ -65,13 +71,15 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-          child: _businesses != null ? ListView.builder(
-            itemCount: _businesses.length,
-            itemBuilder: (BuildContext ctx, int index) {
-              return RestaurantCard(_businesses[index]);
-            },
-          ) : Text('Press the button to load restaurants'),
-        ),
+        child: _businesses != null
+            ? ListView.builder(
+                itemCount: _businesses.length,
+                itemBuilder: (BuildContext ctx, int index) {
+                  return RestaurantCard(_businesses[index]);
+                },
+              )
+            : Text('Press the button to load restaurants'),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _updateData,
         child: Icon(Icons.add),

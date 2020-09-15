@@ -5,9 +5,6 @@ class API{
   API({@required this.apiKey});
   final String apiKey;
 
-  static const lat = 53.450199;
-  static const long = -113.398010;
-
   factory API.dev() => API(apiKey: APIKeys.yelpAuth);
 
   static final String host = 'api.yelp.com';
@@ -16,7 +13,7 @@ class API{
   //   host, '/search', queries
   // );
 
-  Uri searchUri(){
+  Uri searchUri({double lat, double long}){
     Uri uri = Uri.https(host, '/v3/businesses/search', { 'latitude': lat.toString(), 'longitude' : long.toString() });
 
     return uri;  
