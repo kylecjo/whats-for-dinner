@@ -14,7 +14,7 @@ class API{
   // );
 
   Uri searchUri({double lat, double long}){
-    Uri uri = Uri.https(host, '/v3/businesses/search', { 'latitude': lat.toString(), 'longitude' : long.toString(), 'radius' : '2000', 'limit' : '20'  });
+    Uri uri = Uri.https(host, '/v3/businesses/search', { 'latitude': lat.toString(), 'longitude' : long.toString(), 'radius' : '2000', 'limit' : '20', 'categories' : 'restaurants'  });
     return uri;  
   }
 
