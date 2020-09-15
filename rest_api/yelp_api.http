@@ -1,7 +1,8 @@
 
-@location = Edmonton, Alberta
+@location = 1904 36 St Edmonton, Alberta
 @phone = 14157492060
 @id = hc0KmC42EzjXbC83eMIDMg
+@radius = 5000
 ###
 GET {{baseUrl}}/businesses/search/phone?phone={{phone}}
 Authorization: Bearer {{authorization}}
@@ -9,12 +10,12 @@ Authorization: Bearer {{authorization}}
 ### 
 GET {{baseUrl}}/businesses/search
 ?term=
-&location={{location}}
-&latitude=
-&longitude=
-&radius=
+# &location=
+&latitude=48.4239917
+&longitude=-123.3655733
+&radius=2000
 &categories=
 &sort_by=rating
-&price=1
+# &price=
 &open_now=
 Authorization: Bearer {{authorization}}

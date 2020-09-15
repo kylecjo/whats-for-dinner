@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ),
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData.dark(),
+        theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
         home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
