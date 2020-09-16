@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../models/business.dart';
+import '../models/category.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Business business;
+
 
   RestaurantCard(this.business);
 
@@ -21,6 +23,8 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> categoryTitles = business.categories.map((category) => category.title.toString()).toList();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       height: 225,
@@ -80,12 +84,12 @@ class RestaurantCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        // Text('${business.rating} ${business.reviewCount} reviews', style: Theme.of(context).textTheme.bodyText1),
                         Row(
                           children: [
                             if(business.price != null)
-                            Text('${business.price}',
+                            Text('${business.price} •',
                                 style: Theme.of(context).textTheme.bodyText1),
+                            Text('${categoryTitles.join(', ')}',),
                           ],
                         ),
                         Text(

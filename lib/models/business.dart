@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'category.dart';
+
 class Business {
   final double rating;
   final String price;
@@ -12,6 +16,7 @@ class Business {
   final String alias;
   final bool isClosed;
   final int reviewCount;
+  final List<Category> categories;
 
   final String url;
   final String imageUrl;
@@ -36,6 +41,7 @@ class Business {
       this.alias,
       this.isClosed,
       this.reviewCount,
+      this.categories,
       this.url,
       this.imageUrl,
       this.address1,
@@ -47,6 +53,11 @@ class Business {
       this.zip});
 
   factory Business.fromJson(Map<String, dynamic> json) {
+
+    String arrayObjsText = jsonEncode(json['categories']);
+    var categoryObjsJson = jsonDecode(arrayObjsText) as List;
+    List<Category> _categoriesList = categoryObjsJson.map((categoryJson) => Category.fromJson(categoryJson)).toList();
+
     return Business(
       rating: json['rating'],
       price: json['price'],
@@ -59,6 +70,7 @@ class Business {
       alias: json['alias'],
       isClosed: json['is_closed'],
       reviewCount: json['review_count'],
+      categories: _categoriesList,
       url: json['url'],
       imageUrl: json['image_url'],
       address1: json['location']['address1'],
@@ -73,6 +85,6 @@ class Business {
 
   @override
   String toString(){
-    return '$name';
+    return '$name $categories';
   }
 }
