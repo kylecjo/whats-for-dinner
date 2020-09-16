@@ -101,7 +101,7 @@ class RestaurantCard extends StatelessWidget {
                         ),
                         Text(
                             '${business.address1}, ${business.city} ${business.state}',
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyText2, overflow: TextOverflow.fade),
                         Row(
                           children: <Widget>[
                             if (business.price != null)
@@ -110,7 +110,7 @@ class RestaurantCard extends StatelessWidget {
                           ],
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
                         Row(
                           children: [
