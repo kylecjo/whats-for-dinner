@@ -11,8 +11,8 @@ import './widgets/restaurant_card.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) => runApp(MyApp()));
-
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                 ),
                 subtitle1: TextStyle(
-                  fontSize: 10, 
+                  fontSize: 10,
                   color: Colors.black,
                 ),
               ),
@@ -68,6 +68,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Business> _businesses;
+  List<Business> _favorites = <Business>[];
+  List<Business> _hidden = <Business>[];
   final Location location = Location();
   LocationData _locationData;
 
@@ -94,6 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    DismissDirection dimissDirection;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -103,7 +107,25 @@ class _MyHomePageState extends State<MyHomePage> {
             ? ListView.builder(
                 itemCount: _businesses.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return RestaurantCard(_businesses[index]);
+                  final business = _businesses[index].toString();
+                  return Dismissible(
+                      key: Key(business),
+                      background: Container(color: Colors.grey),
+                      onDismissed: (direction) {
+                        if(direction == DismissDirection.endToStart){
+                          setState(() {
+                            _hidden.add(_businesses[index]);
+                            _businesses.removeAt(index);
+                          });
+                        }
+                        if(direction == DismissDirection.startToEnd){
+                            _favorites.add(_businesses[index]);
+                            _businesses.removeAt(index);
+                        }
+                        print(_favorites);
+                        print(_hidden);
+                      },
+                      child: RestaurantCard(_businesses[index]));
                 },
               )
             : Text('Press the button to load restaurants'),
