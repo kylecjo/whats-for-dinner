@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:location/location.dart';
+import 'dart:math';
 
 import './data/repository.dart';
 import './models/business.dart';
@@ -72,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Business> _hidden = <Business>[];
   final Location location = Location();
   LocationData _locationData;
+  final Random rnd = new Random(); 
 
   @override
   void initState() {
@@ -94,6 +96,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _pickOne(){
+    int randomIndex = rnd.nextInt(_favorites.length);
+    print(_favorites[randomIndex]);
+  }
+
   @override
   Widget build(BuildContext context) {
     DismissDirection dimissDirection;
@@ -107,9 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ? ListView.builder(
                 itemCount: _businesses.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  final business = _businesses[index].toString();
                   return Dismissible(
-                      key: Key(business),
+                      key: Key(_businesses[index].toString()),
                       background: Container(color: Colors.grey),
                       onDismissed: (direction) {
                         if(direction == DismissDirection.endToStart){
@@ -122,8 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             _favorites.add(_businesses[index]);
                             _businesses.removeAt(index);
                         }
-                        print(_favorites);
-                        print(_hidden);
+                        print('favorites: $_favorites' );
+                        print('hidden: $_hidden');
                       },
                       child: RestaurantCard(_businesses[index]));
                 },
@@ -131,8 +137,8 @@ class _MyHomePageState extends State<MyHomePage> {
             : Text('Press the button to load restaurants'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _updateData,
-        child: Icon(Icons.add),
+        onPressed: _pickOne,
+        child: Icon(Icons.shuffle),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
