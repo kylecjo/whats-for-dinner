@@ -53,10 +53,11 @@ class Business {
       this.zip});
 
   factory Business.fromJson(Map<String, dynamic> json) {
-
     String arrayObjsText = jsonEncode(json['categories']);
     var categoryObjsJson = jsonDecode(arrayObjsText) as List;
-    List<Category> _categoriesList = categoryObjsJson.map((categoryJson) => Category.fromJson(categoryJson)).toList();
+    List<Category> _categoriesList = categoryObjsJson
+        .map((categoryJson) => Category.fromJson(categoryJson))
+        .toList();
 
     return Business(
       rating: json['rating'],
@@ -66,7 +67,7 @@ class Business {
       name: json['name'],
       latitude: json['coordinates']['latitude'],
       longitude: json['coordinates']['longitude'],
-      distance:json['distance'],
+      distance: json['distance'],
       alias: json['alias'],
       isClosed: json['is_closed'],
       reviewCount: json['review_count'],
@@ -84,7 +85,7 @@ class Business {
   }
 
   @override
-  String toString(){
+  String toString() {
     return '$name';
   }
 }

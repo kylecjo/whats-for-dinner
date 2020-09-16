@@ -1,8 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:location/location.dart';
-import 'dart:math';
+import 'package:provider/provider.dart';
 
 import './data/repository.dart';
 import './models/business.dart';
@@ -59,9 +60,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
   final String title;
+
+  MyHomePage({Key key, this.title}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -73,12 +74,57 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Business> _hidden = <Business>[];
   final Location location = Location();
   LocationData _locationData;
-  final Random rnd = new Random(); 
+  final Random rnd = new Random();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: _businesses != null
+            ? ListView.builder(
+                itemCount: _businesses.length,
+                itemBuilder: (BuildContext ctx, int index) {
+                  return Dismissible(
+                      key: Key(_businesses[index].toString()),
+                      background: Container(color: Colors.grey),
+                      onDismissed: (direction) {
+                        if (direction == DismissDirection.endToStart) {
+                          setState(() {
+                            _hidden.add(_businesses[index]);
+                            _businesses.removeAt(index);
+                          });
+                        }
+                        if (direction == DismissDirection.startToEnd) {
+                          _favorites.add(_businesses[index]);
+                          _businesses.removeAt(index);
+                        }
+                        print('favorites: $_favorites');
+                        print('hidden: $_hidden');
+                      },
+                      child: RestaurantCard(_businesses[index]));
+                },
+              )
+            : Text('Press the button to load restaurants'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _pickOne,
+        child: Icon(Icons.shuffle),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     _updateData();
+  }
+
+  void _pickOne() {
+    int randomIndex = rnd.nextInt(_favorites.length);
+    print(_favorites[randomIndex]);
   }
 
   Future<void> _updateData() async {
@@ -94,52 +140,5 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _businesses = businesses;
     });
-  }
-
-  void _pickOne(){
-    int randomIndex = rnd.nextInt(_favorites.length);
-    print(_favorites[randomIndex]);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    DismissDirection dimissDirection;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: _businesses != null
-            ? ListView.builder(
-                itemCount: _businesses.length,
-                itemBuilder: (BuildContext ctx, int index) {
-                  return Dismissible(
-                      key: Key(_businesses[index].toString()),
-                      background: Container(color: Colors.grey),
-                      onDismissed: (direction) {
-                        if(direction == DismissDirection.endToStart){
-                          setState(() {
-                            _hidden.add(_businesses[index]);
-                            _businesses.removeAt(index);
-                          });
-                        }
-                        if(direction == DismissDirection.startToEnd){
-                            _favorites.add(_businesses[index]);
-                            _businesses.removeAt(index);
-                        }
-                        print('favorites: $_favorites' );
-                        print('hidden: $_hidden');
-                      },
-                      child: RestaurantCard(_businesses[index]));
-                },
-              )
-            : Text('Press the button to load restaurants'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _pickOne,
-        child: Icon(Icons.shuffle),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
   }
 }

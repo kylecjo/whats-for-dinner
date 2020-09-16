@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/business.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../models/business.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Business business;
@@ -20,10 +21,10 @@ class RestaurantCard extends StatelessWidget {
     5.0: 'assets/images/stars_small_5.png',
   };
 
-  void launchURL(String url) async{
-    if(await canLaunch(url)){
+  void launchURL(String url) async {
+    if (await canLaunch(url)) {
       await launch(url);
-    } else{
+    } else {
       throw 'Could not launch $url';
     }
   }
@@ -99,7 +100,8 @@ class RestaurantCard extends StatelessWidget {
                         ),
                         Text(
                             '${business.address1}, ${business.city} ${business.state}',
-                            style: Theme.of(context).textTheme.bodyText2, overflow: TextOverflow.fade),
+                            style: Theme.of(context).textTheme.bodyText2,
+                            overflow: TextOverflow.fade),
                         Row(
                           children: <Widget>[
                             if (business.price != null)
