@@ -10,9 +10,9 @@ Authorization: Bearer {{authorization}}
 ### 
 GET {{baseUrl}}/businesses/search
 ?term=
-# &location=
-&latitude=48.4239917
-&longitude=-123.3655733
+&location={{location}}
+&latitude=
+&longitude=
 &radius=2000
 &categories=
 &sort_by=rating

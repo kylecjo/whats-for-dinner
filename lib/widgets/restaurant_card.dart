@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import '../widgets/yes_no_description.dart';
 import '../models/business.dart';
 import '../models/category.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Business business;
-
 
   RestaurantCard(this.business);
 
@@ -23,7 +23,9 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> categoryTitles = business.categories.map((category) => category.title.toString()).toList();
+    List<String> categoryTitles = business.categories
+        .map((category) => category.title.toString())
+        .toList();
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -31,21 +33,19 @@ class RestaurantCard extends StatelessWidget {
       width: double.infinity,
       child: Card(
           child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 5.0,
-              left: 5.0,
-            ),
-            child: Row(
-              children: [
-                Text(
-                  business.name,
-                  style: Theme.of(context).textTheme.headline5,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              Text(
+                business.name,
+                style: Theme.of(context).textTheme.headline5,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          Text(
+            '${categoryTitles.join(', ')}',
           ),
           Container(
             padding: const EdgeInsets.only(
@@ -61,8 +61,9 @@ class RestaurantCard extends StatelessWidget {
                   width: 180,
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      child: 
-                      business.imageUrl != '' ? Image.network(business.imageUrl) : null),
+                      child: business.imageUrl != ''
+                          ? Image.network(business.imageUrl)
+                          : null),
                 ),
                 Flexible(
                   flex: 3,
@@ -81,25 +82,35 @@ class RestaurantCard extends StatelessWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 10.0),
-                              child: Text('${business.reviewCount} reviews' , style: Theme.of(context).textTheme.bodyText1),
+                              child: Text('${business.reviewCount} reviews',
+                                  style: Theme.of(context).textTheme.bodyText1),
                             ),
                           ],
                         ),
                         Row(
-                          children: [
-                            if(business.price != null)
-                            Text('${business.price} •',
-                                style: Theme.of(context).textTheme.bodyText1),
-                            Text('${categoryTitles.join(', ')}',),
-                          ],
+                          children: [],
                         ),
                         Text(
                             '${business.address1}, ${business.city} ${business.state}',
                             style: Theme.of(context).textTheme.bodyText2),
-                        Row(children: <Widget>[
-                          business.isClosed ? Icon(Icons.close, color: Colors.red, size: 20.0,) : Icon(Icons.check, color: Colors.green, size: 20.0,),
-                          Text('Open Now', style: Theme.of(context).textTheme.subtitle1),
-                        ]),
+                        Row(
+                          children: <Widget>[
+                            if (business.price != null)
+                              Text('${business.price}',
+                                  style: Theme.of(context).textTheme.bodyText1),
+                          ],
+                        ),
+                        SizedBox(height: 30,),
+                        Row(
+                          children: [
+                            SizedBox(width: 120),
+                            Container(
+                              width: 75,
+                              child:
+                                  Image.asset('assets/images/yelp_logo_medium.png'),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
