@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/yes_no_description.dart';
 import '../models/business.dart';
-import '../models/category.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantCard extends StatelessWidget {

@@ -85,6 +85,6 @@ class Business {
 
   @override
   String toString(){
-    return '$name $categories';
+    return '$name';
   }
 }
