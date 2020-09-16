@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/yes_no_description.dart';
 import '../models/business.dart';
 import '../models/category.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Business business;
@@ -20,6 +21,14 @@ class RestaurantCard extends StatelessWidget {
     4.5: 'assets/images/stars_small_4_half.png',
     5.0: 'assets/images/stars_small_5.png',
   };
+
+  void launchURL(String url) async{
+    if(await canLaunch(url)){
+      await launch(url);
+    } else{
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,14 +109,19 @@ class RestaurantCard extends StatelessWidget {
                                   style: Theme.of(context).textTheme.bodyText1),
                           ],
                         ),
-                        SizedBox(height: 30,),
+                        SizedBox(
+                          height: 30,
+                        ),
                         Row(
                           children: [
                             SizedBox(width: 120),
-                            Container(
-                              width: 75,
-                              child:
-                                  Image.asset('assets/images/yelp_logo_medium.png'),
+                            GestureDetector(
+                              onTap: () => launchURL(business.url),
+                              child: Container(
+                                width: 75,
+                                child: Image.asset(
+                                    'assets/images/yelp_logo_medium.png'),
+                              ),
                             ),
                           ],
                         ),
