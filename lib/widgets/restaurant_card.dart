@@ -12,7 +12,7 @@ class RestaurantCard extends StatelessWidget {
     0.0: 'assets/images/stars_small_0.png',
     1.0: 'assets/images/stars_small_1.png',
     1.5: 'assets/images/stars_small_1_half.png',
-    2.0: 'assets/images//stars_small_2.png',
+    2.0: 'assets/images/stars_small_2.png',
     2.5: 'assets/images/stars_small_2_half.png',
     3.0: 'assets/images/stars_small_3.png',
     3.5: 'assets/images/stars_small_3_half.png',
@@ -41,19 +41,26 @@ class RestaurantCard extends StatelessWidget {
       width: double.infinity,
       child: Card(
           child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                business.name,
-                style: Theme.of(context).textTheme.headline5,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-          Text(
-            '${categoryTitles.join(', ')}',
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0, top:4.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      business.name,
+                      style: Theme.of(context).textTheme.headline5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+                Text(
+                  '${categoryTitles.join(', ')}',
+                ),
+              ],
+            ),
           ),
           Container(
             padding: const EdgeInsets.only(
@@ -114,7 +121,8 @@ class RestaurantCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            SizedBox(width: MediaQuery.of(context).size.width / 4),
+                            SizedBox(
+                                width: MediaQuery.of(context).size.width / 4),
                             GestureDetector(
                               onTap: () => launchURL(business.url),
                               child: Container(
