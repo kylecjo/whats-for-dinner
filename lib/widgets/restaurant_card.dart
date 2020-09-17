@@ -114,7 +114,7 @@ class RestaurantCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            SizedBox(width: 120),
+                            SizedBox(width: MediaQuery.of(context).size.width / 4),
                             GestureDetector(
                               onTap: () => launchURL(business.url),
                               child: Container(
