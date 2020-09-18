@@ -29,12 +29,20 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         // theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
         theme: ThemeData(
-          primaryColor: const Color(0xff41B883),
-          accentColor: const Color(0xffb8415b),
+          fontFamily: 'RobotoMono',
+          primaryColor: const Color(0xff8FADC9),
+          accentColor: const Color(0xffDAA99B),
+          // cardColor: const Color(0xffDAA99B),
+          backgroundColor: Colors.white,
+          dividerColor: const Color(0xffDAA99B),
           // accentColor: const Color(0xffb86f41),
-          textTheme: ThemeData.light().textTheme.copyWith(
+          textTheme: ThemeData.light().textTheme.copyWith(   
+                headline6: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
                 headline5: TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
                 bodyText2: TextStyle(
@@ -80,34 +88,42 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title, style: Theme.of(context).textTheme.headline6),
       ),
-      body: Center(
-        child: _businesses != null
-            ? ListView.builder(
-                itemCount: _businesses.length,
-                itemBuilder: (BuildContext ctx, int index) {
-                  return Dismissible(
-                      key: Key(_businesses[index].toString()),
-                      background: Container(color: Colors.grey),
-                      onDismissed: (direction) {
-                        if (direction == DismissDirection.endToStart) {
-                          setState(() {
-                            _hidden.add(_businesses[index]);
+      body: Container(
+        color: Theme.of(context).backgroundColor,
+        child: Center(
+          child: _businesses != null
+              ? ListView.builder(
+                  itemCount: _businesses.length,
+                  // separatorBuilder: (context, index) => Divider(
+                  //   color: Theme.of(context).dividerColor,
+                  //   indent: 20,
+                  //   endIndent: 20,
+                  // ),
+                  itemBuilder: (BuildContext ctx, int index) {
+                    return Dismissible(
+                        key: Key(_businesses[index].toString()),
+                        background: Container(color: Theme.of(context).accentColor),
+                        onDismissed: (direction) {
+                          if (direction == DismissDirection.endToStart) {
+                            setState(() {
+                              _hidden.add(_businesses[index]);
+                              _businesses.removeAt(index);
+                            });
+                          }
+                          if (direction == DismissDirection.startToEnd) {
+                            _favorites.add(_businesses[index]);
                             _businesses.removeAt(index);
-                          });
-                        }
-                        if (direction == DismissDirection.startToEnd) {
-                          _favorites.add(_businesses[index]);
-                          _businesses.removeAt(index);
-                        }
-                        print('favorites: $_favorites');
-                        print('hidden: $_hidden');
-                      },
-                      child: RestaurantCard(_businesses[index]));
-                },
-              )
-            : Text('Press the button to load restaurants'),
+                          }
+                          print('favorites: $_favorites');
+                          print('hidden: $_hidden');
+                        },
+                        child: RestaurantCard(_businesses[index]));
+                  },
+                )
+              : Text('Press the button to load restaurants'),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _pickOne,

@@ -37,23 +37,36 @@ class RestaurantCard extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      height: 225,
-      width: double.infinity,
+      height: MediaQuery.of(context).size.height / 3.2,
+      width: MediaQuery.of(context).size.width,
       child: Card(
           child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                business.name,
-                style: Theme.of(context).textTheme.headline5,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-          Text(
-            '${categoryTitles.join(', ')}',
+          Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                color: Theme.of(context).accentColor,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        business.name,
+                        style: Theme.of(context).textTheme.headline5,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  '${categoryTitles.join(', ')}',
+                ),
+              ],
+            ),
           ),
           Container(
             padding: const EdgeInsets.only(
@@ -114,7 +127,8 @@ class RestaurantCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            SizedBox(width: 120),
+                            SizedBox(
+                                width: MediaQuery.of(context).size.width / 4),
                             GestureDetector(
                               onTap: () => launchURL(business.url),
                               child: Container(
