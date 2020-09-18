@@ -38,116 +38,127 @@ class RestaurantCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       height: MediaQuery.of(context).size.height / 3.2,
-      width: MediaQuery.of(context).size.width,
       child: Card(
+          elevation: 2,
           child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0))),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        business.name,
-                        style: Theme.of(context).textTheme.headline5,
-                        overflow: TextOverflow.ellipsis,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            business.name,
+                            style: Theme.of(context).textTheme.headline5,
+                            overflow: TextOverflow.fade,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        if (business.price != null)
+                          Text(
+                            '${business.price} • ',
+                          ),
+                        Flexible(
+                                                  child: Text(
+                            '${categoryTitles.join(', ')}',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                  top: 5.0,
+                ),
+                height: 150,
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5.0,
+                      ),
+                      width: 180,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: business.imageUrl != ''
+                              ? Image.network(business.imageUrl)
+                              : null),
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  width: 75,
+                                  height: 20,
+                                  child: Image.asset(
+                                      doubleRatingToImage[business.rating]),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: FittedBox(
+                                                                      child: Text('${business.reviewCount} reviews',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                                '${business.address1}',
+                                style: Theme.of(context).textTheme.bodyText2,
+                                overflow: TextOverflow.fade),
+                            Text(
+                                '${business.city} ${business.state}',
+                                style: Theme.of(context).textTheme.bodyText2,
+                                overflow: TextOverflow.fade),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 4.2),
+                                GestureDetector(
+                                  onTap: () => launchURL(business.url),
+                                  child: Container(
+                                    width: 75,
+                                    child: Image.asset(
+                                        'assets/images/yelp_logo_medium.png'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
-                Text(
-                  '${categoryTitles.join(', ')}',
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(
-              top: 5.0,
-            ),
-            height: 150,
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 5.0,
-                  ),
-                  width: 180,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: business.imageUrl != ''
-                          ? Image.network(business.imageUrl)
-                          : null),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 75,
-                              height: 20,
-                              child: Image.asset(
-                                  doubleRatingToImage[business.rating]),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: Text('${business.reviewCount} reviews',
-                                  style: Theme.of(context).textTheme.bodyText1),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [],
-                        ),
-                        Text(
-                            '${business.address1}, ${business.city} ${business.state}',
-                            style: Theme.of(context).textTheme.bodyText2,
-                            overflow: TextOverflow.fade),
-                        Row(
-                          children: <Widget>[
-                            if (business.price != null)
-                              Text('${business.price}',
-                                  style: Theme.of(context).textTheme.bodyText1),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                                width: MediaQuery.of(context).size.width / 4),
-                            GestureDetector(
-                              onTap: () => launchURL(business.url),
-                              child: Container(
-                                width: 75,
-                                child: Image.asset(
-                                    'assets/images/yelp_logo_medium.png'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      )),
+              ),
+            ],
+          )),
     );
   }
 }
