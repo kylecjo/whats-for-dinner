@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemBuilder: (BuildContext ctx, int index) {
                     return Dismissible(
                         key: Key(_businesses[index].toString()),
-                        background: Container(color: Colors.grey),
+                        background: Container(color: Theme.of(context).backgroundColor),
                         onDismissed: (direction) {
                           if (direction == DismissDirection.endToStart) {
                             setState(() {
