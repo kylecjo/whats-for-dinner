@@ -37,7 +37,7 @@ class RestaurantCard extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      height: MediaQuery.of(context).size.height / 3.2,
+      height: MediaQuery.of(context).size.height / 3,
       child: Card(
           elevation: 2,
           child: Column(
