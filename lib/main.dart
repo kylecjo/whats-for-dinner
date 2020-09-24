@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/providers/businesses.dart';
 
 import './data/repository.dart';
 import './models/business.dart';
@@ -21,10 +22,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Provider<Repository>(
-      create: (_) => Repository(
-        apiService: APIService(API.dev()),
-      ),
+    return MultiProvider(
+      providers: [
+        Provider<Repository>(
+          create: (_) => Repository(
+            apiService: APIService(API.dev()),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Businesses(),
+        )
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         // theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
@@ -36,7 +44,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.white,
           dividerColor: const Color(0xffDAA99B),
           // accentColor: const Color(0xffb86f41),
-          textTheme: ThemeData.light().textTheme.copyWith(   
+          textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -77,52 +85,53 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Business> _businesses;
-  List<Business> _favorites = <Business>[];
-  List<Business> _hidden = <Business>[];
   final Location location = Location();
   LocationData _locationData;
   final Random rnd = new Random();
 
   @override
   Widget build(BuildContext context) {
+    final businessList = Provider.of<Businesses>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
         body: Center(
-          child: _businesses != null
+          child: businessList.businesses != null
               ? RefreshIndicator(
                   child: ListView.builder(
-                    itemCount: _businesses.length,
+                    itemCount: businessList.businesses.length,
                     itemBuilder: (BuildContext ctx, int index) {
                       return Dismissible(
-                          key: Key(_businesses[index].toString()),
+                          key: Key(businessList.businesses[index].toString()),
                           background: Container(
                               color: Theme.of(context).backgroundColor),
                           onDismissed: (direction) {
                             if (direction == DismissDirection.endToStart) {
                               setState(() {
-                                if (!_hidden.any((business) =>
-                                    business.id == _businesses[index].id)) {
-                                  _hidden.add(_businesses[index]);
+                                if (!businessList.hidden.any((business) =>
+                                    business.id ==
+                                    businessList.businesses[index].id)) {
+                                  businessList.addHidden(businessList.businesses[index]);
                                 }
-                                _businesses.removeAt(index);
+                                businessList.removeBusiness(businessList.businesses[index]);
                               });
                             }
                             if (direction == DismissDirection.startToEnd) {
                               setState(() {
-                                if (!_favorites.any((business) =>
-                                    business.id == _businesses[index].id)) {
-                                  _favorites.add(_businesses[index]);
+                                if (!businessList.favorites.any((business) =>
+                                    business.id ==
+                                    businessList.businesses[index].id)) {
+                                  businessList.addFavorite(businessList.businesses[index]);
                                 }
-                                _businesses.removeAt(index);
+                                businessList.removeBusiness(businessList.businesses[index]);
                               });
                             }
-                            print('favorites: $_favorites');
-                            print('hidden: $_hidden');
+                            print('favorites: ${businessList.favorites}');
+                            print('hidden: ${businessList.hidden}');
                           },
-                          child: RestaurantCard(_businesses[index]));
+                          child:
+                              RestaurantCard(businessList.businesses[index]));
                     },
                   ),
                   onRefresh: _updateData,
@@ -132,13 +141,14 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: Builder(builder: (BuildContext ctx) {
           return FloatingActionButton(
             onPressed: () {
-              int randomIndex = rnd.nextInt(_favorites.length);
-              final snackBar = SnackBar(
-                content: _favorites.length > 0
-                    ? Text(_favorites[randomIndex].toString())
-                    : Text('You have no favorites!'),
-              );
-              Scaffold.of(ctx).showSnackBar(snackBar);
+              // int randomIndex = rnd.nextInt(businessList.favorites.length);
+              // final snackBar = SnackBar(
+              //   content: businessList.favorites.length > 0
+              //       ? Text(businessList.favorites[randomIndex].toString())
+              //       : Text('You have no favorites!'),
+              // );
+              // Scaffold.of(ctx).showSnackBar(snackBar);
+              _updateData();
             },
             child: Icon(Icons.shuffle),
           );
@@ -149,7 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _updateData();
   }
 
   Future<void> _updateData() async {
@@ -162,8 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
       lat: _locationData.latitude,
       long: _locationData.longitude,
     );
-    setState(() {
-      _businesses = businesses;
-    });
+    final businessList = Provider.of<Businesses>(context, listen: false);
+    businessList.initBusinesses(businesses);
   }
 }
