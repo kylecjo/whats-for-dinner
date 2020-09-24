@@ -92,28 +92,40 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Center(
           child: _businesses != null
-              ? ListView.builder(
-                  itemCount: _businesses.length,
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return Dismissible(
-                        key: Key(_businesses[index].toString()),
-                        background: Container(color: Theme.of(context).backgroundColor),
-                        onDismissed: (direction) {
-                          if (direction == DismissDirection.endToStart) {
-                            setState(() {
-                              _hidden.add(_businesses[index]);
-                              _businesses.removeAt(index);
-                            });
-                          }
-                          if (direction == DismissDirection.startToEnd) {
-                            _favorites.add(_businesses[index]);
-                            _businesses.removeAt(index);
-                          }
-                          print('favorites: $_favorites');
-                          print('hidden: $_hidden');
-                        },
-                        child: RestaurantCard(_businesses[index]));
-                  },
+              ? RefreshIndicator(
+                  child: ListView.builder(
+                    itemCount: _businesses.length,
+                    itemBuilder: (BuildContext ctx, int index) {
+                      return Dismissible(
+                          key: Key(_businesses[index].toString()),
+                          background: Container(
+                              color: Theme.of(context).backgroundColor),
+                          onDismissed: (direction) {
+                            if (direction == DismissDirection.endToStart) {
+                              setState(() {
+                                if (!_hidden.any((business) =>
+                                    business.id == _businesses[index].id)) {
+                                  _hidden.add(_businesses[index]);
+                                }
+                                _businesses.removeAt(index);
+                              });
+                            }
+                            if (direction == DismissDirection.startToEnd) {
+                              setState(() {
+                                if (!_favorites.any((business) =>
+                                    business.id == _businesses[index].id)) {
+                                  _favorites.add(_businesses[index]);
+                                }
+                                _businesses.removeAt(index);
+                              });
+                            }
+                            print('favorites: $_favorites');
+                            print('hidden: $_hidden');
+                          },
+                          child: RestaurantCard(_businesses[index]));
+                    },
+                  ),
+                  onRefresh: _updateData,
                 )
               : Text('Press the button to load restaurants'),
         ),
