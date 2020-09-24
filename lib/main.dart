@@ -88,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final Location location = Location();
   LocationData _locationData;
   final Random rnd = new Random();
+  bool _initState = true;
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +113,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                 if (!businessList.hidden.any((business) =>
                                     business.id ==
                                     businessList.businesses[index].id)) {
-                                  businessList.addHidden(businessList.businesses[index]);
+                                  businessList.addHidden(
+                                      businessList.businesses[index]);
                                 }
-                                businessList.removeBusiness(businessList.businesses[index]);
+                                businessList.removeBusiness(
+                                    businessList.businesses[index]);
                               });
                             }
                             if (direction == DismissDirection.startToEnd) {
@@ -122,9 +125,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                 if (!businessList.favorites.any((business) =>
                                     business.id ==
                                     businessList.businesses[index].id)) {
-                                  businessList.addFavorite(businessList.businesses[index]);
+                                  businessList.addFavorite(
+                                      businessList.businesses[index]);
                                 }
-                                businessList.removeBusiness(businessList.businesses[index]);
+                                businessList.removeBusiness(
+                                    businessList.businesses[index]);
                               });
                             }
                             print('favorites: ${businessList.favorites}');
@@ -141,14 +146,13 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: Builder(builder: (BuildContext ctx) {
           return FloatingActionButton(
             onPressed: () {
-              // int randomIndex = rnd.nextInt(businessList.favorites.length);
-              // final snackBar = SnackBar(
-              //   content: businessList.favorites.length > 0
-              //       ? Text(businessList.favorites[randomIndex].toString())
-              //       : Text('You have no favorites!'),
-              // );
-              // Scaffold.of(ctx).showSnackBar(snackBar);
-              _updateData();
+              int randomIndex = rnd.nextInt(businessList.favorites.length);
+              final snackBar = SnackBar(
+                content: businessList.favorites.length > 0
+                    ? Text(businessList.favorites[randomIndex].toString())
+                    : Text('You have no favorites!'),
+              );
+              Scaffold.of(ctx).showSnackBar(snackBar);
             },
             child: Icon(Icons.shuffle),
           );
@@ -159,6 +163,15 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_initState) {
+      _updateData();
+    }
+    _initState = false;
+    super.didChangeDependencies();
   }
 
   Future<void> _updateData() async {
