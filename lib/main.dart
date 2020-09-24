@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/businesses.dart';
+import './providers/businesses.dart';
+import './widgets/dismissible_card.dart';
 
 import './data/repository.dart';
 import './models/business.dart';
 import './services/api.dart';
 import './services/api_service.dart';
-import './widgets/restaurant_card.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -103,40 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListView.builder(
                     itemCount: businessList.businesses.length,
                     itemBuilder: (BuildContext ctx, int index) {
-                      return Dismissible(
-                          key: Key(businessList.businesses[index].toString()),
-                          background: Container(
-                              color: Theme.of(context).backgroundColor),
-                          onDismissed: (direction) {
-                            if (direction == DismissDirection.endToStart) {
-                              setState(() {
-                                if (!businessList.hidden.any((business) =>
-                                    business.id ==
-                                    businessList.businesses[index].id)) {
-                                  businessList.addHidden(
-                                      businessList.businesses[index]);
-                                }
-                                businessList.removeBusiness(
-                                    businessList.businesses[index]);
-                              });
-                            }
-                            if (direction == DismissDirection.startToEnd) {
-                              setState(() {
-                                if (!businessList.favorites.any((business) =>
-                                    business.id ==
-                                    businessList.businesses[index].id)) {
-                                  businessList.addFavorite(
-                                      businessList.businesses[index]);
-                                }
-                                businessList.removeBusiness(
-                                    businessList.businesses[index]);
-                              });
-                            }
-                            print('favorites: ${businessList.favorites}');
-                            print('hidden: ${businessList.hidden}');
-                          },
-                          child:
-                              RestaurantCard(businessList.businesses[index]));
+                      return DismissibleCard(index);
                     },
                   ),
                   onRefresh: _updateData,
