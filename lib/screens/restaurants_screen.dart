@@ -44,13 +44,18 @@ class _RestaurantScreen extends State<RestaurantScreen> {
         floatingActionButton: Builder(builder: (BuildContext ctx) {
           return FloatingActionButton(
             onPressed: () {
-              int randomIndex = _rnd.nextInt(businessList.favorites.length);
-              final snackBar = SnackBar(
-                content: businessList.favorites.length > 0
-                    ? Text(businessList.favorites[randomIndex].toString())
-                    : Text('You have no favorites!'),
-              );
-              Scaffold.of(ctx).showSnackBar(snackBar);
+              try {
+                int randomIndex = _rnd.nextInt(businessList.favorites.length);
+                final snackBar = SnackBar(
+                  content: Text(businessList.favorites[randomIndex].toString())
+                );
+                Scaffold.of(ctx).showSnackBar(snackBar);
+              } catch (_) {
+                final snackBar = SnackBar(
+                  content: Text('You have no favorites!'),
+                );
+                Scaffold.of(ctx).showSnackBar(snackBar);
+              }
             },
             child: Icon(Icons.shuffle),
           );
