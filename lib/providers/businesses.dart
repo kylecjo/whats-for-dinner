@@ -20,6 +20,7 @@ class Businesses with ChangeNotifier{
   }
 
   void initBusinesses(List<Business> businesses){
+    businesses.removeWhere((business) => _hidden.contains(business));
     _businesses = businesses;
     notifyListeners();
   }

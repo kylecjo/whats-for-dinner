@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import '../data/repository.dart';
 import '../models/business.dart';
 import '../providers/businesses.dart';
 import '../widgets/dismissible_card.dart';
-
 
 class RestaurantScreen extends StatefulWidget {
   final String title;
@@ -35,14 +33,11 @@ class _RestaurantScreen extends State<RestaurantScreen> {
         ),
         body: Center(
           child: businessList.businesses != null
-              ? RefreshIndicator(
-                  child: ListView.builder(
-                    itemCount: businessList.businesses.length,
-                    itemBuilder: (BuildContext ctx, int index) {
-                      return DismissibleCard(index);
-                    },
-                  ),
-                  onRefresh: _updateData,
+              ? ListView.builder(
+                  itemCount: businessList.businesses.length,
+                  itemBuilder: (BuildContext ctx, int index) {
+                    return DismissibleCard(index);
+                  },
                 )
               : Text('Press the button to load restaurants'),
         ),
