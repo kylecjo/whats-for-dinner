@@ -23,7 +23,7 @@ class RestaurantScreen extends StatefulWidget {
 class _RestaurantScreen extends State<RestaurantScreen> {
   final Location location = Location();
   LocationData _locationData;
-  final Random rnd = new Random();
+  final Random _rnd = new Random();
   bool _initState = true;
 
   @override
@@ -49,7 +49,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
         floatingActionButton: Builder(builder: (BuildContext ctx) {
           return FloatingActionButton(
             onPressed: () {
-              int randomIndex = rnd.nextInt(businessList.favorites.length);
+              int randomIndex = _rnd.nextInt(businessList.favorites.length);
               final snackBar = SnackBar(
                 content: businessList.favorites.length > 0
                     ? Text(businessList.favorites[randomIndex].toString())
