@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/widgets/choose_one_button.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
@@ -21,60 +22,29 @@ class RestaurantScreen extends StatefulWidget {
 class _RestaurantScreen extends State<RestaurantScreen> {
   final Location location = Location();
   LocationData _locationData;
-  final Random _rnd = new Random();
   bool _initState = true;
 
   @override
   Widget build(BuildContext context) {
     final businessList = Provider.of<Businesses>(context);
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: businessList.businesses != null
-              ? ListView.builder(
-                  itemCount: businessList.businesses.length,
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return DismissibleCard(index);
-                  },
-                )
-              : Text('Press the button to load restaurants'),
-        ),
-        floatingActionButton: Builder(builder: (BuildContext ctx) {
-          return FloatingActionButton(
-            onPressed: () {
-              try {
-                int randomIndex = _rnd.nextInt(businessList.favorites.length);
-                final snackBar = SnackBar(
-                  content: Text(businessList.favorites[randomIndex].toString())
-                );
-                Scaffold.of(ctx).showSnackBar(snackBar);
-              } catch (_) {
-                final snackBar = SnackBar(
-                  content: Text('You have no favorites!'),
-                );
-                Scaffold.of(ctx).showSnackBar(snackBar);
-              }
-            },
-            child: Icon(Icons.shuffle),
-          );
-        }) // This trailing comma makes auto-formatting nicer for build methods.
-        );
+    return Center(
+        child: businessList.businesses.length > 0
+            ? ListView.builder(
+                itemCount: businessList.businesses.length,
+                itemBuilder: (BuildContext ctx, int index) {
+                  return DismissibleCard(index, RestaurantVisibility.visible);
+                },
+              )
+            : RaisedButton(
+                onPressed: _updateData,
+                child: Text('Load nearby restaurants',
+                    style: Theme.of(context).textTheme.bodyText1),
+                color: Theme.of(context).accentColor));
   }
 
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (_initState) {
-      _updateData();
-    }
-    _initState = false;
-    super.didChangeDependencies();
   }
 
   Future<void> _updateData() async {

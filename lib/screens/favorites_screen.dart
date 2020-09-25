@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
-import '../models/business.dart';
+import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/providers/businesses.dart';
+import 'package:whats_for_dinner/widgets/dismissible_card.dart';
 
 import '../widgets/restaurant_card.dart';
 
 class FavoritesScreen extends StatelessWidget {
-  final List<Business> favorites;
   final String title;
 
-  FavoritesScreen(this.title, this.favorites);
+  FavoritesScreen(this.title);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('$this.title',)
-      ),
-      body: Center(
-        child: favorites != null
+    final businesses = Provider.of<Businesses>(context);
+    return Center(
+        child: businesses.favorites.length > 0
             ? ListView.builder(
-                itemCount: favorites.length,
+                itemCount: businesses.favorites.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                      return RestaurantCard(favorites[index]);
+                      return DismissibleCard(index, RestaurantVisibility.favorite);
                 },
               )
-            : Text('Press the button to load restaurants'),
-      ),
-    );
+            : Text('You have no favorites!'),
+      );
   }
 }

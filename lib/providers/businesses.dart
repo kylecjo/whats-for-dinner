@@ -20,7 +20,6 @@ class Businesses with ChangeNotifier{
   }
 
   void initBusinesses(List<Business> businesses){
-    businesses.removeWhere((business) => _hidden.contains(business));
     _businesses = businesses;
     notifyListeners();
   }
@@ -35,10 +34,18 @@ class Businesses with ChangeNotifier{
     notifyListeners();
   }
 
+  void removeFavorite(Business business){
+    _favorites.removeWhere((element) => element == business);
+    _businesses.insert(0, business);
+    notifyListeners();
+  }
+
   void removeBusiness(Business businessToRemove){
     _businesses.removeWhere((business) => business == businessToRemove);
     notifyListeners();
   }
+
+
 
   Business findById(String id){
     return _businesses.where((business) => business.id == id) as Business;
