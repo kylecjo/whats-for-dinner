@@ -27,7 +27,7 @@ class DismissibleCard extends StatelessWidget {
           onDismissed: (direction) {
             businessList.removeFavorite(businessList.favorites[index]);
           },
-          child: RestaurantCard(businessList.favorites[index]));
+          child: RestaurantCard(business: businessList.favorites[index], cardColor: Color(0xffa4d1a2)));
     } else {
       return Dismissible(
           key: Key(businessList.businesses[index].toString()),
@@ -51,7 +51,7 @@ class DismissibleCard extends StatelessWidget {
             // print('favorites: ${businessList.favorites}');
             // print('hidden: ${businessList.hidden}');
           },
-          child: RestaurantCard(businessList.businesses[index]));
+          child: RestaurantCard(business: businessList.businesses[index], cardColor: Theme.of(context).accentColor));
     }
   }
 }

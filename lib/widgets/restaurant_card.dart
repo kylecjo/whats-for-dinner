@@ -5,8 +5,9 @@ import '../models/business.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Business business;
+  final Color cardColor;
 
-  RestaurantCard(this.business);
+  RestaurantCard({this.business, this.cardColor});
 
   static Map<double, String> doubleRatingToImage = {
     0.0: 'assets/images/stars_small_0.png',
@@ -45,7 +46,7 @@ class RestaurantCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                    color: Theme.of(context).accentColor,
+                    color: cardColor,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10.0),
                         topRight: Radius.circular(10.0))),
@@ -70,7 +71,7 @@ class RestaurantCard extends StatelessWidget {
                             '${business.price} • ',
                           ),
                         Flexible(
-                                                  child: Text(
+                          child: Text(
                             '${categoryTitles.join(', ')}',
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -95,7 +96,8 @@ class RestaurantCard extends StatelessWidget {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: business.imageUrl != ''
-                              ? Image.network(business.imageUrl, fit: BoxFit.cover)
+                              ? Image.network(business.imageUrl,
+                                  fit: BoxFit.cover)
                               : null),
                     ),
                     Flexible(
@@ -116,20 +118,19 @@ class RestaurantCard extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: FittedBox(
-                                                                      child: Text('${business.reviewCount} reviews',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,),
+                                    child: Text(
+                                      '${business.reviewCount} reviews',
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                            Text(
-                                '${business.address1}',
+                            Text('${business.address1}',
                                 style: Theme.of(context).textTheme.bodyText2,
                                 overflow: TextOverflow.fade),
-                            Text(
-                                '${business.city} ${business.state}',
+                            Text('${business.city} ${business.state}',
                                 style: Theme.of(context).textTheme.bodyText2,
                                 overflow: TextOverflow.fade),
                             SizedBox(
@@ -138,8 +139,8 @@ class RestaurantCard extends StatelessWidget {
                             Row(
                               children: [
                                 SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 4.2),
+                                    width: MediaQuery.of(context).size.width /
+                                        4.2),
                                 GestureDetector(
                                   onTap: () => launchURL(business.url),
                                   child: Container(
