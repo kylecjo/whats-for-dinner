@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/providers/businesses.dart';
 import 'package:whats_for_dinner/widgets/dismissible_card.dart';
 
-import '../widgets/restaurant_card.dart';
-
 class FavoritesScreen extends StatelessWidget {
   final String title;
 

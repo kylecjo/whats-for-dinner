@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/widgets/choose_one_button.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
@@ -22,7 +19,6 @@ class RestaurantScreen extends StatefulWidget {
 class _RestaurantScreen extends State<RestaurantScreen> {
   final Location location = Location();
   LocationData _locationData;
-  bool _initState = true;
 
   @override
   Widget build(BuildContext context) {
