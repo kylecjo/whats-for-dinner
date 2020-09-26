@@ -84,9 +84,13 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                     onPressed: () {
                       launch("tel://${args.business.phone}");
                     },
-                    child: Text(
-                      'Call Restaurant',
-                      style: Theme.of(context).textTheme.headline4,
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Icon(Icons.phone),
+                        Text(
+                          'Call Restaurant',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -117,9 +121,14 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                         );
                       }
                     },
-                    child: Text(
-                      'Reroll Restaurant',
-                      style: Theme.of(context).textTheme.headline4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Icon(Icons.shuffle),
+                        Text(
+                          'Reroll Restaurant',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                      ],
                     ),
                   ),
                 ),
