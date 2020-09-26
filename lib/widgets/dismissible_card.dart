@@ -43,18 +43,10 @@ class DismissibleCard extends StatelessWidget {
       return Dismissible(
           key: Key(business.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
+          direction: DismissDirection.endToStart,
           onDismissed: (direction) {
-            if (direction == DismissDirection.endToStart) {
-
               businessList.addHidden(business);
               businessList.removeBusiness(business);
-            }
-
-            if (direction == DismissDirection.startToEnd) {
-
-              businessList.addFavorite(business);
-              businessList.removeBusiness(business);
-            }
           },
           child: RestaurantCard(business: business, cardColor: Theme.of(context).accentColor));
     }

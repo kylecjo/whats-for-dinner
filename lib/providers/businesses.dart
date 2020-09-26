@@ -42,7 +42,6 @@ class Businesses with ChangeNotifier{
 
   void removeFavorite(Business business){
     _favorites.removeWhere((element) => element == business);
-    _businesses.insert(0, business);
     notifyListeners();
   }
 

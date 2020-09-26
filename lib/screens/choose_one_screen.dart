@@ -62,7 +62,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
     final businesses = Provider.of<Businesses>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('What\s for dinner?'),
+        title: Text('RestaurantApp'),
       ),
       body: Column(
         children: [

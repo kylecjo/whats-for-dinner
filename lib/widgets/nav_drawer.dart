@@ -15,7 +15,7 @@ class NavDrawer extends StatelessWidget {
             alignment: Alignment.centerLeft,
             color: Theme.of(context).accentColor,
             child: Text(
-              'What\'s for dinner?',
+              'RestaurantApp',
               style:
                   Theme.of(context).textTheme.headline6.copyWith(fontSize: 22),
             ),
@@ -24,9 +24,9 @@ class NavDrawer extends StatelessWidget {
             height: 20,
           ),
           NavDrawerTile(
-            icon: Icons.favorite,
+            icon: Icons.star,
             title: 'Favorites',
-            iconColor: Colors.red,
+            iconColor: Colors.yellow,
             tapHandler: () {
               Navigator.pop(context);
               Navigator.of(context).pushNamed(FavoritesScreen.routeName);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:whats_for_dinner/providers/businesses.dart';
 
 import '../models/business.dart';
 
@@ -35,6 +37,7 @@ class RestaurantCard extends StatelessWidget {
     List<String> categoryTitles = business.categories
         .map((category) => category.title.toString())
         .toList();
+    final businesses = Provider.of<Businesses>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -54,6 +57,7 @@ class RestaurantCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
                           child: Text(
@@ -62,6 +66,20 @@ class RestaurantCard extends StatelessWidget {
                             overflow: TextOverflow.fade,
                           ),
                         ),
+                        GestureDetector(
+                          onTap: (){
+                            if(businesses.favorites.contains(business)){
+                              businesses.removeFavorite(business);
+                            } else{
+                              businesses.addFavorite(business);
+                            }
+                          },
+                          child: businesses.favorites.contains(business)
+                              ? Icon(Icons.star, size: 20, color: Colors.yellow)
+                              : Icon(Icons.star_border,
+                                  size: 20, color: Colors.grey[700]),
+                        ),
+
                       ],
                     ),
                     Row(
