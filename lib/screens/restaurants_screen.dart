@@ -45,6 +45,11 @@ class _RestaurantScreen extends State<RestaurantScreen> {
                 color: Theme.of(context).accentColor),
       ),
       drawer: NavDrawer(),
+      floatingActionButton: Builder(
+        builder: (BuildContext ctx) {
+          return ChooseOneButton(businessList.businesses, Color(0xffa4d1a2));
+        },
+      ),
     );
   }
 

@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/models/business.dart';
 import 'dart:math';
-
-import '../providers/businesses.dart';
 
 class ChooseOneButton extends StatelessWidget {
   final Random rnd = new Random();
+  final List<Business> chooseOneFromThisList;
+  final Color color;
+
+  ChooseOneButton(this.chooseOneFromThisList, this.color);
 
   @override
   Widget build(BuildContext context) {
-    final businessList = Provider.of<Businesses>(context);
 
     return FloatingActionButton(
+      backgroundColor: color,
       onPressed: () {
         try {
-          int randomIndex = rnd.nextInt(businessList.favorites.length);
+          int randomIndex = rnd.nextInt(chooseOneFromThisList.length);
           final snackBar = SnackBar(
-              content: Text(businessList.favorites[randomIndex].toString()));
+              content: Text(chooseOneFromThisList[randomIndex].toString()));
           Scaffold.of(context).showSnackBar(snackBar);
         } catch (_) {
           final snackBar = SnackBar(

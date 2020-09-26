@@ -29,7 +29,7 @@ class FavoritesScreen extends StatelessWidget {
       ),
       floatingActionButton: Builder(
         builder: (BuildContext ctx) {
-          return ChooseOneButton();
+          return ChooseOneButton(businesses.favorites, Theme.of(context).accentColor);
         },
       ),
     );
