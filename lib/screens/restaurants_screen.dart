@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/models/screen_type.dart';
 import 'package:whats_for_dinner/widgets/choose_one_button.dart';
 import 'package:whats_for_dinner/widgets/nav_drawer.dart';
 
@@ -47,7 +48,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
       drawer: NavDrawer(),
       floatingActionButton: Builder(
         builder: (BuildContext ctx) {
-          return ChooseOneButton(list: businessList.businesses, color: Color(0xffa4d1a2), errorText: 'There are no nearby restaurants!');
+          return ChooseOneButton(list: businessList.businesses, color: Color(0xffa4d1a2), errorText: 'There are no nearby restaurants!', screenType: ScreenType.nearby);
         },
       ),
     );

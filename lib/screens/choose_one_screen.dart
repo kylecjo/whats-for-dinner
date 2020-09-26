@@ -1,5 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/models/choose_one_arguments.dart';
+import 'package:whats_for_dinner/models/screen_type.dart';
+import 'package:whats_for_dinner/providers/businesses.dart';
 import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
 class ChooseOneScreen extends StatefulWidget {
@@ -11,13 +16,13 @@ class ChooseOneScreen extends StatefulWidget {
 
 class _ChooseOneScreenState extends State<ChooseOneScreen>
     with SingleTickerProviderStateMixin {
+  final Random _rnd = new Random();
   AnimationController _controller;
   Animation<Offset> _offsetAnimation;
   Animation<double> _fadeAnimation;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
         duration: const Duration(milliseconds: 2500), vsync: this)
@@ -46,7 +51,6 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     super.dispose();
   }
@@ -54,7 +58,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
   @override
   Widget build(BuildContext context) {
     final ChooseOneArguments args = ModalRoute.of(context).settings.arguments;
-
+    final businesses = Provider.of<Businesses>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('What\s for dinner?'),
@@ -69,13 +73,34 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
           ),
           SizedBox(height: 10),
           FadeTransition(
-              opacity: _fadeAnimation,
-              child: RaisedButton(
-                onPressed: () {},
-                child: Text('Reroll Restaurant'),
-              ))
+            opacity: _fadeAnimation,
+            child: RaisedButton(
+              onPressed: () {
+                if (args.screenType == ScreenType.nearby) {
+                  int randomIndex = _rnd.nextInt(businesses.businesses.length);
+                  Navigator.pushReplacementNamed(
+                    context,
+                    ChooseOneScreen.routeName,
+                    arguments: ChooseOneArguments(
+                        businesses.businesses[randomIndex], ScreenType.nearby),
+                  );
+                } else {
+                  int randomIndex = _rnd.nextInt(businesses.favorites.length);
+                  Navigator.pushReplacementNamed(
+                    context,
+                    ChooseOneScreen.routeName,
+                    arguments: ChooseOneArguments(
+                        businesses.favorites[randomIndex],
+                        ScreenType.favorites),
+                  );
+                }
+              },
+              child: Text('Reroll Restaurant'),
+            ),
+          )
         ],
       ),
     );
   }
+
 }
