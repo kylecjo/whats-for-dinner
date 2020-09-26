@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:whats_for_dinner/models/choose_one_arguments.dart';
 import 'package:whats_for_dinner/models/screen_type.dart';
 import 'package:whats_for_dinner/providers/businesses.dart';
@@ -74,33 +75,59 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
           SizedBox(height: 10),
           FadeTransition(
             opacity: _fadeAnimation,
-            child: RaisedButton(
-              onPressed: () {
-                if (args.screenType == ScreenType.nearby) {
-                  int randomIndex = _rnd.nextInt(businesses.businesses.length);
-                  Navigator.pushReplacementNamed(
-                    context,
-                    ChooseOneScreen.routeName,
-                    arguments: ChooseOneArguments(
-                        businesses.businesses[randomIndex], ScreenType.nearby),
-                  );
-                } else {
-                  int randomIndex = _rnd.nextInt(businesses.favorites.length);
-                  Navigator.pushReplacementNamed(
-                    context,
-                    ChooseOneScreen.routeName,
-                    arguments: ChooseOneArguments(
-                        businesses.favorites[randomIndex],
-                        ScreenType.favorites),
-                  );
-                }
-              },
-              child: Text('Reroll Restaurant'),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 200,
+                  child: RaisedButton(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      launch("tel://${args.business.phone}");
+                    },
+                    child: Text(
+                      'Call Restaurant',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                  ),
+                ),
+                 SizedBox(
+                  width: 200,
+                  child: RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    onPressed: () {
+                      if (args.screenType == ScreenType.nearby) {
+                        int randomIndex =
+                            _rnd.nextInt(businesses.businesses.length);
+                        Navigator.pushReplacementNamed(
+                          context,
+                          ChooseOneScreen.routeName,
+                          arguments: ChooseOneArguments(
+                              businesses.businesses[randomIndex],
+                              ScreenType.nearby),
+                        );
+                      } else {
+                        int randomIndex =
+                            _rnd.nextInt(businesses.favorites.length);
+                        Navigator.pushReplacementNamed(
+                          context,
+                          ChooseOneScreen.routeName,
+                          arguments: ChooseOneArguments(
+                              businesses.favorites[randomIndex],
+                              ScreenType.favorites),
+                        );
+                      }
+                    },
+                    child: Text(
+                      'Reroll Restaurant',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                  ),
+                ),
+              ],
             ),
           )
         ],
       ),
     );
   }
-
 }

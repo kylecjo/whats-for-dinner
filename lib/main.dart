@@ -33,50 +33,51 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
-        // theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
-        theme: ThemeData(
-          fontFamily: 'RobotoMono',
-          primaryColor: const Color(0xff8FADC9),
-          accentColor: const Color(0xffDAA99B),
-          // cardColor: const Color(0xffDAA99B),
-          backgroundColor: Colors.white,
-          dividerColor: const Color(0xffDAA99B),
-          // accentColor: const Color(0xffb86f41),
-          textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+          title: 'Flutter Demo',
+          // theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
+          theme: ThemeData(
+            fontFamily: 'RobotoMono',
+            primaryColor: const Color(0xff8FADC9),
+            accentColor: const Color(0xffDAA99B),
+            // cardColor: const Color(0xffDAA99B),
+            backgroundColor: Colors.white,
+            dividerColor: const Color(0xffDAA99B),
+            // accentColor: const Color(0xffb86f41),
+            textTheme: ThemeData.light().textTheme.copyWith(
+                  headline6: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  headline5: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  headline4: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  bodyText2: TextStyle(
+                    fontSize: 11,
+                    color: Colors.grey[700],
+                  ),
+                  bodyText1: TextStyle(
+                    fontSize: 11,
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  subtitle1: TextStyle(
+                    fontSize: 9,
+                    color: Colors.black,
+                  ),
                 ),
-                headline5: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                bodyText2: TextStyle(
-                  fontSize: 11,
-                  color: Colors.grey[700],
-                ),
-                bodyText1: TextStyle(
-                  fontSize: 11,
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                ),
-                subtitle1: TextStyle(
-                  fontSize: 9,
-                  color: Colors.black,
-                ),
-              ),
-        ),
-
-        initialRoute: '/',
-        routes: {
-          '/': (ctx) => RestaurantScreen(),
-          FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
-          HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
-          ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
-        }
-      ),
+          ),
+          initialRoute: '/',
+          routes: {
+            '/': (ctx) => RestaurantScreen(),
+            FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
+            HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
+            ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
+          }),
     );
   }
 }
-
