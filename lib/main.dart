@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/screens/choose_one_screen.dart';
 import 'package:whats_for_dinner/screens/favorites_screen.dart';
 import 'package:whats_for_dinner/screens/hidden_screen.dart';
 import 'package:whats_for_dinner/screens/restaurants_screen.dart';
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
           '/': (ctx) => RestaurantScreen(),
           FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
           HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
+          ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
         }
       ),
     );

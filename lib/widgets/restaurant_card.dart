@@ -7,7 +7,7 @@ class RestaurantCard extends StatelessWidget {
   final Business business;
   final Color cardColor;
 
-  RestaurantCard({this.business, this.cardColor});
+  RestaurantCard({@required this.business, @required this.cardColor});
 
   static Map<double, String> doubleRatingToImage = {
     0.0: 'assets/images/stars_small_0.png',

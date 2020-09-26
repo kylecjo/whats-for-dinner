@@ -24,7 +24,7 @@ class HiddenScreen extends StatelessWidget {
                   return DismissibleCard(index, RestaurantVisibility.hidden);
                 },
               )
-            : Text('You have no favorites!'),
+            : Text('No hidden restaurants!'),
       ),
     );
   }

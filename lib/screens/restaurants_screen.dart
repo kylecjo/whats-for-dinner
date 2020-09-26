@@ -47,7 +47,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
       drawer: NavDrawer(),
       floatingActionButton: Builder(
         builder: (BuildContext ctx) {
-          return ChooseOneButton(businessList.businesses, Color(0xffa4d1a2));
+          return ChooseOneButton(list: businessList.businesses, color: Color(0xffa4d1a2), errorText: 'There are no nearby restaurants!');
         },
       ),
     );
