@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/screens/favorites_screen.dart';
+import 'package:whats_for_dinner/screens/restaurants_screen.dart';
 
 import './data/repository.dart';
 import './providers/businesses.dart';
@@ -65,7 +67,11 @@ class MyApp extends StatelessWidget {
               ),
         ),
 
-        home: TabsScreen(),
+        initialRoute: '/',
+        routes: {
+          '/': (ctx) => RestaurantScreen(),
+          FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
+        }
       ),
     );
   }

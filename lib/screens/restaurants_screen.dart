@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/widgets/choose_one_button.dart';
+import 'package:whats_for_dinner/widgets/nav_drawer.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
@@ -23,19 +25,31 @@ class _RestaurantScreen extends State<RestaurantScreen> {
   @override
   Widget build(BuildContext context) {
     final businessList = Provider.of<Businesses>(context);
-    return Center(
-        child: businessList.businesses.length > 0
-            ? ListView.builder(
-                itemCount: businessList.businesses.length,
-                itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(index, RestaurantVisibility.visible);
-                },
-              )
-            : RaisedButton(
-                onPressed: _updateData,
-                child: Text('Load nearby restaurants',
-                    style: Theme.of(context).textTheme.bodyText1),
-                color: Theme.of(context).accentColor));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Nearby restaurants'),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      body: Center(
+          child: businessList.businesses.length > 0
+              ? ListView.builder(
+                  itemCount: businessList.businesses.length,
+                  itemBuilder: (BuildContext ctx, int index) {
+                    return DismissibleCard(index, RestaurantVisibility.visible);
+                  },
+                )
+              : RaisedButton(
+                  onPressed: _updateData,
+                  child: Text('Load nearby restaurants',
+                      style: Theme.of(context).textTheme.bodyText1),
+                  color: Theme.of(context).accentColor)),
+      floatingActionButton: Builder(
+        builder: (BuildContext ctx) {
+          return ChooseOneButton();
+        },
+      ),
+      drawer: NavDrawer(),
+    );
   }
 
   @override
