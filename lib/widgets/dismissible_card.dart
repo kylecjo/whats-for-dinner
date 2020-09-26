@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/models/business.dart';
 import '../widgets/restaurant_card.dart';
 import '../providers/businesses.dart';
 
@@ -11,9 +12,9 @@ enum RestaurantVisibility {
 
 class DismissibleCard extends StatelessWidget {
   final RestaurantVisibility visibility;
-  final int index;
+  final Business business;
 
-  DismissibleCard(this.index, this.visibility);
+  DismissibleCard(this.business, this.visibility);
 
   @override
   Widget build(BuildContext context) {
@@ -21,45 +22,41 @@ class DismissibleCard extends StatelessWidget {
 
     if (visibility == RestaurantVisibility.favorite) {
       return Dismissible(
-          key: Key(businessList.businesses[index].toString()),
+          key: Key(business.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
-            businessList.removeFavorite(businessList.favorites[index]);
+            businessList.removeFavorite(business);
           },
-          child: RestaurantCard(business: businessList.favorites[index], cardColor: Color(0xffa4d1a2)));
+          child: RestaurantCard(business: business, cardColor: Color(0xffa4d1a2)));
     } else if(visibility == RestaurantVisibility.hidden){
       return Dismissible(
-          key: Key(businessList.businesses[index].toString()),
+          key: Key(business.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
-            businessList.removeHidden(businessList.hidden[index]);
+            businessList.removeHidden(business);
           },
-          child: RestaurantCard(business: businessList.businesses[index], cardColor: Colors.grey[300]));
+          child: RestaurantCard(business: business, cardColor: Colors.grey[300]));
 
     } else {
       return Dismissible(
-          key: Key(businessList.businesses[index].toString()),
+          key: Key(business.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           onDismissed: (direction) {
             if (direction == DismissDirection.endToStart) {
-              if (!businessList.hidden.any((business) =>
-                  business.id == businessList.businesses[index].id)) {
-                businessList.addHidden(businessList.businesses[index]);
-              }
-              businessList.removeBusiness(businessList.businesses[index]);
+
+              businessList.addHidden(business);
+              businessList.removeBusiness(business);
             }
 
             if (direction == DismissDirection.startToEnd) {
-              if (!businessList.favorites.any((business) =>
-                  business.id == businessList.businesses[index].id)) {
-                businessList.addFavorite(businessList.businesses[index]);
-              }
-              businessList.removeBusiness(businessList.businesses[index]);
+
+              businessList.addFavorite(business);
+              businessList.removeBusiness(business);
             }
           },
-          child: RestaurantCard(business: businessList.businesses[index], cardColor: Theme.of(context).accentColor));
+          child: RestaurantCard(business: business, cardColor: Theme.of(context).accentColor));
     }
   }
 }

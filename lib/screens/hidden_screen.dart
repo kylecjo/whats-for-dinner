@@ -21,7 +21,7 @@ class HiddenScreen extends StatelessWidget {
             ? ListView.builder(
                 itemCount: businesses.hidden.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(index, RestaurantVisibility.hidden);
+                  return DismissibleCard(businesses.hidden[index], RestaurantVisibility.hidden);
                 },
               )
             : Text('No hidden restaurants!'),

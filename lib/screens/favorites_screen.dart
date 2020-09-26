@@ -23,7 +23,7 @@ class FavoritesScreen extends StatelessWidget {
             ? ListView.builder(
                 itemCount: businesses.favorites.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(index, RestaurantVisibility.favorite);
+                  return DismissibleCard(businesses.favorites[index], RestaurantVisibility.favorite);
                 },
               )
             : Text('You have no favorites!'),

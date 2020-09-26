@@ -36,7 +36,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
             ? ListView.builder(
                 itemCount: businessList.businesses.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(index, RestaurantVisibility.visible);
+                  return DismissibleCard(businessList.businesses[index], RestaurantVisibility.visible);
                 },
               )
             : RaisedButton(
