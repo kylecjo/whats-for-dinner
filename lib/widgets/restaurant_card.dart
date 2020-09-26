@@ -98,7 +98,7 @@ class RestaurantCard extends StatelessWidget {
                           child: business.imageUrl != ''
                               ? Image.network(business.imageUrl,
                                   fit: BoxFit.cover)
-                              : null),
+                              : Icon(Icons.terrain, color: Colors.grey, size: 72)),
                     ),
                     Flexible(
                       flex: 3,
