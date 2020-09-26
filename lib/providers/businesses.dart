@@ -29,6 +29,12 @@ class Businesses with ChangeNotifier{
     notifyListeners();  
   }
 
+  void removeHidden(Business business){
+    _hidden.removeWhere((element) => element == business);
+    _businesses.insert(0, business);
+    notifyListeners();
+  }
+
   void addFavorite(Business business){
     _favorites.add(business);
     notifyListeners();

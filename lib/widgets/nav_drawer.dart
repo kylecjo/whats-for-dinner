@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whats_for_dinner/screens/favorites_screen.dart';
+import 'package:whats_for_dinner/screens/hidden_screen.dart';
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -29,6 +30,15 @@ class NavDrawer extends StatelessWidget {
             tapHandler: () {
               Navigator.pop(context);
               Navigator.of(context).pushNamed(FavoritesScreen.routeName);
+            },
+          ),
+           NavDrawerTile(
+            icon: Icons.delete,
+            title: 'Hidden',
+            iconColor: Colors.grey,
+            tapHandler: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushNamed(HiddenScreen.routeName);
             },
           ),
         ],

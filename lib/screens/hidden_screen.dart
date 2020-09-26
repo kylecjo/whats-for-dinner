@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/providers/businesses.dart';
-import 'package:whats_for_dinner/widgets/choose_one_button.dart';
-import 'package:whats_for_dinner/widgets/dismissible_card.dart';
+import '../widgets/dismissible_card.dart';
 
-class FavoritesScreen extends StatelessWidget {
+class HiddenScreen extends StatelessWidget {
   final String title;
-  static const routeName = '/favorites';
+  static const routeName = '/hidden';
 
-  FavoritesScreen(this.title);
+  HiddenScreen(this.title);
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +17,14 @@ class FavoritesScreen extends StatelessWidget {
         title: Text(title),
       ),
       body: Center(
-        child: businesses.favorites.length > 0
+        child: businesses.hidden.length > 0
             ? ListView.builder(
-                itemCount: businesses.favorites.length,
+                itemCount: businesses.hidden.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(index, RestaurantVisibility.favorite);
+                  return DismissibleCard(index, RestaurantVisibility.hidden);
                 },
               )
             : Text('You have no favorites!'),
-      ),
-      floatingActionButton: Builder(
-        builder: (BuildContext ctx) {
-          return ChooseOneButton();
-        },
       ),
     );
   }

@@ -28,6 +28,16 @@ class DismissibleCard extends StatelessWidget {
             businessList.removeFavorite(businessList.favorites[index]);
           },
           child: RestaurantCard(business: businessList.favorites[index], cardColor: Color(0xffa4d1a2)));
+    } else if(visibility == RestaurantVisibility.hidden){
+      return Dismissible(
+          key: Key(businessList.businesses[index].toString()),
+          background: Container(color: Theme.of(context).backgroundColor),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) {
+            businessList.removeHidden(businessList.hidden[index]);
+          },
+          child: RestaurantCard(business: businessList.businesses[index], cardColor: Colors.grey[300]));
+
     } else {
       return Dismissible(
           key: Key(businessList.businesses[index].toString()),
@@ -48,8 +58,6 @@ class DismissibleCard extends StatelessWidget {
               }
               businessList.removeBusiness(businessList.businesses[index]);
             }
-            // print('favorites: ${businessList.favorites}');
-            // print('hidden: ${businessList.hidden}');
           },
           child: RestaurantCard(business: businessList.businesses[index], cardColor: Theme.of(context).accentColor));
     }

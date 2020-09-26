@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/screens/favorites_screen.dart';
+import 'package:whats_for_dinner/screens/hidden_screen.dart';
 import 'package:whats_for_dinner/screens/restaurants_screen.dart';
 
 import './data/repository.dart';
 import './providers/businesses.dart';
-import './screens/tabs_screen.dart';
 import './services/api.dart';
 import './services/api_service.dart';
 
@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (ctx) => RestaurantScreen(),
           FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
+          HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
         }
       ),
     );

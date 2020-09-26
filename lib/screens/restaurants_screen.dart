@@ -31,22 +31,18 @@ class _RestaurantScreen extends State<RestaurantScreen> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Center(
-          child: businessList.businesses.length > 0
-              ? ListView.builder(
-                  itemCount: businessList.businesses.length,
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return DismissibleCard(index, RestaurantVisibility.visible);
-                  },
-                )
-              : RaisedButton(
-                  onPressed: _updateData,
-                  child: Text('Load nearby restaurants',
-                      style: Theme.of(context).textTheme.bodyText1),
-                  color: Theme.of(context).accentColor)),
-      floatingActionButton: Builder(
-        builder: (BuildContext ctx) {
-          return ChooseOneButton();
-        },
+        child: businessList.businesses.length > 0
+            ? ListView.builder(
+                itemCount: businessList.businesses.length,
+                itemBuilder: (BuildContext ctx, int index) {
+                  return DismissibleCard(index, RestaurantVisibility.visible);
+                },
+              )
+            : RaisedButton(
+                onPressed: _updateData,
+                child: Text('Load nearby restaurants',
+                    style: Theme.of(context).textTheme.bodyText1),
+                color: Theme.of(context).accentColor),
       ),
       drawer: NavDrawer(),
     );
