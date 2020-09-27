@@ -39,11 +39,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
                   return DismissibleCard(businessList.businesses[index], RestaurantVisibility.visible);
                 },
               )
-            : RaisedButton(
-                onPressed: _updateData,
-                child: Text('Load nearby restaurants',
-                    style: Theme.of(context).textTheme.bodyText1),
-                color: Theme.of(context).accentColor),
+            : CircularProgressIndicator(),
       ),
       drawer: NavDrawer(),
       floatingActionButton: Builder(
@@ -57,6 +53,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
   @override
   void initState() {
     super.initState();
+    _updateData();
   }
 
   Future<void> _updateData() async {
