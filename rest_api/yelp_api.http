@@ -3,13 +3,16 @@
 @phone = 14157492060
 @id = hc0KmC42EzjXbC83eMIDMg
 @radius = 5000
+@text = me
+@latitude = 53.5185
+@longitude = -113.4962
 ###
 GET {{baseUrl}}/businesses/search/phone?phone={{phone}}
 Authorization: Bearer {{authorization}}
 
 ### 
 GET {{baseUrl}}/businesses/search
-?term=
+?term=mcdonalds
 &location={{location}}
 &latitude=
 &longitude=
@@ -18,4 +21,12 @@ GET {{baseUrl}}/businesses/search
 &sort_by=rating
 # &price=
 &open_now=
+Authorization: Bearer {{authorization}}
+
+###
+
+GET {{baseUrl}}/autocomplete
+?text={{text}}
+&latitude={{latitude}}
+&location={{longitude}}
 Authorization: Bearer {{authorization}}

@@ -8,8 +8,9 @@ class APIService {
   APIService(this.api);
   final API api;
 
-  Future<List<Business>> getBusinesses({double lat, double long}) async {
+  Future<List<Business>> getBusinesses({String term,  double lat, double long}) async {
     final uri = api.searchUri(
+      term: term,
       lat: lat,
       long: long,
     );

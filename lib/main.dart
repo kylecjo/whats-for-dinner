@@ -5,6 +5,7 @@ import 'package:whats_for_dinner/screens/choose_one_screen.dart';
 import 'package:whats_for_dinner/screens/favorites_screen.dart';
 import 'package:whats_for_dinner/screens/hidden_screen.dart';
 import 'package:whats_for_dinner/screens/restaurants_screen.dart';
+import 'package:whats_for_dinner/screens/search_screen.dart';
 
 import './data/repository.dart';
 import './providers/businesses.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
             FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
             HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
             ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
+            SearchScreen.routeName: (ctx) => SearchScreen(),
           }),
     );
   }

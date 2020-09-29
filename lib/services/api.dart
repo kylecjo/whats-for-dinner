@@ -14,8 +14,9 @@ class API {
   //   host, '/search', queries
   // );
 
-  Uri searchUri({double lat, double long}) {
+  Uri searchUri({String term, double lat, double long}) {
     Uri uri = Uri.https(host, '/v3/businesses/search', {
+      'term': term,
       'latitude': lat.toString(),
       'longitude': long.toString(),
       'radius': '2000',
