@@ -25,12 +25,21 @@ class NavDrawer extends StatelessWidget {
             height: 20,
           ),
           NavDrawerTile(
+            icon: Icons.near_me,
+            title: 'Near me',
+            iconColor: Colors.red,
+            tapHandler: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushReplacementNamed('/');
+            },
+          ),
+          NavDrawerTile(
             icon: Icons.star,
             title: 'Favorites',
             iconColor: Colors.yellow,
             tapHandler: () {
               Navigator.pop(context);
-              Navigator.of(context).pushNamed(FavoritesScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(FavoritesScreen.routeName);
             },
           ),
           NavDrawerTile(
@@ -39,7 +48,7 @@ class NavDrawer extends StatelessWidget {
             iconColor: Colors.blue,
             tapHandler: () {
               Navigator.pop(context);
-              Navigator.of(context).pushNamed(SearchScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(SearchScreen.routeName);
             },
           ),
           NavDrawerTile(
@@ -48,7 +57,7 @@ class NavDrawer extends StatelessWidget {
             iconColor: Colors.grey,
             tapHandler: () {
               Navigator.pop(context);
-              Navigator.of(context).pushNamed(HiddenScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(HiddenScreen.routeName);
             },
           ),
         ],

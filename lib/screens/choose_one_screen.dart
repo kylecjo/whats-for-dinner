@@ -84,8 +84,10 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                     onPressed: () {
                       launch("tel://${args.business.phone}");
                     },
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [Icon(Icons.phone),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.phone),
                         Text(
                           'Call Restaurant',
                           style: Theme.of(context).textTheme.headline4,
@@ -94,7 +96,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                     ),
                   ),
                 ),
-                 SizedBox(
+                SizedBox(
                   width: 200,
                   child: RaisedButton(
                     color: Theme.of(context).accentColor,
@@ -108,6 +110,16 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                           arguments: ChooseOneArguments(
                               businesses.businesses[randomIndex],
                               ScreenType.nearby),
+                        );
+                      } else if (args.screenType == ScreenType.search) {
+                        int randomIndex =
+                            _rnd.nextInt(businesses.search.length);
+                        Navigator.pushReplacementNamed(
+                          context,
+                          ChooseOneScreen.routeName,
+                          arguments: ChooseOneArguments(
+                              businesses.search[randomIndex],
+                              ScreenType.search),
                         );
                       } else {
                         int randomIndex =
@@ -123,7 +135,8 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [Icon(Icons.shuffle),
+                      children: [
+                        Icon(Icons.shuffle),
                         Text(
                           'Reroll Restaurant',
                           style: Theme.of(context).textTheme.headline4,

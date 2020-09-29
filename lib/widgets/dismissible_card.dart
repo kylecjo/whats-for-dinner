@@ -8,6 +8,7 @@ enum RestaurantVisibility {
   hidden,
   visible,
   favorite,
+  search,
 }
 
 class DismissibleCard extends StatelessWidget {
@@ -38,6 +39,16 @@ class DismissibleCard extends StatelessWidget {
             businessList.removeHidden(business);
           },
           child: RestaurantCard(business: business, cardColor: Colors.grey[300]));
+
+    } else if(visibility == RestaurantVisibility.search){
+      return Dismissible(
+          key: Key(business.toString()),
+          background: Container(color: Theme.of(context).backgroundColor),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) {
+            businessList.removeSearch(business);
+          },
+          child: RestaurantCard(business: business, cardColor: Colors.blue[200]));
 
     } else {
       return Dismissible(

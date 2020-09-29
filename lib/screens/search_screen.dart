@@ -7,6 +7,7 @@ import 'package:whats_for_dinner/models/screen_type.dart';
 import 'package:whats_for_dinner/providers/businesses.dart';
 import 'package:whats_for_dinner/widgets/choose_one_button.dart';
 import 'package:whats_for_dinner/widgets/dismissible_card.dart';
+import 'package:whats_for_dinner/widgets/nav_drawer.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
@@ -16,8 +17,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  
-  final textController = TextEditingController();    
+  final textController = TextEditingController();
   final Location location = Location();
   LocationData _locationData;
 
@@ -33,36 +33,48 @@ class _SearchScreenState extends State<SearchScreen> {
     final businesses = Provider.of<Businesses>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search'),
+        title: TextFormField(
+          controller: textController,
+          decoration: InputDecoration(
+            labelText: 'Search...',
+            fillColor: Theme.of(context).backgroundColor,
+            filled: true,
+          ),
+          textInputAction: TextInputAction.done,
+          onEditingComplete: () {
+            _search();
+          },
+        ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: Center(
-        child: businesses.search.length > 0
-            ? ListView.builder(
-                itemCount: businesses.search.length,
-                itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(
-                      businesses.search[index], RestaurantVisibility.visible);
-                },
-              )
-            : TextFormField(
-                controller: textController,
-                decoration: InputDecoration(labelText: 'Search...'),
-                textInputAction: TextInputAction.done,
-                onEditingComplete: () {
-                  _search();
-                },
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.9,
+              child: businesses.search.length > 0
+                  ? ListView.builder(
+                      itemCount: businesses.search.length,
+                      itemBuilder: (BuildContext ctx, int index) {
+                        return DismissibleCard(businesses.search[index],
+                            RestaurantVisibility.search);
+                      },
+                    )
+                  : Center(child: Text('Search for something')),
+            ),
+          ],
+        ),
       ),
-      // floatingActionButton: Builder(
-      //   builder: (BuildContext ctx) {
-      //     return ChooseOneButton(
-      //         list: businesses.businesses,
-      //         color: Color(0xffa4d1a2),
-      //         errorText: 'There are no nearby restaurants!',
-      //         screenType: ScreenType.nearby);
-      //   },
-      // ),
+      drawer: NavDrawer(),
+      floatingActionButton: Builder(
+        builder: (BuildContext ctx) {
+          return ChooseOneButton(
+              list: businesses.search,
+              color: Color(0xffa4d1a2),
+              errorText: 'There are no nearby restaurants!',
+              screenType: ScreenType.search);
+        },
+      ),
     );
   }
 
