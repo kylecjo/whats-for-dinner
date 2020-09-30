@@ -51,8 +51,8 @@ class RestaurantCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: cardColor,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0))),
+                        topLeft: Radius.circular(5.0),
+                        topRight: Radius.circular(5.0))),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -74,7 +74,7 @@ class RestaurantCard extends StatelessWidget {
                               businesses.addFavorite(business);
                             }
                           },
-                          child: businesses.favorites.contains(business)
+                          child: businesses.isFavorite(business)
                               ? Icon(Icons.star, size: 20, color: Colors.yellow)
                               : Icon(Icons.star_border,
                                   size: 20, color: Colors.grey[700]),

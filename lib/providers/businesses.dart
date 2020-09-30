@@ -24,6 +24,16 @@ class Businesses with ChangeNotifier{
     return [..._search];
   }
 
+  bool isFavorite(Business business){
+    for (Business b in _favorites){
+      if(business.id == b.id){
+        return true;
+      }
+    }
+
+    return  false;
+  }
+
   void initBusinesses(List<Business> businesses){
     _businesses = businesses;
     notifyListeners();

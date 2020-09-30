@@ -23,7 +23,7 @@ class DismissibleCard extends StatelessWidget {
 
     if (visibility == RestaurantVisibility.favorite) {
       return Dismissible(
-          key: Key(business.toString()),
+          key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
@@ -32,7 +32,7 @@ class DismissibleCard extends StatelessWidget {
           child: RestaurantCard(business: business, cardColor: Color(0xffa4d1a2)));
     } else if(visibility == RestaurantVisibility.hidden){
       return Dismissible(
-          key: Key(business.toString()),
+          key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
@@ -42,7 +42,7 @@ class DismissibleCard extends StatelessWidget {
 
     } else if(visibility == RestaurantVisibility.search){
       return Dismissible(
-          key: Key(business.toString()),
+          key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
@@ -52,7 +52,7 @@ class DismissibleCard extends StatelessWidget {
 
     } else {
       return Dismissible(
-          key: Key(business.toString()),
+          key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
