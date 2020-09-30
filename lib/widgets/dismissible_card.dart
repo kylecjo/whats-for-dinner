@@ -29,9 +29,19 @@ class DismissibleCard extends StatelessWidget {
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
             businessList.removeFavorite(business);
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text('$business hidden'),
+                action: SnackBarAction(label: 'Undo', onPressed: () {
+                  businessList.removeHidden(business);
+                  businessList.addFavorite(business);
+                }),
+              ),
+            );
           },
-          child: RestaurantCard(business: business, cardColor: Color(0xffa4d1a2)));
-    } else if(visibility == RestaurantVisibility.hidden){
+          child:
+              RestaurantCard(business: business, cardColor: Color(0xffa4d1a2)));
+    } else if (visibility == RestaurantVisibility.hidden) {
       return Dismissible(
           key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
@@ -39,28 +49,50 @@ class DismissibleCard extends StatelessWidget {
           onDismissed: (direction) {
             businessList.removeHidden(business);
           },
-          child: RestaurantCard(business: business, cardColor: Colors.grey[300]));
-
-    } else if(visibility == RestaurantVisibility.search){
+          child:
+              RestaurantCard(business: business, cardColor: Colors.grey[300]));
+    } else if (visibility == RestaurantVisibility.search) {
       return Dismissible(
           key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
             businessList.removeSearch(business);
-          },
-          child: RestaurantCard(business: business, cardColor: Colors.blue[200]));
 
+            
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text('$business hidden'),
+                action: SnackBarAction(label: 'Undo', onPressed: () {
+                  businessList.removeHidden(business);
+                  businessList.addSearch(business);
+                }),
+              ),
+            );
+          },
+          child:
+              RestaurantCard(business: business, cardColor: Colors.blue[200]));
     } else {
       return Dismissible(
           key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
-              businessList.addHidden(business);
-              businessList.removeBusiness(business);
+            businessList.addHidden(business);
+            businessList.removeBusiness(business);
+
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text('$business hidden'),
+                action: SnackBarAction(label: 'Undo', onPressed: () {
+                  businessList.removeHidden(business);
+                  businessList.addBusiness(business);
+                }),
+              ),
+            );
           },
-          child: RestaurantCard(business: business, cardColor: Theme.of(context).accentColor));
+          child: RestaurantCard(
+              business: business, cardColor: Theme.of(context).accentColor));
     }
   }
 }

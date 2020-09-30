@@ -67,11 +67,21 @@ class RestaurantCard extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
-                            if(businesses.favorites.contains(business)){
+                          onTap: () {
+                            if (businesses.favorites.contains(business)) {
                               businesses.removeFavorite(business);
-                            } else{
+                              Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('$business unfavorited!'),
+                                ),
+                              );
+                            } else {
                               businesses.addFavorite(business);
+                              Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('$business favorited!'),
+                                ),
+                              );
                             }
                           },
                           child: businesses.isFavorite(business)
@@ -79,7 +89,6 @@ class RestaurantCard extends StatelessWidget {
                               : Icon(Icons.star_border,
                                   size: 20, color: Colors.grey[700]),
                         ),
-
                       ],
                     ),
                     Row(
@@ -116,7 +125,8 @@ class RestaurantCard extends StatelessWidget {
                           child: business.imageUrl != ''
                               ? Image.network(business.imageUrl,
                                   fit: BoxFit.cover)
-                              : Icon(Icons.terrain, color: Colors.grey, size: 72)),
+                              : Icon(Icons.terrain,
+                                  color: Colors.grey, size: 72)),
                     ),
                     Flexible(
                       flex: 3,

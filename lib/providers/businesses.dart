@@ -44,6 +44,11 @@ class Businesses with ChangeNotifier{
     notifyListeners();
   }
 
+  void addBusiness(Business business){
+    _businesses.add(business);
+    notifyListeners();
+  }
+
   void addHidden(Business business){
     _hidden.add(business);
     notifyListeners();  
