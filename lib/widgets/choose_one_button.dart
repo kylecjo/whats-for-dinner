@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import 'package:whats_for_dinner/models/choose_one_arguments.dart';
-import 'package:whats_for_dinner/models/screen_type.dart';
 import 'dart:math';
 
-import 'package:whats_for_dinner/screens/choose_one_screen.dart';
+import 'package:flutter/material.dart';
+
+import '../models/business.dart';
+import '../models/choose_one_arguments.dart';
+import '../models/screen_type.dart';
+import '../screens/choose_one_screen.dart';
 
 class ChooseOneButton extends StatelessWidget {
   final Random rnd = new Random();

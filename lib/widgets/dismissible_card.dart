@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import '../widgets/restaurant_card.dart';
+
+import '../models/business.dart';
 import '../providers/businesses.dart';
+import '../widgets/restaurant_card.dart';
 
 enum RestaurantVisibility {
   hidden,
   visible,
   favorite,
+  search,
 }
 
 class DismissibleCard extends StatelessWidget {
@@ -22,7 +24,7 @@ class DismissibleCard extends StatelessWidget {
 
     if (visibility == RestaurantVisibility.favorite) {
       return Dismissible(
-          key: Key(business.toString()),
+          key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
@@ -31,7 +33,7 @@ class DismissibleCard extends StatelessWidget {
           child: RestaurantCard(business: business, cardColor: Color(0xffa4d1a2)));
     } else if(visibility == RestaurantVisibility.hidden){
       return Dismissible(
-          key: Key(business.toString()),
+          key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
@@ -39,9 +41,19 @@ class DismissibleCard extends StatelessWidget {
           },
           child: RestaurantCard(business: business, cardColor: Colors.grey[300]));
 
+    } else if(visibility == RestaurantVisibility.search){
+      return Dismissible(
+          key: Key(business.id.toString()),
+          background: Container(color: Theme.of(context).backgroundColor),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) {
+            businessList.removeSearch(business);
+          },
+          child: RestaurantCard(business: business, cardColor: Colors.blue[200]));
+
     } else {
       return Dismissible(
-          key: Key(business.toString()),
+          key: Key(business.id.toString()),
           background: Container(color: Theme.of(context).backgroundColor),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:whats_for_dinner/screens/favorites_screen.dart';
-import 'package:whats_for_dinner/screens/hidden_screen.dart';
+
+import '../screens/favorites_screen.dart';
+import '../screens/hidden_screen.dart';
+import '../screens/search_screen.dart';
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -24,21 +26,39 @@ class NavDrawer extends StatelessWidget {
             height: 20,
           ),
           NavDrawerTile(
+            icon: Icons.near_me,
+            title: 'Near me',
+            iconColor: Colors.red,
+            tapHandler: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushReplacementNamed('/');
+            },
+          ),
+          NavDrawerTile(
             icon: Icons.star,
             title: 'Favorites',
             iconColor: Colors.yellow,
             tapHandler: () {
               Navigator.pop(context);
-              Navigator.of(context).pushNamed(FavoritesScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(FavoritesScreen.routeName);
             },
           ),
-           NavDrawerTile(
+          NavDrawerTile(
+            icon: Icons.search,
+            title: 'Search',
+            iconColor: Colors.blue,
+            tapHandler: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushReplacementNamed(SearchScreen.routeName);
+            },
+          ),
+          NavDrawerTile(
             icon: Icons.delete,
             title: 'Hidden',
             iconColor: Colors.grey,
             tapHandler: () {
               Navigator.pop(context);
-              Navigator.of(context).pushNamed(HiddenScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(HiddenScreen.routeName);
             },
           ),
         ],

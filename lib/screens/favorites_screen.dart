@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/models/screen_type.dart';
-import 'package:whats_for_dinner/providers/businesses.dart';
-import 'package:whats_for_dinner/widgets/choose_one_button.dart';
-import 'package:whats_for_dinner/widgets/dismissible_card.dart';
+
+import '../models/screen_type.dart';
+import '../providers/businesses.dart';
+import '../widgets/choose_one_button.dart';
+import '../widgets/dismissible_card.dart';
+import '../widgets/nav_drawer.dart';
 
 class FavoritesScreen extends StatelessWidget {
   final String title;
@@ -28,6 +30,7 @@ class FavoritesScreen extends StatelessWidget {
               )
             : Text('You have no favorites!'),
       ),
+      drawer: NavDrawer(),
       floatingActionButton: Builder(
         builder: (BuildContext ctx) {
           return ChooseOneButton(

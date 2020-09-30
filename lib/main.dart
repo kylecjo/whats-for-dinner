@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/screens/choose_one_screen.dart';
-import 'package:whats_for_dinner/screens/favorites_screen.dart';
-import 'package:whats_for_dinner/screens/hidden_screen.dart';
-import 'package:whats_for_dinner/screens/restaurants_screen.dart';
 
 import './data/repository.dart';
 import './providers/businesses.dart';
+import './screens/choose_one_screen.dart';
+import './screens/favorites_screen.dart';
+import './screens/hidden_screen.dart';
+import './screens/restaurants_screen.dart';
+import './screens/search_screen.dart';
 import './services/api.dart';
 import './services/api_service.dart';
 
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
             FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
             HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
             ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
+            SearchScreen.routeName: (ctx) => SearchScreen(),
           }),
     );
   }
