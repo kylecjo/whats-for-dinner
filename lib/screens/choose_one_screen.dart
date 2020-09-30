@@ -3,10 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:whats_for_dinner/models/choose_one_arguments.dart';
-import 'package:whats_for_dinner/models/screen_type.dart';
-import 'package:whats_for_dinner/providers/businesses.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
+
+import '../models/choose_one_arguments.dart';
+import '../models/screen_type.dart';
+import '../providers/businesses.dart';
+import '../widgets/restaurant_card.dart';
 
 class ChooseOneScreen extends StatefulWidget {
   static const routeName = '/chooseOne';

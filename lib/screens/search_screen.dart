@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/data/repository.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import 'package:whats_for_dinner/models/screen_type.dart';
-import 'package:whats_for_dinner/providers/businesses.dart';
-import 'package:whats_for_dinner/widgets/choose_one_button.dart';
-import 'package:whats_for_dinner/widgets/dismissible_card.dart';
-import 'package:whats_for_dinner/widgets/nav_drawer.dart';
+
+import '../data/repository.dart';
+import '../models/business.dart';
+import '../models/screen_type.dart';
+import '../providers/businesses.dart';
+import '../widgets/choose_one_button.dart';
+import '../widgets/dismissible_card.dart';
+import '../widgets/nav_drawer.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
@@ -36,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
         title: TextFormField(
           controller: textController,
           decoration: InputDecoration(
-            labelText: 'Search...',
+            icon: Icon(Icons.search, color: Colors.black), 
             fillColor: Theme.of(context).backgroundColor,
             filled: true,
           ),

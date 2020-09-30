@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/businesses.dart';
-import 'package:whats_for_dinner/widgets/nav_drawer.dart';
+
+import '../providers/businesses.dart';
 import '../widgets/dismissible_card.dart';
+import '../widgets/nav_drawer.dart';
 
 class HiddenScreen extends StatelessWidget {
   final String title;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:whats_for_dinner/screens/favorites_screen.dart';
-import 'package:whats_for_dinner/screens/hidden_screen.dart';
-import 'package:whats_for_dinner/screens/search_screen.dart';
+
+import '../screens/favorites_screen.dart';
+import '../screens/hidden_screen.dart';
+import '../screens/search_screen.dart';
 
 class NavDrawer extends StatelessWidget {
   @override

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import '../widgets/restaurant_card.dart';
+
+import '../models/business.dart';
 import '../providers/businesses.dart';
+import '../widgets/restaurant_card.dart';
 
 enum RestaurantVisibility {
   hidden,
