@@ -81,7 +81,8 @@ class MyApp extends StatelessWidget {
             ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
             SearchScreen.routeName: (ctx) => SearchScreen(),
             AddCustomListsScreen.routeName: (ctx) => AddCustomListsScreen('Custom lists'),
-          }),
+          },
+          debugShowCheckedModeBanner:  false,),
     );
   }
 }
