@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
 
 import './data/repository.dart';
 import './providers/businesses.dart';
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
             HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
             ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
             SearchScreen.routeName: (ctx) => SearchScreen(),
+            AddCustomListsScreen.routeName: (ctx) => AddCustomListsScreen('Custom lists'),
           }),
     );
   }

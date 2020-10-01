@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/business.dart';
 import '../providers/businesses.dart';
 
-class RestaurantCard extends StatelessWidget {
+class RestaurantCard extends StatefulWidget {
   final Business business;
   final Color cardColor;
 
@@ -24,6 +24,11 @@ class RestaurantCard extends StatelessWidget {
     5.0: 'assets/images/stars_small_5.png',
   };
 
+  @override
+  _RestaurantCardState createState() => _RestaurantCardState();
+}
+
+class _RestaurantCardState extends State<RestaurantCard> {
   void launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -32,9 +37,13 @@ class RestaurantCard extends StatelessWidget {
     }
   }
 
+  void addToCustomList(String string) {
+    final businesses = Provider.of<Businesses>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<String> categoryTitles = business.categories
+    List<String> categoryTitles = widget.business.categories
         .map((category) => category.title.toString())
         .toList();
     final businesses = Provider.of<Businesses>(context);
@@ -49,7 +58,7 @@ class RestaurantCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                    color: cardColor,
+                    color: widget.cardColor,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(5.0),
                         topRight: Radius.circular(5.0))),
@@ -61,41 +70,72 @@ class RestaurantCard extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            business.name,
+                            widget.business.name,
                             style: Theme.of(context).textTheme.headline5,
                             overflow: TextOverflow.fade,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            if (businesses.favorites.contains(business)) {
-                              businesses.removeFavorite(business);
-                              Scaffold.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('$business unfavorited!'),
-                                ),
-                              );
-                            } else {
-                              businesses.addFavorite(business);
-                              Scaffold.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('$business favorited!'),
-                                ),
-                              );
-                            }
-                          },
-                          child: businesses.isFavorite(business)
-                              ? Icon(Icons.star, size: 20, color: Colors.yellow)
-                              : Icon(Icons.star_border,
-                                  size: 20, color: Colors.grey[700]),
+                        Row(
+                          children: [ 
+                            ConstrainedBox(
+                              constraints: new BoxConstraints(
+                                maxHeight: 25,
+                                maxWidth: 25,
+                              ),
+                              child: PopupMenuButton<String>(
+                                  padding: EdgeInsets.all(0),
+                                  icon:
+                                      Icon(Icons.add, color: Colors.grey[700]),
+                                  onSelected: (key) {
+                                    businesses.customLists[key]
+                                        .add(widget.business);
+                                  },
+                                  itemBuilder: (BuildContext ctx) {
+                                    return businesses.customLists.keys
+                                        .map((String key) {
+                                      return PopupMenuItem<String>(
+                                        value: key,
+                                        child: Text(key),
+                                      );
+                                    }).toList();
+                                  }),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (businesses.favorites
+                                    .contains(widget.business)) {
+                                  businesses.removeFavorite(widget.business);
+                                  Scaffold.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          '${widget.business} unfavorited!'),
+                                    ),
+                                  );
+                                } else {
+                                  businesses.addFavorite(widget.business);
+                                  Scaffold.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          Text('${widget.business} favorited!'),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: businesses.isFavorite(widget.business)
+                                  ? Icon(Icons.star,
+                                      size: 20, color: Colors.yellow)
+                                  : Icon(Icons.star_border,
+                                      size: 20, color: Colors.grey[700]),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        if (business.price != null)
+                        if (widget.business.price != null)
                           Text(
-                            '${business.price} • ',
+                            '${widget.business.price} • ',
                           ),
                         Flexible(
                           child: Text(
@@ -122,8 +162,8 @@ class RestaurantCard extends StatelessWidget {
                       width: 180,
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
-                          child: business.imageUrl != ''
-                              ? Image.network(business.imageUrl,
+                          child: widget.business.imageUrl != ''
+                              ? Image.network(widget.business.imageUrl,
                                   fit: BoxFit.cover)
                               : Icon(Icons.terrain,
                                   color: Colors.grey, size: 72)),
@@ -141,13 +181,14 @@ class RestaurantCard extends StatelessWidget {
                                   width: 75,
                                   height: 20,
                                   child: Image.asset(
-                                      doubleRatingToImage[business.rating]),
+                                      RestaurantCard.doubleRatingToImage[
+                                          widget.business.rating]),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: FittedBox(
                                     child: Text(
-                                      '${business.reviewCount} reviews',
+                                      '${widget.business.reviewCount} reviews',
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                     ),
@@ -155,10 +196,11 @@ class RestaurantCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Text('${business.address1}',
+                            Text('${widget.business.address1}',
                                 style: Theme.of(context).textTheme.bodyText2,
                                 overflow: TextOverflow.fade),
-                            Text('${business.city} ${business.state}',
+                            Text(
+                                '${widget.business.city} ${widget.business.state}',
                                 style: Theme.of(context).textTheme.bodyText2,
                                 overflow: TextOverflow.fade),
                             SizedBox(
@@ -170,7 +212,7 @@ class RestaurantCard extends StatelessWidget {
                                     width: MediaQuery.of(context).size.width /
                                         4.2),
                                 GestureDetector(
-                                  onTap: () => launchURL(business.url),
+                                  onTap: () => launchURL(widget.business.url),
                                   child: Container(
                                     width: 75,
                                     child: Image.asset(
