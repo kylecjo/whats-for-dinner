@@ -18,7 +18,7 @@ class NavDrawer extends StatelessWidget {
             alignment: Alignment.centerLeft,
             color: Theme.of(context).accentColor,
             child: Text(
-              'RestaurantApp',
+              'What\'s for Dinner?',
               style:
                   Theme.of(context).textTheme.headline6.copyWith(fontSize: 22),
             ),
