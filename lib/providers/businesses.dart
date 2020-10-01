@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../models/business.dart';
 import 'package:flutter/foundation.dart';
 
@@ -7,6 +9,7 @@ class Businesses with ChangeNotifier{
   List<Business> _hidden = [];
   List<Business> _favorites = [];
   List<Business> _search = [];
+  Map<String, List<Business>> _customLists = {};
 
   List<Business> get businesses {
     return [..._businesses];
@@ -22,6 +25,10 @@ class Businesses with ChangeNotifier{
 
   List<Business> get search {
     return [..._search];
+  }
+
+  Map<String, List<Business>> get customLists  {
+    return {..._customLists};
   }
 
   bool isFavorite(Business business){
@@ -85,7 +92,12 @@ class Businesses with ChangeNotifier{
     notifyListeners();
   }
 
-
+  void addCustomList(String name){
+    // need to do the error checking on this in the widget tree so you can throw an error
+    List<Business> customList = [];
+    _customLists[name] = customList; 
+    notifyListeners();
+  }
 
   Business findById(String id){
     return _businesses.where((business) => business.id == id) as Business;

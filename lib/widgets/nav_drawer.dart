@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
 
 import '../screens/favorites_screen.dart';
 import '../screens/hidden_screen.dart';
@@ -59,6 +60,14 @@ class NavDrawer extends StatelessWidget {
             tapHandler: () {
               Navigator.pop(context);
               Navigator.of(context).pushReplacementNamed(HiddenScreen.routeName);
+            },
+          ),
+           NavDrawerTile(
+            icon: Icons.add,
+            title: 'Custom lists',
+            iconColor: Colors.green,
+            tapHandler: () {
+              Navigator.of(context).pushReplacementNamed(AddCustomListsScreen.routeName);
             },
           ),
         ],
