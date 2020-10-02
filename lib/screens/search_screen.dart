@@ -18,15 +18,16 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final textController = TextEditingController();
-  final Location location = Location();
+  final _textController = TextEditingController();
+  final Location _location = Location();
   LocationData _locationData;
+  bool _isLoading = false;
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    textController.dispose();
+    _textController.dispose();
   }
 
   @override
@@ -35,37 +36,42 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: TextFormField(
-          controller: textController,
+          controller: _textController,
           decoration: InputDecoration(
-            icon: Icon(Icons.search, color: Colors.black), 
+            icon: Icon(Icons.search, color: Colors.black),
             fillColor: Theme.of(context).backgroundColor,
             filled: true,
           ),
           textInputAction: TextInputAction.done,
           onEditingComplete: () {
             _search();
+            FocusScope.of(context).unfocus();
           },
         ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.9,
-              child: businesses.search.length > 0
-                  ? ListView.builder(
-                      itemCount: businesses.search.length,
-                      itemBuilder: (BuildContext ctx, int index) {
-                        return DismissibleCard(businesses.search[index],
-                            RestaurantVisibility.search);
-                      },
-                    )
-                  : Center(child: Text('Search for something')),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    child: businesses.search.length > 0
+                        ? ListView.builder(
+                            itemCount: businesses.search.length,
+                            itemBuilder: (BuildContext ctx, int index) {
+                              return DismissibleCard(businesses.search[index],
+                                  RestaurantVisibility.search);
+                            },
+                          )
+                        : Center(child: Text('Search for something')),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
       drawer: NavDrawer(),
       floatingActionButton: Builder(
         builder: (BuildContext ctx) {
@@ -80,17 +86,23 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> _search() async {
-    _locationData = await location.getLocation();
+    setState(() {
+      _isLoading = true;
+    });
+    _locationData = await _location.getLocation();
     final repository = Provider.of<Repository>(
       context,
       listen: false,
     );
     List<Business> businesses = await repository.getBusinessData(
-      term: textController.text,
+      term: _textController.text,
       lat: _locationData.latitude,
       long: _locationData.longitude,
     );
     final businessList = Provider.of<Businesses>(context, listen: false);
     businessList.initSearch(businesses);
+    setState(() {
+      _isLoading = false;
+    });
   }
 }
