@@ -41,7 +41,8 @@ class NavDrawer extends StatelessWidget {
             iconColor: Colors.yellow,
             tapHandler: () {
               Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed(FavoritesScreen.routeName);
+              Navigator.of(context)
+                  .pushReplacementNamed(FavoritesScreen.routeName);
             },
           ),
           NavDrawerTile(
@@ -50,7 +51,8 @@ class NavDrawer extends StatelessWidget {
             iconColor: Colors.blue,
             tapHandler: () {
               Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed(SearchScreen.routeName);
+              Navigator.of(context)
+                  .pushReplacementNamed(SearchScreen.routeName);
             },
           ),
           NavDrawerTile(
@@ -59,15 +61,17 @@ class NavDrawer extends StatelessWidget {
             iconColor: Colors.grey,
             tapHandler: () {
               Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed(HiddenScreen.routeName);
+              Navigator.of(context)
+                  .pushReplacementNamed(HiddenScreen.routeName);
             },
           ),
-           NavDrawerTile(
+          NavDrawerTile(
             icon: Icons.add,
             title: 'Custom lists',
             iconColor: Colors.green,
             tapHandler: () {
-              Navigator.of(context).pushReplacementNamed(AddCustomListsScreen.routeName);
+              Navigator.of(context)
+                  .pushReplacementNamed(AddCustomListsScreen.routeName);
             },
           ),
         ],

@@ -52,7 +52,10 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                       String key = businesses.customLists.keys.elementAt(idx);
                       return GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder : (ctx) => CustomListScreen(key)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ctx) => CustomListScreen(key)));
                           },
                           child: ListTile(
                             leading: Icon(Icons.directions_bike),

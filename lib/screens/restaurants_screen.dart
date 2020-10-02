@@ -36,7 +36,8 @@ class _RestaurantScreen extends State<RestaurantScreen> {
             ? ListView.builder(
                 itemCount: businessList.businesses.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(businessList.businesses[index], RestaurantVisibility.visible);
+                  return DismissibleCard(businessList.businesses[index],
+                      RestaurantVisibility.visible);
                 },
               )
             : CircularProgressIndicator(),
@@ -44,7 +45,12 @@ class _RestaurantScreen extends State<RestaurantScreen> {
       drawer: NavDrawer(),
       floatingActionButton: Builder(
         builder: (BuildContext ctx) {
-          return ChooseOneButton(list: businessList.businesses, color: Color(0xffa4d1a2), errorText: 'There are no nearby restaurants!', screenType: ScreenType.nearby);
+          return ChooseOneButton(
+            list: businessList.businesses,
+            color: Color(0xffa4d1a2),
+            errorText: 'There are no nearby restaurants!',
+            screenType: ScreenType.nearby,
+          );
         },
       ),
     );
