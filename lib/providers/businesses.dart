@@ -99,6 +99,11 @@ class Businesses with ChangeNotifier{
     notifyListeners();
   }
 
+  void removeCustomList(String name){
+    _customLists.remove(name);
+    notifyListeners();
+  }
+
   Business findById(String id){
     return _businesses.where((business) => business.id == id) as Business;
   }

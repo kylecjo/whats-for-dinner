@@ -25,7 +25,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _textController.dispose();
   }
@@ -33,54 +32,57 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final businesses = Provider.of<Businesses>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: TextFormField(
-          controller: _textController,
-          decoration: InputDecoration(
-            icon: Icon(Icons.search, color: Colors.black),
-            fillColor: Theme.of(context).backgroundColor,
-            filled: true,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: TextFormField(
+            controller: _textController,
+            decoration: InputDecoration(
+              icon: Icon(Icons.search, color: Colors.black),
+              fillColor: Theme.of(context).backgroundColor,
+              filled: true,
+            ),
+            textInputAction: TextInputAction.done,
+            onEditingComplete: () {
+              _search();
+              FocusScope.of(context).unfocus();
+            },
           ),
-          textInputAction: TextInputAction.done,
-          onEditingComplete: () {
-            _search();
-            FocusScope.of(context).unfocus();
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.9,
+                      child: businesses.search.length > 0
+                          ? ListView.builder(
+                              itemCount: businesses.search.length,
+                              itemBuilder: (BuildContext ctx, int index) {
+                                return DismissibleCard(businesses.search[index],
+                                    RestaurantVisibility.search);
+                              },
+                            )
+                          : Center(child: Text('Search for something')),
+                    ),
+                  ],
+                ),
+              ),
+        drawer: NavDrawer(),
+        floatingActionButton: Builder(
+          builder: (BuildContext ctx) {
+            return ChooseOneButton(
+                list: businesses.search,
+                color: Color(0xffa4d1a2),
+                errorText: 'There are no nearby restaurants!',
+                screenType: ScreenType.search);
           },
         ),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    child: businesses.search.length > 0
-                        ? ListView.builder(
-                            itemCount: businesses.search.length,
-                            itemBuilder: (BuildContext ctx, int index) {
-                              return DismissibleCard(businesses.search[index],
-                                  RestaurantVisibility.search);
-                            },
-                          )
-                        : Center(child: Text('Search for something')),
-                  ),
-                ],
-              ),
-            ),
-      drawer: NavDrawer(),
-      floatingActionButton: Builder(
-        builder: (BuildContext ctx) {
-          return ChooseOneButton(
-              list: businesses.search,
-              color: Color(0xffa4d1a2),
-              errorText: 'There are no nearby restaurants!',
-              screenType: ScreenType.search);
-        },
       ),
     );
   }

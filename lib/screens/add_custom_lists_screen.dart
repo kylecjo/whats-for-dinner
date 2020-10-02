@@ -21,51 +21,64 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
   @override
   Widget build(BuildContext context) {
     final businesses = Provider.of<Businesses>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: [
-          // TODO:  style all of this
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: TextField(
-              controller: textController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'List Name',
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: TextField(
+                        controller: textController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'List Name',
+                        ),
+                      ),
+                    ),
+                  ),
+                  RaisedButton(
+                    child: Text('Add'),
+                    color: Theme.of(context).accentColor,
+                    onPressed: () {
+                      businesses.addCustomList(textController.text);
+                      textController.clear();
+                    },
+                  ),
+                ],
               ),
             ),
-          ),
-          RaisedButton(
-            child: Text('Add'),
-            onPressed: () {
-              businesses.addCustomList(textController.text);
-              textController.clear();
-            },
-          ),
-          Expanded(
-            child: businesses.customLists.isNotEmpty
-                ? ListView.builder(
-                    itemCount: businesses.customLists.length,
-                    itemBuilder: (BuildContext ctx, int idx) {
-                      String key = businesses.customLists.keys.elementAt(idx);
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (ctx) => CustomListScreen(key)));
-                        },
-                        child: CustomListTile(key),
-                      );
-                    })
-                : Text('No custom lists yet'),
-          ),
-        ],
+            Expanded(
+              child: businesses.customLists.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: businesses.customLists.length,
+                      itemBuilder: (BuildContext ctx, int idx) {
+                        String key = businesses.customLists.keys.elementAt(idx);
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ctx) => CustomListScreen(key)));
+                          },
+                          child: CustomListTile(
+                              key, businesses.customLists[key].length),
+                        );
+                      })
+                  : Center(child: Text('No custom lists yet')),
+            ),
+          ],
+        ),
+        drawer: NavDrawer(),
       ),
-      drawer: NavDrawer(),
     );
   }
 }
