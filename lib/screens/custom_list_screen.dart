@@ -32,7 +32,7 @@ class CustomListScreen extends StatelessWidget {
       floatingActionButton: ChooseOneButton(
           list: businesses.customLists[title],
           color: Colors.yellow,
-          errorText: 'ErrorText',
+          errorText: 'No restaurants in $title yet!',
           screenType: ScreenType.nearby),
     );
   }

@@ -45,7 +45,15 @@ class RestaurantCardHeader extends StatelessWidget {
                         padding: EdgeInsets.all(0),
                         icon: Icon(Icons.add, color: Colors.grey[700]),
                         onSelected: (key) {
-                          businesses.customLists[key].add(business);
+                          if (!businesses.customLists[key].contains(business)) {
+                            businesses.customLists[key].add(business);
+                          } else {
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('$business already in $key!'),
+                              ),
+                            );
+                          }
                         },
                         itemBuilder: (BuildContext ctx) {
                           return businesses.customLists.keys.map((String key) {
