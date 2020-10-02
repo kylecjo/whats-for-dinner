@@ -9,14 +9,14 @@ Not yet available
 ## App Preview
 
 <p float="left">
-  <img src="./images/flutter_01.png" width="200" />
-  <img src="./images/flutter_02.png" width="200" /> 
-  <img src="./images/flutter_03.png" width="200"/>
+  <img src="./images/nearby.png" width="200" />
+  <img src="./images/nav_drawer.png" width="200" /> 
+  <img src="./images/favorites.png" width="200"/>
 </p>
 
 <p float="left">
-  <img src="./images/flutter_04.png" width="200"/>
-  <img src="./images/flutter_05.png" width="200"/>
+  <img src="./images/choose_one.png" width="200"/>
+  <img src="./images/custom_lists.png" width="200"/>
 </p>
 
 
