@@ -12,7 +12,11 @@ Not yet available
   <img src="./images/flutter_01.png" width="200" />
   <img src="./images/flutter_02.png" width="200" /> 
   <img src="./images/flutter_03.png" width="200"/>
+</p>
+
+<p float="left">
   <img src="./images/flutter_04.png" width="200"/>
+  <img src="./images/flutter_05.png" width="200"/>
 </p>
 
 
