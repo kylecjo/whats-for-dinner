@@ -22,6 +22,7 @@ class RestaurantScreen extends StatefulWidget {
 class _RestaurantScreen extends State<RestaurantScreen> {
   final Location location = Location();
   LocationData _locationData;
+  bool _isInit =  true;
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +58,23 @@ class _RestaurantScreen extends State<RestaurantScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    if(_isInit){
+      Provider.of<Businesses>(context).fetchAndSetFavorites();
+      print(Provider.of<Businesses>(context).favorites);
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+  @override
   void initState() {
+
     super.initState();
     _updateData();
   }
+
+  
 
   Future<void> _updateData() async {
     _locationData = await location.getLocation();
