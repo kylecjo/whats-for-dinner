@@ -84,6 +84,32 @@ class Business {
     );
   }
 
+  Map<String, dynamic> toJson(){
+    return{
+      'rating': this.rating,
+      'price': this.price,
+      'phone': this.phone,
+      'id': this.id,
+      'name': this.name,
+      'latitude': this.latitude,
+      'longitude': this.longitude,
+      'distance' : this.distance,
+      'alias': this.alias,
+      'isClosed': this.isClosed,
+      'reviewCount': this.reviewCount,
+      'categories': json.encode(this.categories),
+      'url': this.url,
+      'imageUrl': this.imageUrl,
+      'address1': this.address1,
+      'address2': this.address2,
+      'address3': this.address3,
+      'city': this.city,
+      'state': this.state,
+      'country': this.country,
+      'zip': this.zip,
+    };
+  }
+
   @override
   String toString() {
     return '$name';

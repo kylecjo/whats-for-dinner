@@ -3,22 +3,29 @@ import 'package:provider/provider.dart';
 import '../models/business.dart';
 import '../providers/businesses.dart';
 
-class RestaurantCardHeader extends StatelessWidget {
+class RestaurantCardHeader extends StatefulWidget {
   final Color color;
   final Business business;
 
   RestaurantCardHeader({@required this.color, @required this.business});
 
   @override
+  _RestaurantCardHeaderState createState() => _RestaurantCardHeaderState();
+}
+
+class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
+  bool _isLoading = false;
+
+  @override
   Widget build(BuildContext context) {
-    List<String> categoryTitles = business.categories
+    List<String> categoryTitles = widget.business.categories
         .map((category) => category.title.toString())
         .toList();
     final businesses = Provider.of<Businesses>(context);
     return Container(
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-          color: color,
+          color: widget.color,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(5.0), topRight: Radius.circular(5.0))),
       child: Column(
@@ -29,7 +36,7 @@ class RestaurantCardHeader extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  business.name,
+                  widget.business.name,
                   style: Theme.of(context).textTheme.headline5,
                   overflow: TextOverflow.fade,
                 ),
@@ -45,12 +52,14 @@ class RestaurantCardHeader extends StatelessWidget {
                         padding: EdgeInsets.all(0),
                         icon: Icon(Icons.add, color: Colors.grey[700]),
                         onSelected: (key) {
-                          if (!businesses.customLists[key].contains(business)) {
-                            businesses.customLists[key].add(business);
+                          if (!businesses.customLists[key]
+                              .contains(widget.business)) {
+                            businesses.customLists[key].add(widget.business);
                           } else {
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('$business already in $key!'),
+                                content:
+                                    Text('${widget.business} already in $key!'),
                               ),
                             );
                           }
@@ -65,27 +74,67 @@ class RestaurantCardHeader extends StatelessWidget {
                         }),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      if (businesses.favorites.contains(business)) {
-                        businesses.removeFavorite(business);
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('$business unfavorited!'),
-                          ),
-                        );
+                    onTap: () async {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      if (businesses.isFavorite(widget.business)) {
+                        try {
+                          await businesses.removeFavorite(widget.business);
+                        } on Exception catch (e) {
+                          showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                    title: Text('Error!'),
+                                    content: Text('$e'),
+                                    actions: [
+                                      FlatButton(
+                                        child: Text('OK'),
+                                        onPressed: () =>
+                                            Navigator.of(ctx).pop(),
+                                      ),
+                                    ],
+                                  ));
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
                       } else {
-                        businesses.addFavorite(business);
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('$business favorited!'),
-                          ),
-                        );
+                        try {
+                          await businesses.addFavorite(widget.business);
+                        } on Exception catch (e) {
+                          showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                    title: Text('Error!'),
+                                    content: Text('$e'),
+                                    actions: [
+                                      FlatButton(
+                                        child: Text('OK'),
+                                        onPressed: () =>
+                                            Navigator.of(ctx).pop(),
+                                      ),
+                                    ],
+                                  ));
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
                       }
                     },
-                    child: businesses.isFavorite(business)
-                        ? Icon(Icons.star, size: 20, color: Colors.yellow)
-                        : Icon(Icons.star_border,
-                            size: 20, color: Colors.grey[700]),
+                    child: _isLoading
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.grey[700],
+                            ))
+                        : businesses.isFavorite(widget.business)
+                            ? Icon(Icons.star, size: 20, color: Colors.yellow)
+                            : Icon(Icons.star_border,
+                                size: 20, color: Colors.grey[700]),
                   ),
                 ],
               ),
@@ -93,9 +142,9 @@ class RestaurantCardHeader extends StatelessWidget {
           ),
           Row(
             children: [
-              if (business.price != null)
+              if (widget.business.price != null)
                 Text(
-                  '${business.price} • ',
+                  '${widget.business.price} • ',
                 ),
               Flexible(
                 child: Text(
