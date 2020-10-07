@@ -61,6 +61,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
   void didChangeDependencies() {
     if(_isInit){
       Provider.of<Businesses>(context).fetchAndSetFavorites();
+      Provider.of<Businesses>(context).fetchAndSetCustomLists();
     }
     _isInit = false;
     super.didChangeDependencies();

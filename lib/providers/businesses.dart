@@ -120,18 +120,41 @@ class Businesses with ChangeNotifier {
     notifyListeners();
   }
 
-  void addCustomList(String name) {
+  Future<void> addCustomList(String listName) async{
     // TODO need to do the error checking on this in the widget tree so you can throw an error
-    // const url = '${APIKeys.firebase}/customLists.json';
-    // try{
-    //   url,
-    // } on Exception catch(e){
-    //   print(e);
-    //   throw e;
-    // }
-    CustomList customList = CustomList(name: name);
+    CustomList customList = CustomList(name: listName, businesses: []);   
+    const url = '${APIKeys.firebase}/customLists.json';
+    try{
+      await http.post(
+        url,
+        body: json.encode(customList),
+      );
+    } on Exception catch(e){
+      print(e);
+      throw e;
+    }
+
     _customLists.add(customList);
     notifyListeners();
+  }
+
+  Future<void> addToCustomList(int index, Business business) async {
+    String url =
+          '${APIKeys.firebase}/customLists.json?orderBy="name"&equalTo="${customLists[index].name}"&limitToFirst=1';
+    try{
+      final response = await http.get(url);
+      customLists[index].businesses.add(business);
+      Map<String, dynamic> map = json.decode(response.body) as Map<String, dynamic>;
+      String docId = map.keys.first;
+      String customListUrl = '${APIKeys.firebase}/customLists/$docId.json';
+      await http.patch(customListUrl, body: json.encode(customLists[index]));
+      notifyListeners();
+
+      
+    } on Exception catch(e){
+      print(e);
+      throw e;
+    }
   }
 
   void removeCustomList(String name) {
@@ -143,6 +166,26 @@ class Businesses with ChangeNotifier {
     return _businesses.where((business) => business.id == id) as Business;
   }
 
+  Future<void> fetchAndSetCustomLists() async {
+    const url = '${APIKeys.firebase}/customLists.json';
+    try{
+      final response = await http.get(url);
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final List<CustomList> loadedCustomLists =  [];
+
+      data.forEach((id, customListJson){
+        loadedCustomLists.add(CustomList.fromJson(customListJson));
+      });
+
+      _customLists = loadedCustomLists;
+      notifyListeners();
+
+
+    } on Exception catch(e){
+      throw(e);
+    }
+  }
+
   Future<void> fetchAndSetFavorites() async {
     const url = '${APIKeys.firebase}/favorites.json';
     try {
@@ -151,33 +194,7 @@ class Businesses with ChangeNotifier {
       final List<Business> loadedFavorites = [];
 
       data.forEach((id, business) {
-        List<dynamic> cats = json.decode(business['categories']) as List<dynamic>;
-        List<cat.Category> categoriesList = cats
-            .map((categoryJson) => cat.Category.fromJson(categoryJson))
-            .toList();
-        loadedFavorites.add(Business(
-          rating: business['rating'],
-          price: business['price'],
-          phone: business['phone'],
-          id: business['id'],
-          name: business['name'],
-          latitude: business['latitude'],
-          longitude: business['longitude'],
-          distance: business['distance'],
-          alias: business['alias'],
-          isClosed: business['isClosed'],
-          reviewCount: business['reviewCount'],
-          categories: categoriesList,
-          url: business['url'],
-          imageUrl: business['imageUrl'],
-          address1: business['address1'],
-          address2: business['address2'],
-          address3: business['address3'],
-          city: business['city'],
-          state: business['state'],
-          country: business['country'],
-          zip: business['zip'],
-        ));
+        loadedFavorites.add(Business.fromJsonFireBase(business));
       });
       _favorites = loadedFavorites;
       notifyListeners();
