@@ -120,16 +120,16 @@ class Businesses with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addCustomList(String listName) async{
+  Future<void> addCustomList(String listName) async {
     // TODO need to do the error checking on this in the widget tree so you can throw an error
-    CustomList customList = CustomList(name: listName, businesses: []);   
+    CustomList customList = CustomList(name: listName, businesses: []);
     const url = '${APIKeys.firebase}/customLists.json';
-    try{
+    try {
       await http.post(
         url,
         body: json.encode(customList),
       );
-    } on Exception catch(e){
+    } on Exception catch (e) {
       print(e);
       throw e;
     }
@@ -140,21 +140,24 @@ class Businesses with ChangeNotifier {
 
   Future<void> addToCustomList(int index, Business business) async {
     String url =
-          '${APIKeys.firebase}/customLists.json?orderBy="name"&equalTo="${customLists[index].name}"&limitToFirst=1';
-    try{
+        '${APIKeys.firebase}/customLists.json?orderBy="name"&equalTo="${customLists[index].name}"&limitToFirst=1';
+    try {
       final response = await http.get(url);
       customLists[index].businesses.add(business);
-      Map<String, dynamic> map = json.decode(response.body) as Map<String, dynamic>;
+      Map<String, dynamic> map =
+          json.decode(response.body) as Map<String, dynamic>;
       String docId = map.keys.first;
       String customListUrl = '${APIKeys.firebase}/customLists/$docId.json';
       await http.patch(customListUrl, body: json.encode(customLists[index]));
       notifyListeners();
-
-      
-    } on Exception catch(e){
+    } on Exception catch (e) {
       print(e);
       throw e;
     }
+  }
+
+  Future<void> removeFromCustomList(int index, Business business) async {
+    
   }
 
   void removeCustomList(String name) {
@@ -168,21 +171,19 @@ class Businesses with ChangeNotifier {
 
   Future<void> fetchAndSetCustomLists() async {
     const url = '${APIKeys.firebase}/customLists.json';
-    try{
+    try {
       final response = await http.get(url);
       final data = json.decode(response.body) as Map<String, dynamic>;
-      final List<CustomList> loadedCustomLists =  [];
+      final List<CustomList> loadedCustomLists = [];
 
-      data.forEach((id, customListJson){
+      data.forEach((id, customListJson) {
         loadedCustomLists.add(CustomList.fromJson(customListJson));
       });
 
       _customLists = loadedCustomLists;
       notifyListeners();
-
-
-    } on Exception catch(e){
-      throw(e);
+    } on Exception catch (e) {
+      throw (e);
     }
   }
 
