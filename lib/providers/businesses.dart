@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:whats_for_dinner/models/custom_list.dart';
 import 'package:whats_for_dinner/services/api_keys.dart';
 
 import '../models/business.dart';
@@ -13,7 +14,7 @@ class Businesses with ChangeNotifier {
   List<Business> _hidden = [];
   List<Business> _favorites = [];
   List<Business> _search = [];
-  Map<String, List<Business>> _customLists = {};
+  List<CustomList> _customLists = [];
 
   List<Business> get businesses {
     return [..._businesses];
@@ -31,8 +32,8 @@ class Businesses with ChangeNotifier {
     return [..._search];
   }
 
-  Map<String, List<Business>> get customLists {
-    return {..._customLists};
+  List<CustomList> get customLists {
+    return [..._customLists];
   }
 
   bool isFavorite(Business business) {
@@ -120,14 +121,21 @@ class Businesses with ChangeNotifier {
   }
 
   void addCustomList(String name) {
-    // need to do the error checking on this in the widget tree so you can throw an error
-    List<Business> customList = [];
-    _customLists[name] = customList;
+    // TODO need to do the error checking on this in the widget tree so you can throw an error
+    // const url = '${APIKeys.firebase}/customLists.json';
+    // try{
+    //   url,
+    // } on Exception catch(e){
+    //   print(e);
+    //   throw e;
+    // }
+    CustomList customList = CustomList(name: name);
+    _customLists.add(customList);
     notifyListeners();
   }
 
   void removeCustomList(String name) {
-    _customLists.remove(name);
+    _customLists.removeWhere((element) => element.name == name);
     notifyListeners();
   }
 

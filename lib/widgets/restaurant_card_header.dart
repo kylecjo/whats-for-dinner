@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/models/custom_list.dart';
 import '../models/business.dart';
 import '../providers/businesses.dart';
 
@@ -51,24 +52,25 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                     child: PopupMenuButton<String>(
                         padding: EdgeInsets.all(0),
                         icon: Icon(Icons.add, color: Colors.grey[700]),
-                        onSelected: (key) {
-                          if (!businesses.customLists[key]
+                        onSelected: (name) {
+                          int selectedListIndex = businesses.customLists.indexWhere((element) => element.name == name);
+                          if (!businesses.customLists[selectedListIndex].businesses
                               .contains(widget.business)) {
-                            businesses.customLists[key].add(widget.business);
+                            businesses.customLists[selectedListIndex].businesses.add(widget.business);
                           } else {
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
                                 content:
-                                    Text('${widget.business} already in $key!'),
+                                    Text('${widget.business} already in $name!'),
                               ),
                             );
                           }
                         },
                         itemBuilder: (BuildContext ctx) {
-                          return businesses.customLists.keys.map((String key) {
+                          return businesses.customLists.map((CustomList element) {
                             return PopupMenuItem<String>(
-                              value: key,
-                              child: Text(key),
+                              value: element.name,
+                              child: Text(element.name),
                             );
                           }).toList();
                         }),
