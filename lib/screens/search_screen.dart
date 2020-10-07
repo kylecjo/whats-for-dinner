@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/widgets/search_dismissible_card.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
 import '../models/screen_type.dart';
 import '../providers/businesses.dart';
 import '../widgets/choose_one_button.dart';
-import '../widgets/dismissible_card.dart';
 import '../widgets/nav_drawer.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -64,8 +64,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           ? ListView.builder(
                               itemCount: businesses.search.length,
                               itemBuilder: (BuildContext ctx, int index) {
-                                return DismissibleCard(businesses.search[index],
-                                    RestaurantVisibility.search);
+                                return SearchDismissibleCard(
+                                  businesses.search[index],
+                                );
                               },
                             )
                           : Center(child: Text('Search for something')),

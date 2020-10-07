@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whats_for_dinner/models/custom_list.dart';
 import 'package:whats_for_dinner/models/screen_type.dart';
 import 'package:whats_for_dinner/widgets/choose_one_button.dart';
-import 'package:whats_for_dinner/widgets/dismissible_card.dart';
+import 'package:whats_for_dinner/widgets/nearby_dismissible_card.dart';
 
 class CustomListScreen extends StatelessWidget {
   final CustomList customList;
@@ -21,8 +21,7 @@ class CustomListScreen extends StatelessWidget {
             ? ListView.builder(
                 itemCount: customList.businesses.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(customList.businesses[index],
-                      RestaurantVisibility.visible);
+                  return NearbyDismissibleCard(customList.businesses[index],);
                 },
               )
             : Text('No restaurants in ${customList.name} yet!'),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/widgets/favorite_dismissible_card.dart';
 
 import '../models/screen_type.dart';
 import '../providers/businesses.dart';
 import '../widgets/choose_one_button.dart';
-import '../widgets/dismissible_card.dart';
 import '../widgets/nav_drawer.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -25,7 +25,7 @@ class FavoritesScreen extends StatelessWidget {
             ? ListView.builder(
                 itemCount: businesses.favorites.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(businesses.favorites[index], RestaurantVisibility.favorite);
+                  return FavoriteDismissibleCard(businesses.favorites[index]);
                 },
               )
             : Text('You have no favorites!'),
