@@ -21,11 +21,10 @@ class FavoriteDismissibleCard extends StatelessWidget {
           businessList.removeFavorite(business);
           Scaffold.of(context).showSnackBar(
             SnackBar(
-              content: Text('$business hidden'),
+              content: Text('$business removed from favorites'),
               action: SnackBarAction(
                   label: 'Undo',
                   onPressed: () {
-                    businessList.removeHidden(business);
                     businessList.addFavorite(business);
                   }),
             ),

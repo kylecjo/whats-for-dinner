@@ -20,7 +20,6 @@ class SearchDismissibleCard extends StatelessWidget {
         direction: DismissDirection.endToStart,
         onDismissed: (direction) {
           businessList.removeSearch(business);
-
           Scaffold.of(context).showSnackBar(
             SnackBar(
               content: Text('$business hidden'),

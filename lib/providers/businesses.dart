@@ -138,17 +138,17 @@ class Businesses with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addToCustomList(int index, Business business) async {
+  Future<void> addToCustomList(CustomList customList, Business business) async {
     String url =
-        '${APIKeys.firebase}/customLists.json?orderBy="name"&equalTo="${customLists[index].name}"&limitToFirst=1';
+        '${APIKeys.firebase}/customLists.json?orderBy="name"&equalTo="${customList.name}"&limitToFirst=1';
     try {
       final response = await http.get(url);
-      customLists[index].businesses.add(business);
+      customList.businesses.add(business);
       Map<String, dynamic> map =
           json.decode(response.body) as Map<String, dynamic>;
       String docId = map.keys.first;
       String customListUrl = '${APIKeys.firebase}/customLists/$docId.json';
-      await http.patch(customListUrl, body: json.encode(customLists[index]));
+      await http.patch(customListUrl, body: json.encode(customList));
       notifyListeners();
     } on Exception catch (e) {
       print(e);
@@ -156,8 +156,36 @@ class Businesses with ChangeNotifier {
     }
   }
 
-  Future<void> removeFromCustomList(int index, Business business) async {
-    
+  void removeFromCustomList(CustomList customList, Business business) {
+    // String url =
+    //     '${APIKeys.firebase}/customLists.json?orderBy="name"&equalTo="${customList.name}"&limitToFirst=1';
+    // try {
+    //   customList.businesses.removeWhere((element) => element.id == business.id);
+    //   int customListIndex =
+    //       _customLists.indexWhere((element) => element.name == customList.name);
+    //   _customLists[customListIndex]
+    //       .businesses
+    //       .removeWhere((element) => element.name == business.name);
+    //   print(_customLists[customListIndex].businesses);
+    //   notifyListeners();
+    //   final response = await http.get(url);
+
+    //   Map<String, dynamic> map =
+    //       json.decode(response.body) as Map<String, dynamic>;
+    //   String docId = map.keys.first;
+    //   String customListUrl = '${APIKeys.firebase}/customLists/$docId.json';
+    //   await http.patch(customListUrl, body: json.encode(customList));
+
+    // } on Exception catch (e) {
+    //   print(e);
+    //   throw e;
+    // }
+    int customListIndex =
+        _customLists.indexWhere((element) => element.name == customList.name);
+    _customLists[customListIndex]
+        .businesses
+        .removeWhere((element) => element.id == business.id);
+    notifyListeners();
   }
 
   void removeCustomList(String name) {
@@ -173,12 +201,14 @@ class Businesses with ChangeNotifier {
     const url = '${APIKeys.firebase}/customLists.json';
     try {
       final response = await http.get(url);
-      final data = json.decode(response.body) as Map<String, dynamic>;
+      final data = json.decode(response.body) as Map<String, dynamic> ?? {};
       final List<CustomList> loadedCustomLists = [];
 
-      data.forEach((id, customListJson) {
-        loadedCustomLists.add(CustomList.fromJson(customListJson));
-      });
+      if (data.isNotEmpty) {
+        data.forEach((id, customListJson) {
+          loadedCustomLists.add(CustomList.fromJson(customListJson));
+        });
+      }
 
       _customLists = loadedCustomLists;
       notifyListeners();
@@ -191,12 +221,13 @@ class Businesses with ChangeNotifier {
     const url = '${APIKeys.firebase}/favorites.json';
     try {
       final response = await http.get(url);
-      final data = json.decode(response.body) as Map<String, dynamic>;
+      final data = json.decode(response.body) as Map<String, dynamic> ?? {};
       final List<Business> loadedFavorites = [];
-
-      data.forEach((id, business) {
-        loadedFavorites.add(Business.fromJsonFireBase(business));
-      });
+      if (data.isNotEmpty) {
+        data.forEach((id, business) {
+          loadedFavorites.add(Business.fromJsonFireBase(business));
+        });
+      }
       _favorites = loadedFavorites;
       notifyListeners();
     } on Exception catch (e) {
