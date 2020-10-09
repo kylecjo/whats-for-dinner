@@ -66,10 +66,12 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (ctx) => CustomListScreen(businesses.customLists[idx])));
+                                    builder: (ctx) => CustomListScreen(
+                                        businesses.customLists[idx])));
                           },
                           child: CustomListTile(
-                              businesses.customLists[idx].name, businesses.customLists[idx].businesses.length),
+                              businesses.customLists[idx].name,
+                              businesses.customLists[idx].businesses.length),
                         );
                       })
                   : Center(child: Text('No custom lists yet')),

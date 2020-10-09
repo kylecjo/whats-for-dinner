@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:whats_for_dinner/models/custom_list.dart';
 import 'package:whats_for_dinner/services/api_keys.dart';
@@ -7,7 +6,6 @@ import 'package:whats_for_dinner/services/api_keys.dart';
 import '../models/business.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import '../models/category.dart' as cat;
 
 class Businesses with ChangeNotifier {
   List<Business> _businesses = [];
@@ -156,36 +154,28 @@ class Businesses with ChangeNotifier {
     }
   }
 
-  void removeFromCustomList(CustomList customList, Business business) {
-    // String url =
-    //     '${APIKeys.firebase}/customLists.json?orderBy="name"&equalTo="${customList.name}"&limitToFirst=1';
-    // try {
-    //   customList.businesses.removeWhere((element) => element.id == business.id);
-    //   int customListIndex =
-    //       _customLists.indexWhere((element) => element.name == customList.name);
-    //   _customLists[customListIndex]
-    //       .businesses
-    //       .removeWhere((element) => element.name == business.name);
-    //   print(_customLists[customListIndex].businesses);
-    //   notifyListeners();
-    //   final response = await http.get(url);
+  Future<void> removeFromCustomList(
+      CustomList customList, Business business) async {
+    String url =
+        '${APIKeys.firebase}/customLists.json?orderBy="name"&equalTo="${customList.name}"&limitToFirst=1';
+    try {
+      customList.businesses.removeWhere((element) => element.id == business.id);
+      _customLists
+          .singleWhere((element) => element.name == customList.name)
+          .businesses
+          .removeWhere((element) => element.id == business.id);
+      notifyListeners();
+      final response = await http.get(url);
 
-    //   Map<String, dynamic> map =
-    //       json.decode(response.body) as Map<String, dynamic>;
-    //   String docId = map.keys.first;
-    //   String customListUrl = '${APIKeys.firebase}/customLists/$docId.json';
-    //   await http.patch(customListUrl, body: json.encode(customList));
-
-    // } on Exception catch (e) {
-    //   print(e);
-    //   throw e;
-    // }
-    int customListIndex =
-        _customLists.indexWhere((element) => element.name == customList.name);
-    _customLists[customListIndex]
-        .businesses
-        .removeWhere((element) => element.id == business.id);
-    notifyListeners();
+      Map<String, dynamic> map =
+          json.decode(response.body) as Map<String, dynamic>;
+      String docId = map.keys.first;
+      String customListUrl = '${APIKeys.firebase}/customLists/$docId.json';
+      await http.patch(customListUrl, body: json.encode(customList));
+    } on Exception catch (e) {
+      print(e);
+      throw e;
+    }
   }
 
   void removeCustomList(String name) {

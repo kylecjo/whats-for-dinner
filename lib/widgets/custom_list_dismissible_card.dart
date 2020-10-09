@@ -14,28 +14,17 @@ class CustomListDismissibleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final businessList = Provider.of<Businesses>(context);
-  
-    return Dismissible(
-        key: Key(business.id.toString()),
-        background: Container(color: Theme.of(context).backgroundColor),
-        direction: DismissDirection.endToStart,
-        onDismissed: (direction) {
-          businessList.removeFromCustomList(customList, business);
 
-          // Scaffold.of(context).showSnackBar(
-          //   SnackBar(
-          //     content: Text('$business hidden'),
-          //     action: SnackBarAction(
-          //         label: 'Undo',
-          //         onPressed: () {
-          //           businessList.removeHidden(business);
-          //           businessList.addBusiness(business);
-          //         }),
-          //   ),
-          // );
-        },
-        child: RestaurantCard(
-            business: business, cardColor: Theme.of(context).accentColor));
+    return Consumer<Businesses>(
+      builder: (context, businessList, child) => Dismissible(
+          key: Key(business.id.toString()),
+          background: Container(color: Theme.of(context).backgroundColor),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) {
+            businessList.removeFromCustomList(customList, business);
+          },
+          child: RestaurantCard(
+              business: business, cardColor: Theme.of(context).accentColor)),
+    );
   }
 }
