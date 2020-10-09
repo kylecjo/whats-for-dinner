@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/widgets/nearby_dismissible_card.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
 import '../models/screen_type.dart';
 import '../providers/businesses.dart';
 import '../widgets/choose_one_button.dart';
-import '../widgets/dismissible_card.dart';
 import '../widgets/nav_drawer.dart';
 
 class RestaurantScreen extends StatefulWidget {
@@ -37,8 +37,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
             ? ListView.builder(
                 itemCount: businessList.businesses.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(businessList.businesses[index],
-                      RestaurantVisibility.visible);
+                  return NearbyDismissibleCard(businessList.businesses[index]);
                 },
               )
             : CircularProgressIndicator(),
@@ -61,7 +60,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
   void didChangeDependencies() {
     if(_isInit){
       Provider.of<Businesses>(context).fetchAndSetFavorites();
-      print(Provider.of<Businesses>(context).favorites);
+      Provider.of<Businesses>(context).fetchAndSetCustomLists();
     }
     _isInit = false;
     super.didChangeDependencies();

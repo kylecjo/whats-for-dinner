@@ -61,16 +61,17 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                   ? ListView.builder(
                       itemCount: businesses.customLists.length,
                       itemBuilder: (BuildContext ctx, int idx) {
-                        String key = businesses.customLists.keys.elementAt(idx);
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (ctx) => CustomListScreen(key)));
+                                    builder: (ctx) => CustomListScreen(
+                                        businesses.customLists[idx])));
                           },
                           child: CustomListTile(
-                              key, businesses.customLists[key].length),
+                              businesses.customLists[idx].name,
+                              businesses.customLists[idx].businesses.length),
                         );
                       })
                   : Center(child: Text('No custom lists yet')),
