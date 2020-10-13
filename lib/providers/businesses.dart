@@ -22,10 +22,6 @@ class Businesses with ChangeNotifier {
     return [..._hidden];
   }
 
-  List<Business> get favorites {
-    return [..._favorites];
-  }
-
   List<Business> get search {
     return [..._search];
   }
@@ -70,38 +66,6 @@ class Businesses with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addFavorite(Business business) async {
-    const url = '${APIKeys.firebase}/favorites.json';
-    try {
-      await http.post(
-        url,
-        body: json.encode(business),
-      );
-      _favorites.add(business);
-      notifyListeners();
-    } on Exception catch (e) {
-      print(e);
-      throw e;
-    }
-  }
-
-  Future<void> removeFavorite(Business business) async {
-    String url =
-        '${APIKeys.firebase}/favorites.json?orderBy="name"&equalTo="${business.name}"&limitToFirst=1';
-    try {
-      final response = await http.get(url);
-      Map<String, dynamic> map =
-          json.decode(response.body) as Map<String, dynamic>;
-      String docId = map.keys.first;
-      String deleteUrl = '${APIKeys.firebase}/favorites/$docId.json';
-      await http.delete(deleteUrl);
-      _favorites.removeWhere((element) => element.id == business.id);
-      notifyListeners();
-    } on Exception catch (e) {
-      print(e);
-      throw e;
-    }
-  }
 
   void addSearch(Business business) {
     _search.add(business);

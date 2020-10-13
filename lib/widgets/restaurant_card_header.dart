@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/models/custom_list.dart';
+import '../providers/favorites.dart';
 import '../models/business.dart';
 import '../providers/businesses.dart';
 
@@ -23,6 +24,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
         .map((category) => category.title.toString())
         .toList();
     final businesses = Provider.of<Businesses>(context);
+    final favs = Provider.of<Favorites>(context);
     return Container(
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -81,9 +83,9 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                       setState(() {
                         _isLoading = true;
                       });
-                      if (businesses.isFavorite(widget.business)) {
+                      if (favs.isFavorite(widget.business)) {
                         try {
-                          await businesses.removeFavorite(widget.business);
+                          await favs.removeFavorite(widget.business);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
@@ -105,7 +107,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                         }
                       } else {
                         try {
-                          await businesses.addFavorite(widget.business);
+                          await favs.addFavorite(widget.business);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
@@ -134,7 +136,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                             child: CircularProgressIndicator(
                               backgroundColor: Colors.grey[700],
                             ))
-                        : businesses.isFavorite(widget.business)
+                        : favs.isFavorite(widget.business)
                             ? Icon(Icons.star, size: 20, color: Colors.yellow)
                             : Icon(Icons.star_border,
                                 size: 20, color: Colors.grey[700]),
