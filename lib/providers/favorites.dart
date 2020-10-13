@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:whats_for_dinner/services/api_keys.dart';
+import '../services/api_keys.dart';
 
 import '../models/business.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +22,6 @@ class Favorites with ChangeNotifier {
 
     return false;
   }
-
 
   Future<void> addFavorite(Business business) async {
     const url = '${APIKeys.firebase}/favorites.json';

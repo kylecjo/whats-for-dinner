@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/models/custom_list.dart';
+import 'package:whats_for_dinner/providers/custom_lists.dart';
 import '../providers/favorites.dart';
 import '../models/business.dart';
-import '../providers/businesses.dart';
 
 class RestaurantCardHeader extends StatefulWidget {
   final Color color;
@@ -23,8 +23,8 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
     List<String> categoryTitles = widget.business.categories
         .map((category) => category.title.toString())
         .toList();
-    final businesses = Provider.of<Businesses>(context);
-    final favs = Provider.of<Favorites>(context);
+    final favoriteProvider = Provider.of<Favorites>(context);
+    final customListProvider = Provider.of<CustomLists>(context);
     return Container(
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -55,10 +55,10 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                         padding: EdgeInsets.all(0),
                         icon: Icon(Icons.add, color: Colors.grey[700]),
                         onSelected: (name) {
-                          int selectedListIndex = businesses.customLists.indexWhere((element) => element.name == name);
-                          if (!businesses.customLists[selectedListIndex].businesses
+                          int selectedListIndex = customListProvider.customLists.indexWhere((element) => element.name == name);
+                          if (!customListProvider.customLists[selectedListIndex].businesses
                               .contains(widget.business)) {
-                            businesses.addToCustomList(businesses.customLists[selectedListIndex], widget.business);
+                            customListProvider.addToCustomList(customListProvider.customLists[selectedListIndex], widget.business);
           
                           } else {
                             Scaffold.of(context).showSnackBar(
@@ -70,7 +70,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                           }
                         },
                         itemBuilder: (BuildContext ctx) {
-                          return businesses.customLists.map((CustomList element) {
+                          return customListProvider.customLists.map((CustomList element) {
                             return PopupMenuItem<String>(
                               value: element.name,
                               child: Text(element.name),
@@ -83,9 +83,9 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                       setState(() {
                         _isLoading = true;
                       });
-                      if (favs.isFavorite(widget.business)) {
+                      if (favoriteProvider.isFavorite(widget.business)) {
                         try {
-                          await favs.removeFavorite(widget.business);
+                          await favoriteProvider.removeFavorite(widget.business);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
@@ -107,7 +107,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                         }
                       } else {
                         try {
-                          await favs.addFavorite(widget.business);
+                          await favoriteProvider.addFavorite(widget.business);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
@@ -136,7 +136,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                             child: CircularProgressIndicator(
                               backgroundColor: Colors.grey[700],
                             ))
-                        : favs.isFavorite(widget.business)
+                        : favoriteProvider.isFavorite(widget.business)
                             ? Icon(Icons.star, size: 20, color: Colors.yellow)
                             : Icon(Icons.star_border,
                                 size: 20, color: Colors.grey[700]),

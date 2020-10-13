@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/providers/custom_lists.dart';
+import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/widgets/nearby_dismissible_card.dart';
 
 import '../data/repository.dart';
@@ -59,8 +61,8 @@ class _RestaurantScreen extends State<RestaurantScreen> {
   @override
   void didChangeDependencies() {
     if(_isInit){
-      Provider.of<Businesses>(context).fetchAndSetFavorites();
-      Provider.of<Businesses>(context).fetchAndSetCustomLists();
+      Provider.of<Favorites>(context).fetchAndSetFavorites();
+      Provider.of<CustomLists>(context).fetchAndSetCustomLists();
     }
     _isInit = false;
     super.didChangeDependencies();
