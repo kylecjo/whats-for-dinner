@@ -14,7 +14,6 @@ class CustomLists with ChangeNotifier {
     return [..._customLists];
   }
 
-
   Future<void> addCustomList(String listName) async {
     // TODO need to do the error checking on this in the widget tree so you can throw an error
     CustomList customList = CustomList(name: listName, businesses: []);
@@ -62,12 +61,7 @@ class CustomLists with ChangeNotifier {
           .businesses
           .removeWhere((element) => element.id == business.id);
       notifyListeners();
-      final response = await http.get(url);
-
-      Map<String, dynamic> map =
-          json.decode(response.body) as Map<String, dynamic>;
-      String docId = map.keys.first;
-      String customListUrl = '${APIKeys.firebase}/customLists/$docId.json';
+      String customListUrl = await getCustomListUrl(url);
       await http.patch(customListUrl, body: json.encode(customList));
     } on Exception catch (e) {
       print(e);
@@ -75,9 +69,26 @@ class CustomLists with ChangeNotifier {
     }
   }
 
-  void removeCustomList(String name) {
-    _customLists.removeWhere((element) => element.name == name);
-    notifyListeners();
+  Future<void> removeCustomList(String name) async {
+    String url =
+        '${APIKeys.firebase}/customLists.json?orderBy="name"&equalTo="$name"&limitToFirst=1';
+    try {
+      _customLists.removeWhere((element) => element.name == name);
+      notifyListeners();
+      String customListUrl = await getCustomListUrl(url);
+      await http.delete(customListUrl);
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
+
+  Future<String> getCustomListUrl(String url) async {
+    final response = await http.get(url);
+
+    Map<String, dynamic> map =
+        json.decode(response.body) as Map<String, dynamic>;
+    String docId = map.keys.first;
+    return  '${APIKeys.firebase}/customLists/$docId.json';
   }
 
   Future<void> fetchAndSetCustomLists() async {
