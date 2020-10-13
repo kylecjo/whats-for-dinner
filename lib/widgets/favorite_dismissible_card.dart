@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/favorites.dart';
 
 import '../models/business.dart';
-import '../providers/businesses.dart';
 import '../widgets/restaurant_card.dart';
 
 class FavoriteDismissibleCard extends StatelessWidget {
@@ -12,20 +12,20 @@ class FavoriteDismissibleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final businessList = Provider.of<Businesses>(context);
+    final favs = Provider.of<Favorites>(context);
     return Dismissible(
         key: Key(business.id.toString()),
         background: Container(color: Theme.of(context).backgroundColor),
         direction: DismissDirection.endToStart,
         onDismissed: (direction) {
-          businessList.removeFavorite(business);
+          favs.removeFavorite(business);
           Scaffold.of(context).showSnackBar(
             SnackBar(
               content: Text('$business removed from favorites'),
               action: SnackBarAction(
                   label: 'Undo',
                   onPressed: () {
-                    businessList.addFavorite(business);
+                   favs.addFavorite(business);
                   }),
             ),
           );

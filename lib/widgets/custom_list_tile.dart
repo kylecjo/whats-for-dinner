@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/businesses.dart';
+import 'package:whats_for_dinner/providers/custom_lists.dart';
 
 class CustomListTile extends StatelessWidget {
   final String name;
@@ -10,7 +10,7 @@ class CustomListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final businesses = Provider.of<Businesses>(context);
+    final customListProvider = Provider.of<CustomLists>(context);
     return Card(
       elevation: 1,
       child: ListTile(
@@ -48,7 +48,7 @@ class CustomListTile extends StatelessWidget {
                       FlatButton(
                           child: Text('Continue'),
                           onPressed: () {
-                            businesses.removeCustomList(name);
+                            customListProvider.removeCustomList(name);
                             Navigator.of(context).pop();
                           }),
                     ],

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:whats_for_dinner/providers/favorites.dart';
 
 import '../models/choose_one_arguments.dart';
 import '../models/screen_type.dart';
@@ -61,6 +62,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
   Widget build(BuildContext context) {
     final ChooseOneArguments args = ModalRoute.of(context).settings.arguments;
     final businesses = Provider.of<Businesses>(context);
+    final favs = Provider.of<Favorites>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('What\'s for Dinner?'),
@@ -124,12 +126,12 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                         );
                       } else {
                         int randomIndex =
-                            _rnd.nextInt(businesses.favorites.length);
+                            _rnd.nextInt(favs.favorites.length);
                         Navigator.pushReplacementNamed(
                           context,
                           ChooseOneScreen.routeName,
                           arguments: ChooseOneArguments(
-                              businesses.favorites[randomIndex],
+                              favs.favorites[randomIndex],
                               ScreenType.favorites),
                         );
                       }

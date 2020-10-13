@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/businesses.dart';
+import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/screens/custom_list_screen.dart';
 import 'package:whats_for_dinner/widgets/custom_list_tile.dart';
 import 'package:whats_for_dinner/widgets/nav_drawer.dart';
@@ -20,7 +20,7 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final businesses = Provider.of<Businesses>(context);
+    final customListProvider = Provider.of<CustomLists>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
       child: Scaffold(
@@ -49,7 +49,7 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                     child: Text('Add'),
                     color: Theme.of(context).accentColor,
                     onPressed: () {
-                      businesses.addCustomList(textController.text);
+                      customListProvider.addCustomList(textController.text);
                       textController.clear();
                     },
                   ),
@@ -57,9 +57,9 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
               ),
             ),
             Expanded(
-              child: businesses.customLists.isNotEmpty
+              child: customListProvider.customLists.isNotEmpty
                   ? ListView.builder(
-                      itemCount: businesses.customLists.length,
+                      itemCount: customListProvider.customLists.length,
                       itemBuilder: (BuildContext ctx, int idx) {
                         return GestureDetector(
                           onTap: () {
@@ -67,11 +67,11 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (ctx) => CustomListScreen(
-                                        businesses.customLists[idx])));
+                                        customListProvider.customLists[idx])));
                           },
                           child: CustomListTile(
-                              businesses.customLists[idx].name,
-                              businesses.customLists[idx].businesses.length),
+                              customListProvider.customLists[idx].name,
+                              customListProvider.customLists[idx].businesses.length),
                         );
                       })
                   : Center(child: Text('No custom lists yet')),

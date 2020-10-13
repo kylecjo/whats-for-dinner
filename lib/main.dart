@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/providers/custom_lists.dart';
+import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
 
 import './data/repository.dart';
@@ -32,7 +34,13 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => Businesses(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Favorites(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CustomLists(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
