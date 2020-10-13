@@ -7,6 +7,13 @@ class Category {
     return Category(json['alias'] as String, json['title'] as String);
   }
 
+  Map<String, dynamic> toJson(){
+    return{
+      'alias': this.alias,
+      'title': this.title,
+    };
+  }
+
   @override
   String toString() {
     return '${this.alias}, ${this.title}';

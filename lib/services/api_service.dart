@@ -20,7 +20,7 @@ class APIService {
       Map<String, dynamic> map = json.decode(response.body);
       Iterable jsonList = map['businesses'];
       List<Business> businesses =
-          jsonList.map((model) => Business.fromJson(model)).toList();
+          jsonList.map((model) => Business.fromJsonYelp(model)).toList();
       return businesses;
     }
     throw response;

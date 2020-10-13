@@ -34,3 +34,4 @@ Not yet available
 - [ ] Firebase Integration
 - [ ] User Authentication
 - [ ] Share lists between users
+- [ ] IOS 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/widgets/hidden_dismissible_card.dart';
 
 import '../providers/businesses.dart';
-import '../widgets/dismissible_card.dart';
 import '../widgets/nav_drawer.dart';
 
 class HiddenScreen extends StatelessWidget {
@@ -23,7 +23,7 @@ class HiddenScreen extends StatelessWidget {
             ? ListView.builder(
                 itemCount: businesses.hidden.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(businesses.hidden[index], RestaurantVisibility.hidden);
+                  return HiddenDismissibleCard(businesses.hidden[index]);
                 },
               )
             : Text('No hidden restaurants!'),

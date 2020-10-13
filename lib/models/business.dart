@@ -52,7 +52,37 @@ class Business {
       this.country,
       this.zip});
 
-  factory Business.fromJson(Map<String, dynamic> json) {
+  factory Business.fromJsonFireBase(Map<String, dynamic> business) {
+    List<dynamic> cats = json.decode(business['categories']) as List<dynamic>;
+    List<Category> categoriesList =
+        cats.map((categoryJson) => Category.fromJson(categoryJson)).toList();
+    
+    return Business(
+      rating: business['rating'],
+      price: business['price'],
+      phone: business['phone'],
+      id: business['id'],
+      name: business['name'],
+      latitude: business['latitude'],
+      longitude: business['longitude'],
+      distance: business['distance'],
+      alias: business['alias'],
+      isClosed: business['isClosed'],
+      reviewCount: business['reviewCount'],
+      categories: categoriesList,
+      url: business['url'],
+      imageUrl: business['imageUrl'],
+      address1: business['address1'],
+      address2: business['address2'],
+      address3: business['address3'],
+      city: business['city'],
+      state: business['state'],
+      country: business['country'],
+      zip: business['zip'],
+    );
+  }
+
+  factory Business.fromJsonYelp(Map<String, dynamic> json) {
     String arrayObjsText = jsonEncode(json['categories']);
     var categoryObjsJson = jsonDecode(arrayObjsText) as List;
     List<Category> _categoriesList = categoryObjsJson
@@ -82,6 +112,32 @@ class Business {
       country: json['location']['country'],
       zip: json['location']['zip_code'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'rating': this.rating,
+      'price': this.price,
+      'phone': this.phone,
+      'id': this.id,
+      'name': this.name,
+      'latitude': this.latitude,
+      'longitude': this.longitude,
+      'distance': this.distance,
+      'alias': this.alias,
+      'isClosed': this.isClosed,
+      'reviewCount': this.reviewCount,
+      'categories': json.encode(this.categories),
+      'url': this.url,
+      'imageUrl': this.imageUrl,
+      'address1': this.address1,
+      'address2': this.address2,
+      'address3': this.address3,
+      'city': this.city,
+      'state': this.state,
+      'country': this.country,
+      'zip': this.zip,
+    };
   }
 
   @override

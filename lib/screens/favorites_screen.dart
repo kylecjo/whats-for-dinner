@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/favorites.dart';
+import 'package:whats_for_dinner/widgets/favorite_dismissible_card.dart';
 
 import '../models/screen_type.dart';
-import '../providers/businesses.dart';
 import '../widgets/choose_one_button.dart';
-import '../widgets/dismissible_card.dart';
 import '../widgets/nav_drawer.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -15,17 +15,17 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final businesses = Provider.of<Businesses>(context);
+    final favs = Provider.of<Favorites>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
       body: Center(
-        child: businesses.favorites.length > 0
+        child: favs.favorites.length > 0
             ? ListView.builder(
-                itemCount: businesses.favorites.length,
+                itemCount: favs.favorites.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return DismissibleCard(businesses.favorites[index], RestaurantVisibility.favorite);
+                  return FavoriteDismissibleCard(favs.favorites[index]);
                 },
               )
             : Text('You have no favorites!'),
@@ -34,7 +34,7 @@ class FavoritesScreen extends StatelessWidget {
       floatingActionButton: Builder(
         builder: (BuildContext ctx) {
           return ChooseOneButton(
-            list: businesses.favorites,
+            list: favs.favorites,
             color: Theme.of(context).accentColor,
             errorText: 'You have no favorites!',
             screenType: ScreenType.favorites,
