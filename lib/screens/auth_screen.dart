@@ -1,6 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/models/http_exception.dart';
+
+import '../providers/auth.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -57,13 +61,11 @@ class AuthScreen extends StatelessWidget {
                         ],
                       ),
                       child: Text(
-                        'MyShop',
-                        style: TextStyle(
-                          color: Theme.of(context).accentTextTheme.title.color,
-                          fontSize: 50,
-                          fontFamily: 'Anton',
-                          fontWeight: FontWeight.normal,
-                        ),
+                        'What\'s for Dinner?',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            .copyWith(color: Colors.white),
                       ),
                     ),
                   ),
@@ -100,7 +102,23 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('An Error Occured!'),
+        content: Text(message),
+        actions: [
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -109,10 +127,37 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-    } else {
-      // Sign user up
+    try {
+      if (_authMode == AuthMode.Login) {
+        // Log user in
+        await Provider.of<Auth>(context, listen: false).login(
+          _authData['email'],
+          _authData['password'],
+        );
+      } else {
+        // Sign user up
+        await Provider.of<Auth>(context, listen: false).signup(
+          _authData['email'],
+          _authData['password'],
+        );
+      }
+    } on HttpException catch (e) {
+      var errorMessage = 'Authentication failed';
+      if (e.toString().contains('EMAIL_EXISTS')) {
+        errorMessage = 'Email address is already in use';
+      } else if (e.toString().contains('INVALID_EMAIL')) {
+        errorMessage = 'This is not a valid email address';
+      } else if (e.toString().contains('WEAK_PASSWORD')) {
+        errorMessage = 'Password is too weak';
+      } else if (e.toString().contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'No user with that email exists';
+      } else if (e.toString().contains('INVALID_PASSWORD')) {
+        errorMessage = 'Invalid password';
+      }
+      _showErrorDialog(errorMessage);
+    } catch (error) {
+      const errorMessage = 'Could not authenticate. Try again later.';
+      _showErrorDialog(errorMessage);
     }
     setState(() {
       _isLoading = false;
@@ -157,7 +202,6 @@ class _AuthCardState extends State<AuthCard> {
                     if (value.isEmpty || !value.contains('@')) {
                       return 'Invalid email!';
                     }
-                    return null;
                     return null;
                   },
                   onSaved: (value) {

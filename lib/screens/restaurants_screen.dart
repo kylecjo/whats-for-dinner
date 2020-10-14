@@ -14,7 +14,7 @@ import '../widgets/nav_drawer.dart';
 
 class RestaurantScreen extends StatefulWidget {
   final String title;
-
+  static const routeName = '/nearby';
   RestaurantScreen({Key key, this.title}) : super(key: key);
 
   @override
