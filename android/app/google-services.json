@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "676135350437",
+    "firebase_url": "https://restaurant-app-e3d7d.firebaseio.com",
+    "project_id": "restaurant-app-e3d7d",
+    "storage_bucket": "restaurant-app-e3d7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676135350437:android:a327fbefd9fb2cde779d4c",
+        "android_client_info": {
+          "package_name": "com.example.whats_for_dinner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "676135350437-dcoum5jhleo99bijp2b3jpma6sruataf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuVTWz9jecKkUa046_7I9-PNLzhHBxP4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "676135350437-dcoum5jhleo99bijp2b3jpma6sruataf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
