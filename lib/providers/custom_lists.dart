@@ -6,10 +6,12 @@ import 'package:whats_for_dinner/services/api_keys.dart';
 import '../models/business.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 class CustomLists with ChangeNotifier {
   List<CustomList> _customLists;
   final String authToken;
+  var uuid = Uuid();
 
   CustomLists(this.authToken, this._customLists);
 
@@ -19,8 +21,7 @@ class CustomLists with ChangeNotifier {
 
   Future<void> addCustomList(String uid, String listName) async {
     // TODO need to do the error checking on this in the widget tree so you can throw an error
-    // TODO  make custom list id a uuid 
-    CustomList customList = CustomList(id: DateTime.now().millisecondsSinceEpoch.toString(), name: listName, businesses: []);
+    CustomList customList = CustomList(id: uuid.v4(), name: listName, businesses: []);
     final url = '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
     try {
       await http.put(
