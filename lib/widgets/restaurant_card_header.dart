@@ -57,22 +57,31 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                         padding: EdgeInsets.all(0),
                         icon: Icon(Icons.add, color: Colors.grey[700]),
                         onSelected: (name) {
-                          int selectedListIndex = customListProvider.customLists.indexWhere((element) => element.name == name);
-                          if (!customListProvider.customLists[selectedListIndex].businesses
-                              .contains(widget.business)) {
-                            customListProvider.addToCustomList(customListProvider.customLists[selectedListIndex], widget.business, authProvider.uid);
-          
-                          } else {
+                          int selectedListIndex = customListProvider.customLists
+                              .indexWhere((element) => element.name == name);
+                          if (customListProvider
+                                  .customLists[selectedListIndex].businesses
+                                  .singleWhere(
+                                      (it) => it.id == widget.business.id,
+                                      orElse: () => null) !=
+                              null) {
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
-                                content:
-                                    Text('${widget.business} already in $name!'),
+                                content: Text(
+                                    '${widget.business} already in $name!'),
                               ),
                             );
+                          } else {
+                            customListProvider.addToCustomList(
+                                customListProvider
+                                    .customLists[selectedListIndex],
+                                widget.business,
+                                authProvider.uid);
                           }
                         },
                         itemBuilder: (BuildContext ctx) {
-                          return customListProvider.customLists.map((CustomList element) {
+                          return customListProvider.customLists
+                              .map((CustomList element) {
                             return PopupMenuItem<String>(
                               value: element.name,
                               child: Text(element.name),
@@ -87,7 +96,8 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                       });
                       if (favoriteProvider.isFavorite(widget.business)) {
                         try {
-                          await favoriteProvider.removeFavorite(widget.business, authProvider.uid);
+                          await favoriteProvider.removeFavorite(
+                              widget.business, authProvider.uid);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
@@ -109,7 +119,8 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                         }
                       } else {
                         try {
-                          await favoriteProvider.addFavorite(widget.business, authProvider.uid);
+                          await favoriteProvider.addFavorite(
+                              widget.business, authProvider.uid);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
