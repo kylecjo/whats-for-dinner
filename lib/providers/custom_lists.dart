@@ -74,15 +74,6 @@ class CustomLists with ChangeNotifier {
     }
   }
 
-  Future<String> getCustomListUrl(String name, String url) async {
-    final response = await http.get(url);
-
-    Map<String, dynamic> map =
-        json.decode(response.body) as Map<String, dynamic>;
-    String docId = map.keys.firstWhere((element) => map[element]['name'] == name);
-    return  '${APIKeys.firebase}/customLists/$docId.json?auth=$authToken';
-  }
-
   Future<void> fetchAndSetCustomLists(String uid) async {
     final url = '${APIKeys.firebase}/customLists/$uid.json?auth=$authToken';
     try {
