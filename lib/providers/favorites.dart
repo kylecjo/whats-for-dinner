@@ -7,7 +7,10 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class Favorites with ChangeNotifier {
-  List<Business> _favorites = [];
+  List<Business> _favorites;
+  final String authToken;
+
+  Favorites(this.authToken, this._favorites);
 
   List<Business> get favorites {
     return [..._favorites];
@@ -23,10 +26,10 @@ class Favorites with ChangeNotifier {
     return false;
   }
 
-  Future<void> addFavorite(Business business) async {
-    const url = '${APIKeys.firebase}/favorites.json';
+  Future<void> addFavorite(Business business, String uid) async {
+    final url = '${APIKeys.firebase}/favorites/$uid/${business.id}.json?auth=$authToken';
     try {
-      await http.post(
+      await http.put(
         url,
         body: json.encode(business),
       );
@@ -38,15 +41,9 @@ class Favorites with ChangeNotifier {
     }
   }
 
-  Future<void> removeFavorite(Business business) async {
-    String url =
-        '${APIKeys.firebase}/favorites.json?orderBy="name"&equalTo="${business.name}"&limitToFirst=1';
+  Future<void> removeFavorite(Business business, String uid) async {
     try {
-      final response = await http.get(url);
-      Map<String, dynamic> map =
-          json.decode(response.body) as Map<String, dynamic>;
-      String docId = map.keys.first;
-      String deleteUrl = '${APIKeys.firebase}/favorites/$docId.json';
+      final deleteUrl = '${APIKeys.firebase}/favorites/$uid/${business.id}.json?auth=$authToken';
       await http.delete(deleteUrl);
       _favorites.removeWhere((element) => element.id == business.id);
       notifyListeners();
@@ -56,8 +53,8 @@ class Favorites with ChangeNotifier {
     }
   }
 
-  Future<void> fetchAndSetFavorites() async {
-    const url = '${APIKeys.firebase}/favorites.json';
+  Future<void> fetchAndSetFavorites(String uid) async {
+    final url = '${APIKeys.firebase}/favorites/$uid.json?auth=$authToken';
     try {
       final response = await http.get(url);
       final data = json.decode(response.body) as Map<String, dynamic> ?? {};

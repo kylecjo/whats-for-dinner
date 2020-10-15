@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
+import 'package:whats_for_dinner/screens/splash_screen.dart';
 
 import './data/repository.dart';
 import './providers/businesses.dart';
@@ -14,6 +16,7 @@ import './screens/restaurants_screen.dart';
 import './screens/search_screen.dart';
 import './services/api.dart';
 import './services/api_service.dart';
+import './screens/auth_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +30,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(
+          value: Auth(),
+        ),
         Provider<Repository>(
           create: (_) => Repository(
             apiService: APIService(API.dev()),
@@ -35,63 +41,77 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => Businesses(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => Favorites(),
+        ChangeNotifierProxyProvider<Auth, Favorites>(
+          create: null,
+          update: (_, auth, prev) =>
+              Favorites(auth.token, prev == null ? [] : prev.favorites),
         ),
-        ChangeNotifierProvider(
-          create: (_) => CustomLists(),
+        ChangeNotifierProxyProvider<Auth, CustomLists>(
+          create: null,
+          update: (_, auth, prev) =>
+              CustomLists(auth.token, prev == null ? [] : prev.customLists),
         ),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        // theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
-        theme: ThemeData(
-          fontFamily: 'RobotoMono',
-          primaryColor: const Color(0xff8FADC9),
-          accentColor: const Color(0xffDAA99B),
-          // cardColor: const Color(0xffDAA99B),
-          backgroundColor: Colors.white,
-          dividerColor: const Color(0xffDAA99B),
-          // accentColor: const Color(0xffb86f41),
-          textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+      child: Consumer<Auth>(
+        builder: (ctx, authData, _) => MaterialApp(
+          title: 'Flutter Demo',
+          // theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
+          theme: ThemeData(
+            fontFamily: 'RobotoMono',
+            primaryColor: const Color(0xff8FADC9),
+            accentColor: const Color(0xffDAA99B),
+            // cardColor: const Color(0xffDAA99B),
+            backgroundColor: Colors.white,
+            dividerColor: const Color(0xffDAA99B),
+            // accentColor: const Color(0xffb86f41),
+            textTheme: ThemeData.light().textTheme.copyWith(
+                  headline6: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  headline5: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  headline4: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  bodyText2: TextStyle(
+                    fontSize: 11,
+                    color: Colors.grey[700],
+                  ),
+                  bodyText1: TextStyle(
+                    fontSize: 11,
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  subtitle1: TextStyle(
+                    fontSize: 9,
+                    color: Colors.black,
+                  ),
                 ),
-                headline5: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                headline4: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-                bodyText2: TextStyle(
-                  fontSize: 11,
-                  color: Colors.grey[700],
-                ),
-                bodyText1: TextStyle(
-                  fontSize: 11,
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                ),
-                subtitle1: TextStyle(
-                  fontSize: 9,
-                  color: Colors.black,
-                ),
-              ),
+          ),
+          home: authData.isAuth
+              ? RestaurantScreen()
+              : FutureBuilder(
+                  future: authData.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen()),
+          routes: {
+            RestaurantScreen.routeName: (ctx) => RestaurantScreen(),
+            FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
+            HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
+            ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
+            SearchScreen.routeName: (ctx) => SearchScreen(),
+            AddCustomListsScreen.routeName: (ctx) =>
+                AddCustomListsScreen('Custom lists'),
+          },
+          debugShowCheckedModeBanner: false,
         ),
-        initialRoute: '/',
-        routes: {
-          '/': (ctx) => RestaurantScreen(),
-          FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
-          HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
-          ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
-          SearchScreen.routeName: (ctx) => SearchScreen(),
-          AddCustomListsScreen.routeName: (ctx) =>
-              AddCustomListsScreen('Custom lists'),
-        },
-        debugShowCheckedModeBanner: false,
       ),
     );
   }
