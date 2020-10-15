@@ -7,7 +7,10 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class Favorites with ChangeNotifier {
-  List<Business> _favorites = [];
+  List<Business> _favorites;
+  final String authToken;
+
+  Favorites(this.authToken, this._favorites);
 
   List<Business> get favorites {
     return [..._favorites];
@@ -24,7 +27,7 @@ class Favorites with ChangeNotifier {
   }
 
   Future<void> addFavorite(Business business) async {
-    const url = '${APIKeys.firebase}/favorites.json';
+    final url = '${APIKeys.firebase}/favorites.json?auth=$authToken';
     try {
       await http.post(
         url,
@@ -39,8 +42,8 @@ class Favorites with ChangeNotifier {
   }
 
   Future<void> removeFavorite(Business business) async {
-    String url =
-        '${APIKeys.firebase}/favorites.json?orderBy="name"&equalTo="${business.name}"&limitToFirst=1';
+    final url =
+        '${APIKeys.firebase}/favorites.json?orderBy="name"&equalTo="${business.name}"&limitToFirst=1?auth=$authToken';
     try {
       final response = await http.get(url);
       Map<String, dynamic> map =
@@ -57,7 +60,7 @@ class Favorites with ChangeNotifier {
   }
 
   Future<void> fetchAndSetFavorites() async {
-    const url = '${APIKeys.firebase}/favorites.json';
+    final url = '${APIKeys.firebase}/favorites.json?auth=$authToken';
     try {
       final response = await http.get(url);
       final data = json.decode(response.body) as Map<String, dynamic> ?? {};

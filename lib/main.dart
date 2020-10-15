@@ -29,6 +29,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(
+          value: Auth(),
+        ),
         Provider<Repository>(
           create: (_) => Repository(
             apiService: APIService(API.dev()),
@@ -37,14 +40,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => Businesses(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => Favorites(),
+        ChangeNotifierProxyProvider<Auth, Favorites>(
+          create: null,
+          update: (_, auth, prev) =>
+              Favorites(auth.token, prev == null ? [] : prev.favorites),
         ),
-        ChangeNotifierProvider(
-          create: (_) => CustomLists(),
-        ),
-        ChangeNotifierProvider.value(
-          value: Auth(),
+        ChangeNotifierProxyProvider<Auth, CustomLists>(
+          create: null, 
+          update: (_, auth, prev) => CustomLists(auth.token, prev == null ? [] : prev.customLists),
         ),
       ],
       child: Consumer<Auth>(
