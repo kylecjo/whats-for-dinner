@@ -64,7 +64,7 @@ class _RestaurantScreen extends State<RestaurantScreen> {
     if (_isInit) {
       Provider.of<Favorites>(context)
           .fetchAndSetFavorites(Provider.of<Auth>(context).uid);
-      Provider.of<CustomLists>(context).fetchAndSetCustomLists();
+      Provider.of<CustomLists>(context).fetchAndSetCustomLists(Provider.of<Auth>(context).uid);
     }
     _isInit = false;
     super.didChangeDependencies();

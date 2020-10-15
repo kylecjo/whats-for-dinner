@@ -4,15 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:whats_for_dinner/models/business.dart';
 
 class CustomList {
-  // final String id;
+  final String id;
   final String name;
   List<Business> businesses = [];
 
   // CustomList({@required this.id, @required this.name});
-  CustomList({@required this.name, @required this.businesses});
+  CustomList({@required this.id, @required this.name, @required this.businesses});
 
   Map<String, dynamic> toJson() {
     return {
+      'id': this.id,
       'name': this.name,
       'businesses': json.encode(this.businesses),
     };
@@ -23,6 +24,7 @@ class CustomList {
     List<Business> businessList = list.map((i) => Business.fromJsonFireBase(i)).toList();
 
     return CustomList(
+      id: data['id'],
       name: data['name'],
       businesses: businessList,
     );

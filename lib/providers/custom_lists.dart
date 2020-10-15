@@ -17,12 +17,13 @@ class CustomLists with ChangeNotifier {
     return [..._customLists];
   }
 
-  Future<void> addCustomList(String listName) async {
+  Future<void> addCustomList(String uid, String listName) async {
     // TODO need to do the error checking on this in the widget tree so you can throw an error
-    CustomList customList = CustomList(name: listName, businesses: []);
-    final url = '${APIKeys.firebase}/customLists.json?auth=$authToken';
+    // TODO  make custom list id a uuid 
+    CustomList customList = CustomList(id: DateTime.now().millisecondsSinceEpoch.toString(), name: listName, businesses: []);
+    final url = '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
     try {
-      await http.post(
+      await http.put(
         url,
         body: json.encode(customList),
       );
@@ -35,16 +36,11 @@ class CustomLists with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addToCustomList(CustomList customList, Business business) async {
-    String url =
-        '${APIKeys.firebase}/customLists.json?auth=$authToken';
+  Future<void> addToCustomList(CustomList customList, Business business, String uid) async {
     try {
-      final response = await http.get(url);
       customList.businesses.add(business);
-      Map<String, dynamic> map =
-          json.decode(response.body) as Map<String, dynamic>;
-      String docId = map.keys.firstWhere((element) => map[element]['name'] == customList.name);
-      String customListUrl = '${APIKeys.firebase}/customLists/$docId.json?auth=$authToken';
+      print(customList.id);
+      String customListUrl = '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
       await http.patch(customListUrl, body: json.encode(customList));
       notifyListeners();
     } on Exception catch (e) {
@@ -53,18 +49,12 @@ class CustomLists with ChangeNotifier {
     }
   }
 
-  Future<void> removeFromCustomList(
+  Future<void> removeFromCustomList(String uid,
       CustomList customList, Business business) async {
-    String url =
-        '${APIKeys.firebase}/customLists.json?auth=$authToken';
     try {
       customList.businesses.removeWhere((element) => element.id == business.id);
-      _customLists
-          .singleWhere((element) => element.name == customList.name)
-          .businesses
-          .removeWhere((element) => element.id == business.id);
       notifyListeners();
-      String customListUrl = await getCustomListUrl(customList.name, url);
+      String customListUrl = '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
       await http.patch(customListUrl, body: json.encode(customList));
     } on Exception catch (e) {
       print(e);
@@ -72,13 +62,11 @@ class CustomLists with ChangeNotifier {
     }
   }
 
-  Future<void> removeCustomList(String name) async {
-    String url =
-        '${APIKeys.firebase}/customLists.json?auth=$authToken';
+  Future<void> removeCustomList(String uid, String id) async {
     try {
-      _customLists.removeWhere((element) => element.name == name);
+      _customLists.removeWhere((element) => element.id == id);
       notifyListeners();
-      String customListUrl = await getCustomListUrl(name, url);
+      String customListUrl =  '${APIKeys.firebase}/customLists/$uid/$id.json?auth=$authToken';
       await http.delete(customListUrl);
     } on Exception catch (e) {
       throw e;
@@ -94,8 +82,8 @@ class CustomLists with ChangeNotifier {
     return  '${APIKeys.firebase}/customLists/$docId.json?auth=$authToken';
   }
 
-  Future<void> fetchAndSetCustomLists() async {
-    final url = '${APIKeys.firebase}/customLists.json?auth=$authToken';
+  Future<void> fetchAndSetCustomLists(String uid) async {
+    final url = '${APIKeys.firebase}/customLists/$uid.json?auth=$authToken';
     try {
       final response = await http.get(url);
       final data = json.decode(response.body) as Map<String, dynamic> ?? {};

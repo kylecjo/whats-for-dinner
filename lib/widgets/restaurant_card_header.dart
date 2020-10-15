@@ -60,7 +60,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                           int selectedListIndex = customListProvider.customLists.indexWhere((element) => element.name == name);
                           if (!customListProvider.customLists[selectedListIndex].businesses
                               .contains(widget.business)) {
-                            customListProvider.addToCustomList(customListProvider.customLists[selectedListIndex], widget.business);
+                            customListProvider.addToCustomList(customListProvider.customLists[selectedListIndex], widget.business, authProvider.uid);
           
                           } else {
                             Scaffold.of(context).showSnackBar(
