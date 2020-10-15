@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/widgets/nearby_dismissible_card.dart';
@@ -24,7 +25,7 @@ class RestaurantScreen extends StatefulWidget {
 class _RestaurantScreen extends State<RestaurantScreen> {
   final Location location = Location();
   LocationData _locationData;
-  bool _isInit =  true;
+  bool _isInit = true;
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +61,9 @@ class _RestaurantScreen extends State<RestaurantScreen> {
 
   @override
   void didChangeDependencies() {
-    if(_isInit){
-      Provider.of<Favorites>(context).fetchAndSetFavorites();
+    if (_isInit) {
+      Provider.of<Favorites>(context)
+          .fetchAndSetFavorites(Provider.of<Auth>(context).uid);
       Provider.of<CustomLists>(context).fetchAndSetCustomLists();
     }
     _isInit = false;
@@ -70,12 +72,9 @@ class _RestaurantScreen extends State<RestaurantScreen> {
 
   @override
   void initState() {
-
     super.initState();
     _updateData();
   }
-
-  
 
   Future<void> _updateData() async {
     _locationData = await location.getLocation();

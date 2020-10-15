@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/models/custom_list.dart';
+import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import '../providers/favorites.dart';
 import '../models/business.dart';
@@ -25,6 +26,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
         .toList();
     final favoriteProvider = Provider.of<Favorites>(context);
     final customListProvider = Provider.of<CustomLists>(context);
+    final authProvider = Provider.of<Auth>(context);
     return Container(
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -85,7 +87,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                       });
                       if (favoriteProvider.isFavorite(widget.business)) {
                         try {
-                          await favoriteProvider.removeFavorite(widget.business);
+                          await favoriteProvider.removeFavorite(widget.business, authProvider.uid);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
@@ -107,7 +109,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                         }
                       } else {
                         try {
-                          await favoriteProvider.addFavorite(widget.business);
+                          await favoriteProvider.addFavorite(widget.business, authProvider.uid);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
