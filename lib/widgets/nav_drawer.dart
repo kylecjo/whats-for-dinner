@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth.dart';
+import '../screens/add_custom_lists_screen.dart';
 
 import '../screens/favorites_screen.dart';
 import '../screens/hidden_screen.dart';
@@ -72,6 +74,16 @@ class NavDrawer extends StatelessWidget {
             tapHandler: () {
               Navigator.of(context)
                   .pushReplacementNamed(AddCustomListsScreen.routeName);
+            },
+          ),
+           NavDrawerTile(
+            icon: Icons.exit_to_app,
+            title: 'Logout',
+            iconColor: Colors.black,
+            tapHandler: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed('/');
+              Provider.of<Auth>(context, listen: false).logout();
             },
           ),
         ],

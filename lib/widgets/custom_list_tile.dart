@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 
 class CustomListTile extends StatelessWidget {
   final String name;
   final int listLength;
+  final String id;
 
-  CustomListTile(this.name, this.listLength);
+  CustomListTile({@required this.name, @required this.listLength, @required  this.id});
 
   @override
   Widget build(BuildContext context) {
     final customListProvider = Provider.of<CustomLists>(context);
+    final authProvider = Provider.of<Auth>(context);
     return Card(
       elevation: 1,
       child: ListTile(
@@ -48,7 +51,7 @@ class CustomListTile extends StatelessWidget {
                       FlatButton(
                           child: Text('Continue'),
                           onPressed: () {
-                            customListProvider.removeCustomList(name);
+                            customListProvider.removeCustomList(authProvider.uid, id);
                             Navigator.of(context).pop();
                           }),
                     ],

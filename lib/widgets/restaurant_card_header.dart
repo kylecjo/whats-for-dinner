@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/models/custom_list.dart';
+import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import '../providers/favorites.dart';
 import '../models/business.dart';
@@ -25,6 +26,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
         .toList();
     final favoriteProvider = Provider.of<Favorites>(context);
     final customListProvider = Provider.of<CustomLists>(context);
+    final authProvider = Provider.of<Auth>(context);
     return Container(
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -55,22 +57,31 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                         padding: EdgeInsets.all(0),
                         icon: Icon(Icons.add, color: Colors.grey[700]),
                         onSelected: (name) {
-                          int selectedListIndex = customListProvider.customLists.indexWhere((element) => element.name == name);
-                          if (!customListProvider.customLists[selectedListIndex].businesses
-                              .contains(widget.business)) {
-                            customListProvider.addToCustomList(customListProvider.customLists[selectedListIndex], widget.business);
-          
-                          } else {
+                          int selectedListIndex = customListProvider.customLists
+                              .indexWhere((element) => element.name == name);
+                          if (customListProvider
+                                  .customLists[selectedListIndex].businesses
+                                  .singleWhere(
+                                      (it) => it.id == widget.business.id,
+                                      orElse: () => null) !=
+                              null) {
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
-                                content:
-                                    Text('${widget.business} already in $name!'),
+                                content: Text(
+                                    '${widget.business} already in $name!'),
                               ),
                             );
+                          } else {
+                            customListProvider.addToCustomList(
+                                customListProvider
+                                    .customLists[selectedListIndex],
+                                widget.business,
+                                authProvider.uid);
                           }
                         },
                         itemBuilder: (BuildContext ctx) {
-                          return customListProvider.customLists.map((CustomList element) {
+                          return customListProvider.customLists
+                              .map((CustomList element) {
                             return PopupMenuItem<String>(
                               value: element.name,
                               child: Text(element.name),
@@ -85,7 +96,8 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                       });
                       if (favoriteProvider.isFavorite(widget.business)) {
                         try {
-                          await favoriteProvider.removeFavorite(widget.business);
+                          await favoriteProvider.removeFavorite(
+                              widget.business, authProvider.uid);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
@@ -107,7 +119,8 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                         }
                       } else {
                         try {
-                          await favoriteProvider.addFavorite(widget.business);
+                          await favoriteProvider.addFavorite(
+                              widget.business, authProvider.uid);
                         } on Exception catch (e) {
                           showDialog(
                               context: context,
