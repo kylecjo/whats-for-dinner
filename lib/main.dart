@@ -5,6 +5,7 @@ import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
+import 'package:whats_for_dinner/screens/splash_screen.dart';
 
 import './data/repository.dart';
 import './providers/businesses.dart';
@@ -46,8 +47,9 @@ class MyApp extends StatelessWidget {
               Favorites(auth.token, prev == null ? [] : prev.favorites),
         ),
         ChangeNotifierProxyProvider<Auth, CustomLists>(
-          create: null, 
-          update: (_, auth, prev) => CustomLists(auth.token, prev == null ? [] : prev.customLists),
+          create: null,
+          update: (_, auth, prev) =>
+              CustomLists(auth.token, prev == null ? [] : prev.customLists),
         ),
       ],
       child: Consumer<Auth>(
@@ -90,7 +92,15 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
           ),
-          home: authData.isAuth ? RestaurantScreen() : AuthScreen(),
+          home: authData.isAuth
+              ? RestaurantScreen()
+              : FutureBuilder(
+                  future: authData.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen()),
           routes: {
             RestaurantScreen.routeName: (ctx) => RestaurantScreen(),
             FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
