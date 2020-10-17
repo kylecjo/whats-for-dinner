@@ -72,15 +72,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
               ),
-        floatingActionButton: Builder(
-          builder: (BuildContext ctx) {
-            return ChooseOneButton(
-                list: businessProvider.search,
-                color: Color(0xffa4d1a2),
-                errorText: 'There are no nearby restaurants!',
-                screenType: ScreenType.search);
-          },
-        ),
       ),
     );
   }
@@ -98,6 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
       term: _textController.text,
       lat: _locationData.latitude,
       long: _locationData.longitude,
+      radius: 30000,
     );
     final businessList = Provider.of<Businesses>(context, listen: false);
     businessList.initSearch(businesses);
