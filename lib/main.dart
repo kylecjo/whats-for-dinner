@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
             primaryColor: Colors.green,
             accentColor: Colors.white,
             // cardColor: const Color(0xffDAA99B),
-            backgroundColor: Colors.grey[300],
+            backgroundColor: Colors.grey[200],
             dividerColor: const Color(0xffDAA99B),
             // accentColor: const Color(0xffb86f41),
             textTheme: ThemeData.light().textTheme.copyWith(

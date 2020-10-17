@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
+import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/screens/custom_list_screen.dart';
 import 'package:whats_for_dinner/widgets/custom_list_tile.dart';
+import '../screens/favorites_screen.dart';
 
 class AddCustomListsScreen extends StatefulWidget {
   final String title;
@@ -22,9 +24,11 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
   Widget build(BuildContext context) {
     final customListProvider = Provider.of<CustomLists>(context);
     final authProvider = Provider.of<Auth>(context);
+    final favoritesProvider = Provider.of<Favorites>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(widget.title),
         ),
@@ -40,6 +44,8 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                       child: TextField(
                         controller: textController,
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
                           border: OutlineInputBorder(),
                           labelText: 'List Name',
                         ),
@@ -56,6 +62,31 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                     },
                   ),
                 ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => FavoritesScreen('Favorites'),
+                  ),
+                );
+              },
+              child: Card(
+                elevation: 1,
+                child: ListTile(
+                  leading: Icon(Icons.favorite, color: Colors.red),
+                  title: Text(
+                    'Favorites',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                  ),
+                  subtitle: Text('${favoritesProvider.favorites.length} items'),
+                ),
               ),
             ),
             Expanded(

@@ -34,12 +34,13 @@ class _SearchScreenState extends State<SearchScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: TextFormField(
             controller: _textController,
             decoration: InputDecoration(
               icon: Icon(Icons.search, color: Colors.black),
-              fillColor: Theme.of(context).backgroundColor,
+              fillColor: Colors.white,
               filled: true,
             ),
             textInputAction: TextInputAction.done,

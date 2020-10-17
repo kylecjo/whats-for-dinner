@@ -12,7 +12,6 @@ import 'package:whats_for_dinner/screens/top_rated_screen.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
-import '../models/screen_type.dart';
 import '../providers/businesses.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -109,21 +108,21 @@ class _ExploreScreen extends State<ExploreScreen> {
       final businessList = Provider.of<Businesses>(context, listen: false);
       businessList.initNearby(nearby);
 
-      // List<Business> hotnew = await repository.getBusinessData(
-      //   lat: _locationData.latitude,
-      //   long: _locationData.longitude,
-      //   attributes: 'hot_and_new',
-      //   radius: 40000,
-      // );
-      // businessList.initHot(hotnew);
+      List<Business> hotnew = await repository.getBusinessData(
+        lat: _locationData.latitude,
+        long: _locationData.longitude,
+        attributes: 'hot_and_new',
+        radius: 40000,
+      );
+      businessList.initHot(hotnew);
 
-      // List<Business> top = await repository.getBusinessData(
-      //   lat: _locationData.latitude,
-      //   long: _locationData.longitude,
-      //   radius: 40000,
-      //   sortBy: 'rating',
-      // );
-      // businessList.initTop(top);
+      List<Business> top = await repository.getBusinessData(
+        lat: _locationData.latitude,
+        long: _locationData.longitude,
+        radius: 40000,
+        sortBy: 'rating',
+      );
+      businessList.initTop(top);
     } catch (e) {
       throw e;
     }
@@ -131,12 +130,11 @@ class _ExploreScreen extends State<ExploreScreen> {
 
   void chooseOne(List<Business> businesses, String errorText) {
     try {
-      int randomIndex = rnd.nextInt(businesses.length);
       Navigator.pushNamed(
         context,
         ChooseOneScreen.routeName,
         arguments:
-            ChooseOneArguments(businesses[randomIndex], ScreenType.nearby),
+            ChooseOneArguments(businesses),
       );
     } catch (_) {
       final snackBar = SnackBar(
