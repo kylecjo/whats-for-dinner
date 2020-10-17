@@ -37,6 +37,7 @@ class _CustomListScreenState extends State<CustomListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(widget.customList.name),
         actions: [
