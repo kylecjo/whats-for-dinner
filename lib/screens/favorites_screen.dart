@@ -16,11 +16,7 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final favs = Provider.of<Favorites>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Center(
+    return Center(
         child: favs.favorites.length > 0
             ? ListView.builder(
                 itemCount: favs.favorites.length,
@@ -29,18 +25,6 @@ class FavoritesScreen extends StatelessWidget {
                 },
               )
             : Text('You have no favorites!'),
-      ),
-      drawer: NavDrawer(),
-      floatingActionButton: Builder(
-        builder: (BuildContext ctx) {
-          return ChooseOneButton(
-            list: favs.favorites,
-            color: Theme.of(context).accentColor,
-            errorText: 'You have no favorites!',
-            screenType: ScreenType.favorites,
-          );
-        },
-      ),
-    );
+      );
   }
 }

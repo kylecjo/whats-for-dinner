@@ -84,7 +84,6 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
             ),
           ],
         ),
-        drawer: NavDrawer(),
       ),
     );
   }

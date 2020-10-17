@@ -74,7 +74,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
               ),
-        drawer: NavDrawer(),
         floatingActionButton: Builder(
           builder: (BuildContext ctx) {
             return ChooseOneButton(

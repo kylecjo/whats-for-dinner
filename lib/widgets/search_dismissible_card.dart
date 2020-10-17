@@ -32,6 +32,6 @@ class SearchDismissibleCard extends StatelessWidget {
             ),
           );
         },
-        child: RestaurantCard(business: business, cardColor: Colors.blue[200]));
+        child: RestaurantCard(business: business, cardColor: Colors.white));
   }
 }

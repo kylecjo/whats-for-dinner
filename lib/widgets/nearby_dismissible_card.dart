@@ -35,6 +35,6 @@ class NearbyDismissibleCard extends StatelessWidget {
           );
         },
         child: RestaurantCard(
-            business: business, cardColor: Theme.of(context).accentColor));
+            business: business, cardColor: Colors.white));
   }
 }
