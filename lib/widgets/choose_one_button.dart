@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -8,7 +7,6 @@ import '../models/screen_type.dart';
 import '../screens/choose_one_screen.dart';
 
 class ChooseOneButton extends StatelessWidget {
-  final Random rnd = new Random();
   final List<Business> list;
   final Color color;
   final String errorText;
@@ -23,11 +21,10 @@ class ChooseOneButton extends StatelessWidget {
       backgroundColor: color,
       onPressed: () {
         try {
-          int randomIndex = rnd.nextInt(list.length);
           Navigator.pushNamed(
             context,
             ChooseOneScreen.routeName,
-            arguments: ChooseOneArguments(list[randomIndex], screenType),
+            arguments: ChooseOneArguments(list),
           );
         } catch (_) {
           final snackBar = SnackBar(

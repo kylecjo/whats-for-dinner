@@ -6,13 +6,14 @@ import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
 import 'package:whats_for_dinner/screens/splash_screen.dart';
+import 'package:whats_for_dinner/screens/tabs_screen.dart';
 
 import './data/repository.dart';
 import './providers/businesses.dart';
 import './screens/choose_one_screen.dart';
 import './screens/favorites_screen.dart';
-import './screens/hidden_screen.dart';
-import './screens/restaurants_screen.dart';
+
+import 'screens/nearby_screen.dart';
 import './screens/search_screen.dart';
 import './services/api.dart';
 import './services/api_service.dart';
@@ -58,10 +59,10 @@ class MyApp extends StatelessWidget {
           // theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
           theme: ThemeData(
             fontFamily: 'RobotoMono',
-            primaryColor: const Color(0xff8FADC9),
-            accentColor: const Color(0xffDAA99B),
+            primaryColor: Colors.green,
+            accentColor: Colors.white,
             // cardColor: const Color(0xffDAA99B),
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.grey[200],
             dividerColor: const Color(0xffDAA99B),
             // accentColor: const Color(0xffb86f41),
             textTheme: ThemeData.light().textTheme.copyWith(
@@ -93,7 +94,7 @@ class MyApp extends StatelessWidget {
                 ),
           ),
           home: authData.isAuth
-              ? RestaurantScreen()
+              ? TabsScreen()
               : FutureBuilder(
                   future: authData.tryAutoLogin(),
                   builder: (ctx, authResultSnapshot) =>
@@ -102,9 +103,8 @@ class MyApp extends StatelessWidget {
                           ? SplashScreen()
                           : AuthScreen()),
           routes: {
-            RestaurantScreen.routeName: (ctx) => RestaurantScreen(),
+            NearbyScreen.routeName: (ctx) => NearbyScreen(),
             FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
-            HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
             ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
             SearchScreen.routeName: (ctx) => SearchScreen(),
             AddCustomListsScreen.routeName: (ctx) =>

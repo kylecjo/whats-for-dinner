@@ -40,7 +40,6 @@ class CustomLists with ChangeNotifier {
   Future<void> addToCustomList(CustomList customList, Business business, String uid) async {
     try {
       customList.businesses.add(business);
-      print(customList.id);
       String customListUrl = '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
       await http.patch(customListUrl, body: json.encode(customList));
       notifyListeners();

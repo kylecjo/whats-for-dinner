@@ -4,7 +4,8 @@ import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/screens/custom_list_screen.dart';
 import 'package:whats_for_dinner/widgets/custom_list_tile.dart';
-import 'package:whats_for_dinner/widgets/nav_drawer.dart';
+import 'package:whats_for_dinner/widgets/favorite_list_tile.dart';
+import 'package:whats_for_dinner/widgets/text_field_alert_dialog.dart';
 
 class AddCustomListsScreen extends StatefulWidget {
   final String title;
@@ -26,65 +27,78 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(widget.title),
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: TextField(
-                        controller: textController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'List Name',
-                        ),
-                      ),
-                    ),
-                  ),
-                  RaisedButton(
-                    child: Text('Add'),
-                    color: Theme.of(context).accentColor,
-                    onPressed: () {
-                      customListProvider.addCustomList(
-                          authProvider.uid, textController.text);
-                      textController.clear();
-                    },
-                  ),
-                ],
-              ),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              child: InkWell(
+                  child: Text('+ New List',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontSize: 13, color: Colors.teal)),
+                  onTap: () {
+                    return showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Enter list name',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    .copyWith(fontSize: 15)),
+                            content: TextField(
+                              controller: textController,
+                              textInputAction: TextInputAction.go,
+                            ),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: new Text('Submit'),
+                                onPressed: () {
+                                  print('${textController.text}');
+                                  customListProvider.addCustomList(
+                                      authProvider.uid, textController.text);
+                                  textController.clear();
+                                  Navigator.of(context).pop();
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }),
             ),
+            FavoriteListTile(),
             Expanded(
-              child: customListProvider.customLists.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: customListProvider.customLists.length,
-                      itemBuilder: (BuildContext ctx, int idx) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (ctx) => CustomListScreen(
-                                        customListProvider.customLists[idx])));
-                          },
-                          child: CustomListTile(
-                            name: customListProvider.customLists[idx].name,
-                            listLength: customListProvider
-                                .customLists[idx].businesses.length,
-                            id: customListProvider.customLists[idx].id,
-                          ),
-                        );
-                      })
-                  : Center(child: Text('No custom lists yet')),
+              child: ListView.builder(
+                itemCount: customListProvider.customLists.length,
+                itemBuilder: (BuildContext ctx, int idx) {
+                  // https://stackoverflow.com/questions/59499302/flutter-container-listview-scrollable
+                  // a hack to have a widget scrollable with listview
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => CustomListScreen(
+                                  customListProvider.customLists[idx])));
+                    },
+                    child: CustomListTile(
+                      name: customListProvider.customLists[idx].name,
+                      listLength:
+                          customListProvider.customLists[idx].businesses.length,
+                      id: customListProvider.customLists[idx].id,
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
-        drawer: NavDrawer(),
       ),
     );
   }

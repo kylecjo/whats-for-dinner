@@ -1,13 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
+
 
 import '../models/choose_one_arguments.dart';
-import '../models/screen_type.dart';
-import '../providers/businesses.dart';
+
 import '../widgets/restaurant_card.dart';
 
 class ChooseOneScreen extends StatefulWidget {
@@ -19,7 +17,6 @@ class ChooseOneScreen extends StatefulWidget {
 
 class _ChooseOneScreenState extends State<ChooseOneScreen>
     with SingleTickerProviderStateMixin {
-  final Random _rnd = new Random();
   AnimationController _controller;
   Animation<Offset> _offsetAnimation;
   Animation<double> _fadeAnimation;
@@ -60,10 +57,12 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
 
   @override
   Widget build(BuildContext context) {
+    final rnd = new Random();
     final ChooseOneArguments args = ModalRoute.of(context).settings.arguments;
-    final businesses = Provider.of<Businesses>(context);
-    final favs = Provider.of<Favorites>(context);
+    final randomBusiness = args.businesses[rnd.nextInt(args.businesses.length)];
+
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text('What\'s for Dinner?'),
       ),
@@ -72,7 +71,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
           SlideTransition(
             position: _offsetAnimation,
             child: RestaurantCard(
-                business: args.business,
+                business: randomBusiness,
                 cardColor: Theme.of(context).accentColor),
           ),
           SizedBox(height: 10),
@@ -83,9 +82,9 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                 SizedBox(
                   width: 200,
                   child: RaisedButton(
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.white,
                     onPressed: () {
-                      launch("tel://${args.business.phone}");
+                      launch("tel://${randomBusiness.phone}");
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,37 +103,13 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                   child: RaisedButton(
                     color: Theme.of(context).accentColor,
                     onPressed: () {
-                      if (args.screenType == ScreenType.nearby) {
-                        int randomIndex =
-                            _rnd.nextInt(businesses.businesses.length);
                         Navigator.pushReplacementNamed(
                           context,
                           ChooseOneScreen.routeName,
                           arguments: ChooseOneArguments(
-                              businesses.businesses[randomIndex],
-                              ScreenType.nearby),
+                              args.businesses,
+                              ),
                         );
-                      } else if (args.screenType == ScreenType.search) {
-                        int randomIndex =
-                            _rnd.nextInt(businesses.search.length);
-                        Navigator.pushReplacementNamed(
-                          context,
-                          ChooseOneScreen.routeName,
-                          arguments: ChooseOneArguments(
-                              businesses.search[randomIndex],
-                              ScreenType.search),
-                        );
-                      } else {
-                        int randomIndex =
-                            _rnd.nextInt(favs.favorites.length);
-                        Navigator.pushReplacementNamed(
-                          context,
-                          ChooseOneScreen.routeName,
-                          arguments: ChooseOneArguments(
-                              favs.favorites[randomIndex],
-                              ScreenType.favorites),
-                        );
-                      }
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
