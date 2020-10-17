@@ -21,7 +21,7 @@ class AuthScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              color: Colors.yellow[100],
+              color: Theme.of(context).backgroundColor,
             ),
           ),
           SingleChildScrollView(

@@ -12,6 +12,7 @@ import './data/repository.dart';
 import './providers/businesses.dart';
 import './screens/choose_one_screen.dart';
 import './screens/favorites_screen.dart';
+
 import 'screens/nearby_screen.dart';
 import './screens/search_screen.dart';
 import './services/api.dart';
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
             primaryColor: Colors.green,
             accentColor: Colors.white,
             // cardColor: const Color(0xffDAA99B),
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.grey[300],
             dividerColor: const Color(0xffDAA99B),
             // accentColor: const Color(0xffb86f41),
             textTheme: ThemeData.light().textTheme.copyWith(

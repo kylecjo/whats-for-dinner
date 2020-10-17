@@ -20,7 +20,6 @@ class _RestaurantCardState extends State<RestaurantCard> {
     return Container(
       height: MediaQuery.of(context).size.height / 3.3,
       child: Card(
-        elevation: 2,
         child: Column(
           children: [
             RestaurantCardHeader(

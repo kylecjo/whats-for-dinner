@@ -3,8 +3,6 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
-import '../data/repository.dart';
-import '../models/business.dart';
 import '../providers/businesses.dart';
 
 
@@ -15,7 +13,6 @@ class HotNewScreen extends StatefulWidget {
 
 class _HotNewScreenState extends State<HotNewScreen> {
   final Location location = Location();
-  LocationData _locationData;
 
   @override
   Widget build(BuildContext context) {
@@ -34,25 +31,4 @@ class _HotNewScreenState extends State<HotNewScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _updateData();
-  }
-
-  Future<void> _updateData() async {
-    _locationData = await location.getLocation();
-    final repository = Provider.of<Repository>(
-      context,
-      listen: false,
-    );
-    List<Business> businesses = await repository.getBusinessData(
-      lat: _locationData.latitude,
-      long: _locationData.longitude,
-      attributes: 'hot_and_new',
-      radius: 40000,
-    );
-    final businessList = Provider.of<Businesses>(context, listen: false);
-    businessList.initHot(businesses);
-  }
 }

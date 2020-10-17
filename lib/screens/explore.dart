@@ -33,6 +33,7 @@ class _ExploreScreen extends State<ExploreScreen> {
   Widget build(BuildContext context) {
     final businessProvider = Provider.of<Businesses>(context);
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text('Explore'),
         backgroundColor: Theme.of(context).primaryColor,
@@ -51,14 +52,17 @@ class _ExploreScreen extends State<ExploreScreen> {
             onTap: () {
               final idx = DefaultTabController.of(context).index;
               switch (idx) {
-                case 0: 
-                  chooseOne(businessProvider.nearby, 'There are no nearby businesses!');
+                case 0:
+                  chooseOne(businessProvider.nearby,
+                      'There are no nearby businesses!');
                   break;
-                case 1: 
-                  chooseOne(businessProvider.hot, 'There are no new restaurants!');
+                case 1:
+                  chooseOne(
+                      businessProvider.hot, 'There are no new restaurants!');
                   break;
-                case 2: 
-                  chooseOne(businessProvider.top, 'There are no top restaurants!');
+                case 2:
+                  chooseOne(
+                      businessProvider.top, 'There are no top restaurants!');
                   break;
                 default:
               }
@@ -91,17 +95,38 @@ class _ExploreScreen extends State<ExploreScreen> {
   }
 
   Future<void> _updateData() async {
-    _locationData = await location.getLocation();
-    final repository = Provider.of<Repository>(
-      context,
-      listen: false,
-    );
-    List<Business> businesses = await repository.getBusinessData(
-      lat: _locationData.latitude,
-      long: _locationData.longitude,
-    );
-    final businessList = Provider.of<Businesses>(context, listen: false);
-    businessList.initNearby(businesses);
+    try {
+      _locationData = await location.getLocation();
+      final repository = Provider.of<Repository>(
+        context,
+        listen: false,
+      );
+      List<Business> nearby = await repository.getBusinessData(
+        lat: _locationData.latitude,
+        long: _locationData.longitude,
+        radius: 2000,
+      );
+      final businessList = Provider.of<Businesses>(context, listen: false);
+      businessList.initNearby(nearby);
+
+      // List<Business> hotnew = await repository.getBusinessData(
+      //   lat: _locationData.latitude,
+      //   long: _locationData.longitude,
+      //   attributes: 'hot_and_new',
+      //   radius: 40000,
+      // );
+      // businessList.initHot(hotnew);
+
+      // List<Business> top = await repository.getBusinessData(
+      //   lat: _locationData.latitude,
+      //   long: _locationData.longitude,
+      //   radius: 40000,
+      //   sortBy: 'rating',
+      // );
+      // businessList.initTop(top);
+    } catch (e) {
+      throw e;
+    }
   }
 
   void chooseOne(List<Business> businesses, String errorText) {
@@ -110,8 +135,8 @@ class _ExploreScreen extends State<ExploreScreen> {
       Navigator.pushNamed(
         context,
         ChooseOneScreen.routeName,
-        arguments: ChooseOneArguments(
-            businesses[randomIndex], ScreenType.nearby),
+        arguments:
+            ChooseOneArguments(businesses[randomIndex], ScreenType.nearby),
       );
     } catch (_) {
       final snackBar = SnackBar(

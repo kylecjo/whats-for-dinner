@@ -6,8 +6,6 @@ import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
-import '../data/repository.dart';
-import '../models/business.dart';
 import '../providers/businesses.dart';
 
 class NearbyScreen extends StatefulWidget {
@@ -21,7 +19,6 @@ class NearbyScreen extends StatefulWidget {
 
 class _NearbyScreen extends State<NearbyScreen> {
   final Location location = Location();
-  LocationData _locationData;
   bool _isInit = true;
 
   @override
@@ -53,24 +50,4 @@ class _NearbyScreen extends State<NearbyScreen> {
     super.didChangeDependencies();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _updateData();
-  }
-
-  Future<void> _updateData() async {
-    _locationData = await location.getLocation();
-    final repository = Provider.of<Repository>(
-      context,
-      listen: false,
-    );
-    List<Business> businesses = await repository.getBusinessData(
-      lat: _locationData.latitude,
-      long: _locationData.longitude,
-      radius: 2000,
-    );
-    final businessList = Provider.of<Businesses>(context, listen: false);
-    businessList.initNearby(businesses);
-  }
 }

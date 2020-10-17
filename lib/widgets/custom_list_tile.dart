@@ -17,8 +17,12 @@ class CustomListTile extends StatelessWidget {
     return Card(
       elevation: 1,
       child: ListTile(
-        leading: Icon(Icons.fastfood, color: Colors.grey[500]),
-        title: Text(name, style: Theme.of(context).textTheme.headline5),
+        leading: Icon(Icons.list, color: Colors.teal),
+        title: Text(name, style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),),
         subtitle: Text('$listLength items'),
         trailing: GestureDetector(
           child: Icon(Icons.delete),
