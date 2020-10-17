@@ -57,8 +57,8 @@ class _ExploreScreen extends State<ExploreScreen> {
                   Navigator.pushNamed(
                     context,
                     ChooseOneScreen.routeName,
-                    arguments:
-                        ChooseOneArguments(businessList.nearby[randomIndex], ScreenType.nearby),
+                    arguments: ChooseOneArguments(
+                        businessList.nearby[randomIndex], ScreenType.nearby),
                   );
                 } catch (_) {
                   final snackBar = SnackBar(
@@ -68,7 +68,16 @@ class _ExploreScreen extends State<ExploreScreen> {
                 }
               }
             },
-          )
+          ),
+          GestureDetector(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 7),
+              child: Icon(Icons.exit_to_app),
+            ),
+            onTap: (){
+              Provider.of<Auth>(context, listen: false).logout();
+            }
+          ),
         ],
       ),
       body: TabBarView(

@@ -12,7 +12,6 @@ import './data/repository.dart';
 import './providers/businesses.dart';
 import './screens/choose_one_screen.dart';
 import './screens/favorites_screen.dart';
-import './screens/hidden_screen.dart';
 import 'screens/nearby_screen.dart';
 import './screens/search_screen.dart';
 import './services/api.dart';
@@ -105,7 +104,6 @@ class MyApp extends StatelessWidget {
           routes: {
             NearbyScreen.routeName: (ctx) => NearbyScreen(),
             FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
-            HiddenScreen.routeName: (ctx) => HiddenScreen('Hidden'),
             ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
             SearchScreen.routeName: (ctx) => SearchScreen(),
             AddCustomListsScreen.routeName: (ctx) =>
