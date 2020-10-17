@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/screens/custom_list_screen.dart';
 import 'package:whats_for_dinner/widgets/custom_list_tile.dart';
 import 'package:whats_for_dinner/widgets/favorite_list_tile.dart';
-import '../screens/favorites_screen.dart';
+import 'package:whats_for_dinner/widgets/text_field_alert_dialog.dart';
 
 class AddCustomListsScreen extends StatefulWidget {
   final String title;
@@ -33,63 +32,68 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
           title: Text(widget.title),
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: TextField(
-                        controller: textController,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(),
-                          labelText: 'List Name',
-                        ),
-                      ),
-                    ),
-                  ),
-                  RaisedButton(
-                    child: Text('Add'),
-                    color: Theme.of(context).accentColor,
-                    onPressed: () {
-                      customListProvider.addCustomList(
-                          authProvider.uid, textController.text);
-                      textController.clear();
-                    },
-                  ),
-                ],
-              ),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              child: InkWell(
+                  child: Text('+ New List',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontSize: 13, color: Colors.teal)),
+                  onTap: () {
+                    return showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Enter list name',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    .copyWith(fontSize: 15)),
+                            content: TextField(
+                              controller: textController,
+                              textInputAction: TextInputAction.go,
+                            ),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: new Text('Submit'),
+                                onPressed: () {
+                                  print('${textController.text}');
+                                  customListProvider.addCustomList(
+                                      authProvider.uid, textController.text);
+                                  textController.clear();
+                                  Navigator.of(context).pop();
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }),
             ),
+            FavoriteListTile(),
             Expanded(
               child: ListView.builder(
                 itemCount: customListProvider.customLists.length,
                 itemBuilder: (BuildContext ctx, int idx) {
                   // https://stackoverflow.com/questions/59499302/flutter-container-listview-scrollable
                   // a hack to have a widget scrollable with listview
-                  if (idx == 0) {
-                    return FavoriteListTile();
-                  } else {
-                    idx = idx - 1;
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (ctx) => CustomListScreen(
-                                    customListProvider.customLists[idx])));
-                      },
-                      child: CustomListTile(
-                        name: customListProvider.customLists[idx].name,
-                        listLength: customListProvider
-                            .customLists[idx].businesses.length,
-                        id: customListProvider.customLists[idx].id,
-                      ),
-                    );
-                  }
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => CustomListScreen(
+                                  customListProvider.customLists[idx])));
+                    },
+                    child: CustomListTile(
+                      name: customListProvider.customLists[idx].name,
+                      listLength:
+                          customListProvider.customLists[idx].businesses.length,
+                      id: customListProvider.customLists[idx].id,
+                    ),
+                  );
                 },
               ),
             ),
