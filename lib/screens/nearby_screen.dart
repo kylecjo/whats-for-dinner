@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/providers/favorites.dart';
-import 'package:whats_for_dinner/widgets/nearby_dismissible_card.dart';
+import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
@@ -26,13 +26,15 @@ class _NearbyScreen extends State<NearbyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final businessList = Provider.of<Businesses>(context);
+    final businessProvider = Provider.of<Businesses>(context);
     return Center(
-      child: businessList.businesses.length > 0
+      child: businessProvider.nearby.length > 0
           ? ListView.builder(
-              itemCount: businessList.businesses.length,
+              itemCount: businessProvider.nearby.length,
               itemBuilder: (BuildContext ctx, int index) {
-                return NearbyDismissibleCard(businessList.businesses[index]);
+                return RestaurantCard(
+                    business: businessProvider.nearby[index],
+                    cardColor: Colors.white);
               },
             )
           : CircularProgressIndicator(),

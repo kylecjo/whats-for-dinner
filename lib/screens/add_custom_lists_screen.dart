@@ -4,7 +4,6 @@ import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/screens/custom_list_screen.dart';
 import 'package:whats_for_dinner/widgets/custom_list_tile.dart';
-import 'package:whats_for_dinner/widgets/nav_drawer.dart';
 
 class AddCustomListsScreen extends StatefulWidget {
   final String title;

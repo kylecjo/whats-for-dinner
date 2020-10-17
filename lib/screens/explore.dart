@@ -10,13 +10,11 @@ import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/screens/choose_one_screen.dart';
 import 'package:whats_for_dinner/screens/favorites_screen.dart';
 import 'package:whats_for_dinner/screens/nearby_screen.dart';
-import 'package:whats_for_dinner/widgets/nearby_dismissible_card.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
 import '../models/screen_type.dart';
 import '../providers/businesses.dart';
-import '../widgets/choose_one_button.dart';
 
 class ExploreScreen extends StatefulWidget {
   final String title;
@@ -55,12 +53,12 @@ class _ExploreScreen extends State<ExploreScreen> {
               final idx = DefaultTabController.of(context).index;
               if (idx == 0) {
                 try {
-                  int randomIndex = rnd.nextInt(businessList.businesses.length);
+                  int randomIndex = rnd.nextInt(businessList.nearby.length);
                   Navigator.pushNamed(
                     context,
                     ChooseOneScreen.routeName,
                     arguments:
-                        ChooseOneArguments(businessList.businesses[randomIndex], ScreenType.nearby),
+                        ChooseOneArguments(businessList.nearby[randomIndex], ScreenType.nearby),
                   );
                 } catch (_) {
                   final snackBar = SnackBar(

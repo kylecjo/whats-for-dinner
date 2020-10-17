@@ -2,12 +2,12 @@ import '../models/business.dart';
 import 'package:flutter/foundation.dart';
 
 class Businesses with ChangeNotifier {
-  List<Business> _businesses = [];
+  List<Business> _nearby = [];
   List<Business> _hidden = [];
   List<Business> _search = [];
 
-  List<Business> get businesses {
-    return [..._businesses];
+  List<Business> get nearby {
+    return [..._nearby];
   }
 
   List<Business> get hidden {
@@ -19,7 +19,7 @@ class Businesses with ChangeNotifier {
   }
 
   void initBusinesses(List<Business> businesses) {
-    _businesses = businesses;
+    _nearby = businesses;
     notifyListeners();
   }
 
@@ -29,7 +29,7 @@ class Businesses with ChangeNotifier {
   }
 
   void addBusiness(Business business) {
-    _businesses.add(business);
+    _nearby.add(business);
     notifyListeners();
   }
 
@@ -40,7 +40,7 @@ class Businesses with ChangeNotifier {
 
   void removeHidden(Business business) {
     _hidden.removeWhere((element) => element == business);
-    _businesses.insert(0, business);
+    _nearby.insert(0, business);
     notifyListeners();
   }
 
@@ -56,14 +56,14 @@ class Businesses with ChangeNotifier {
   }
 
   void removeBusiness(Business businessToRemove) {
-    _businesses.removeWhere((business) => business.id == businessToRemove.id);
+    _nearby.removeWhere((business) => business.id == businessToRemove.id);
     notifyListeners();
   }
 
 
 
   Business findById(String id) {
-    return _businesses.where((business) => business.id == id) as Business;
+    return _nearby.where((business) => business.id == id) as Business;
   }
 
 }

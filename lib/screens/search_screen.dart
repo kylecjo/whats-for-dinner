@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/widgets/search_dismissible_card.dart';
+import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
 import '../models/screen_type.dart';
 import '../providers/businesses.dart';
 import '../widgets/choose_one_button.dart';
-import '../widgets/nav_drawer.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
@@ -31,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final businesses = Provider.of<Businesses>(context);
+    final businessProvider = Provider.of<Businesses>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
       child: Scaffold(
@@ -60,13 +59,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   children: [
                     Container(
                       height: MediaQuery.of(context).size.height * 0.9,
-                      child: businesses.search.length > 0
+                      child: businessProvider.search.length > 0
                           ? ListView.builder(
-                              itemCount: businesses.search.length,
+                              itemCount: businessProvider.search.length,
                               itemBuilder: (BuildContext ctx, int index) {
-                                return SearchDismissibleCard(
-                                  businesses.search[index],
-                                );
+                                return RestaurantCard(business: businessProvider.search[index], cardColor: Colors.white);
                               },
                             )
                           : Center(child: Text('Search for something')),
@@ -77,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen> {
         floatingActionButton: Builder(
           builder: (BuildContext ctx) {
             return ChooseOneButton(
-                list: businesses.search,
+                list: businessProvider.search,
                 color: Color(0xffa4d1a2),
                 errorText: 'There are no nearby restaurants!',
                 screenType: ScreenType.search);

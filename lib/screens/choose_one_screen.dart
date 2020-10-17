@@ -106,12 +106,12 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                     onPressed: () {
                       if (args.screenType == ScreenType.nearby) {
                         int randomIndex =
-                            _rnd.nextInt(businesses.businesses.length);
+                            _rnd.nextInt(businesses.nearby.length);
                         Navigator.pushReplacementNamed(
                           context,
                           ChooseOneScreen.routeName,
                           arguments: ChooseOneArguments(
-                              businesses.businesses[randomIndex],
+                              businesses.nearby[randomIndex],
                               ScreenType.nearby),
                         );
                       } else if (args.screenType == ScreenType.search) {
