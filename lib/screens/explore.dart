@@ -44,7 +44,7 @@ class _ExploreScreen extends State<ExploreScreen> {
           ],
         ),
         actions: [
-          GestureDetector(
+          InkWell(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 7),
                 child: Icon(Icons.shuffle)),
