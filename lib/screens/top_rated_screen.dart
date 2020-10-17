@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
 import '../providers/businesses.dart';
 
-class NearbyScreen extends StatefulWidget {
-  final String title;
-  static const routeName = '/nearby';
-  NearbyScreen({Key key, this.title}) : super(key: key);
-
+class TopRatedScreen extends StatefulWidget {
   @override
-  _NearbyScreen createState() => _NearbyScreen();
+  _TopRatedScreenState createState() => _TopRatedScreenState();
 }
 
-class _NearbyScreen extends State<NearbyScreen> {
-  final Location location = Location();
+class _TopRatedScreenState extends State<TopRatedScreen> {
+final Location location = Location();
   LocationData _locationData;
-  bool _isInit = true;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +22,10 @@ class _NearbyScreen extends State<NearbyScreen> {
     return Center(
       child: businessProvider.nearby.length > 0
           ? ListView.builder(
-              itemCount: businessProvider.nearby.length,
-              itemBuilder: (context, int index) {
+              itemCount: businessProvider.top.length,
+              itemBuilder: (BuildContext ctx, int index) {
                 return RestaurantCard(
-                    business: businessProvider.nearby[index],
+                    business: businessProvider.top[index],
                     cardColor: Colors.white);
               },
             )
@@ -41,17 +33,6 @@ class _NearbyScreen extends State<NearbyScreen> {
     );
   }
 
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      Provider.of<Favorites>(context)
-          .fetchAndSetFavorites(Provider.of<Auth>(context).uid);
-      Provider.of<CustomLists>(context)
-          .fetchAndSetCustomLists(Provider.of<Auth>(context).uid);
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
 
   @override
   void initState() {
@@ -68,9 +49,10 @@ class _NearbyScreen extends State<NearbyScreen> {
     List<Business> businesses = await repository.getBusinessData(
       lat: _locationData.latitude,
       long: _locationData.longitude,
-      radius: 2000,
+      radius: 40000,
+      sortBy: 'rating',
     );
     final businessList = Provider.of<Businesses>(context, listen: false);
-    businessList.initNearby(businesses);
+    businessList.initTop(businesses);
   }
 }

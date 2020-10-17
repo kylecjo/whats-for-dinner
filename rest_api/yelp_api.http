@@ -1,5 +1,5 @@
 
-@location = 1904 36 St Edmonton, Alberta
+@location =
 @phone = 14157492060
 @id = hc0KmC42EzjXbC83eMIDMg
 @radius = 5000
@@ -12,15 +12,16 @@ Authorization: Bearer {{authorization}}
 
 ### 
 GET {{baseUrl}}/businesses/search
-?term=mcdonalds
-&location={{location}}
-&latitude=
-&longitude=
-&radius=2000
+?term=
+# &location=
+&latitude={{latitude}}
+&longitude={{longitude}}
+&radius=40000
 &categories=
 &sort_by=rating
 # &price=
 &open_now=
+&attributes=
 Authorization: Bearer {{authorization}}
 
 ###

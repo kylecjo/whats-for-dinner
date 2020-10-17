@@ -14,14 +14,15 @@ class API {
   //   host, '/search', queries
   // );
 
-  Uri searchUri({String term, double lat, double long}) {
+  Uri searchUri({String term, double lat, double long, int radius, String attributes, String sortBy}) {
     Uri uri = Uri.https(host, '/v3/businesses/search', {
       'term': term,
       'latitude': lat.toString(),
       'longitude': long.toString(),
-      'radius': '2000',
+      'radius': radius != null ? radius.toString() : '2000',
       'limit': '30',
-      'categories': 'restaurants'
+      'attributes': attributes,
+      'sortBy': sortBy,
     });
     return uri;
   }

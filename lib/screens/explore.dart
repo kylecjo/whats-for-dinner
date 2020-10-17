@@ -5,11 +5,10 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/models/choose_one_arguments.dart';
 import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
 import 'package:whats_for_dinner/screens/choose_one_screen.dart';
-import 'package:whats_for_dinner/screens/favorites_screen.dart';
+import 'package:whats_for_dinner/screens/hot&new_screen.dart';
 import 'package:whats_for_dinner/screens/nearby_screen.dart';
+import 'package:whats_for_dinner/screens/top_rated_screen.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
@@ -29,11 +28,10 @@ class _ExploreScreen extends State<ExploreScreen> {
   final Random rnd = new Random();
   final Location location = Location();
   LocationData _locationData;
-  bool _isInit = true;
 
   @override
   Widget build(BuildContext context) {
-    final businessList = Provider.of<Businesses>(context);
+    final businessProvider = Provider.of<Businesses>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Explore'),
@@ -41,7 +39,8 @@ class _ExploreScreen extends State<ExploreScreen> {
         bottom: TabBar(
           tabs: [
             Tab(text: 'Nearby'),
-            Tab(text: 'Favorites'),
+            Tab(text: 'Hot & New'),
+            Tab(text: 'Top Rated')
           ],
         ),
         actions: [
@@ -51,54 +50,38 @@ class _ExploreScreen extends State<ExploreScreen> {
                 child: Icon(Icons.shuffle)),
             onTap: () {
               final idx = DefaultTabController.of(context).index;
-              if (idx == 0) {
-                try {
-                  int randomIndex = rnd.nextInt(businessList.nearby.length);
-                  Navigator.pushNamed(
-                    context,
-                    ChooseOneScreen.routeName,
-                    arguments: ChooseOneArguments(
-                        businessList.nearby[randomIndex], ScreenType.nearby),
-                  );
-                } catch (_) {
-                  final snackBar = SnackBar(
-                    content: Text('There are no nearby restaurants!'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackBar);
-                }
+              switch (idx) {
+                case 0: 
+                  chooseOne(businessProvider.nearby, 'There are no nearby businesses!');
+                  break;
+                case 1: 
+                  chooseOne(businessProvider.hot, 'There are no new restaurants!');
+                  break;
+                case 2: 
+                  chooseOne(businessProvider.top, 'There are no top restaurants!');
+                  break;
+                default:
               }
             },
           ),
           GestureDetector(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 7),
-              child: Icon(Icons.exit_to_app),
-            ),
-            onTap: (){
-              Provider.of<Auth>(context, listen: false).logout();
-            }
-          ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 7),
+                child: Icon(Icons.exit_to_app),
+              ),
+              onTap: () {
+                Provider.of<Auth>(context, listen: false).logout();
+              }),
         ],
       ),
       body: TabBarView(
         children: [
           NearbyScreen(),
-          FavoritesScreen('Favorites'),
+          HotNewScreen(),
+          TopRatedScreen(),
         ],
       ),
     );
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      Provider.of<Favorites>(context)
-          .fetchAndSetFavorites(Provider.of<Auth>(context).uid);
-      Provider.of<CustomLists>(context)
-          .fetchAndSetCustomLists(Provider.of<Auth>(context).uid);
-    }
-    _isInit = false;
-    super.didChangeDependencies();
   }
 
   @override
@@ -118,6 +101,23 @@ class _ExploreScreen extends State<ExploreScreen> {
       long: _locationData.longitude,
     );
     final businessList = Provider.of<Businesses>(context, listen: false);
-    businessList.initBusinesses(businesses);
+    businessList.initNearby(businesses);
+  }
+
+  void chooseOne(List<Business> businesses, String errorText) {
+    try {
+      int randomIndex = rnd.nextInt(businesses.length);
+      Navigator.pushNamed(
+        context,
+        ChooseOneScreen.routeName,
+        arguments: ChooseOneArguments(
+            businesses[randomIndex], ScreenType.nearby),
+      );
+    } catch (_) {
+      final snackBar = SnackBar(
+        content: Text(errorText),
+      );
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
   }
 }

@@ -8,12 +8,22 @@ class APIService {
   APIService(this.api);
   final API api;
 
-  Future<List<Business>> getBusinesses({String term,  double lat, double long}) async {
+  Future<List<Business>> getBusinesses(
+      {String term,
+      double lat,
+      double long,
+      int radius,
+      String attributes,
+      String sortBy}) async {
     final uri = api.searchUri(
       term: term,
       lat: lat,
       long: long,
+      radius: radius,
+      attributes: attributes,
+      sortBy: sortBy,
     );
+
     final response = await http.get(uri.toString(),
         headers: {'Authorization': 'Bearer ${api.apiKey}'});
     if (response.statusCode == 200) {
