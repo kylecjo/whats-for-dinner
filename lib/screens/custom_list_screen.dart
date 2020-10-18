@@ -44,7 +44,7 @@ class _CustomListScreenState extends State<CustomListScreen> {
           InkWell(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 7),
-                child: Icon(Icons.shuffle)),
+                child: Icon(Icons.casino)),
             onTap: () {
                 chooseOne(widget.customList.businesses, 'There are no items in this custom list');
               }

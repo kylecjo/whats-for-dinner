@@ -50,12 +50,12 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                 children: [
                   ConstrainedBox(
                     constraints: new BoxConstraints(
-                      maxHeight: 25,
-                      maxWidth: 25,
+                      maxHeight: 30,
+                      maxWidth: 30,
                     ),
                     child: PopupMenuButton<String>(
                         padding: EdgeInsets.all(0),
-                        icon: Icon(Icons.add, color: Colors.grey[700]),
+                        icon: Icon(Icons.add, color: Colors.grey[700], size: 30),
                         onSelected: (name) {
                           int selectedListIndex = customListProvider.customLists
                               .indexWhere((element) => element.name == name);
@@ -89,6 +89,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                           }).toList();
                         }),
                   ),
+                  SizedBox(width: 4),
                   GestureDetector(
                     onTap: () async {
                       setState(() {
@@ -144,15 +145,15 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                     },
                     child: _isLoading
                         ? SizedBox(
-                            height: 20,
-                            width: 20,
+                            height: 30,
+                            width: 30,
                             child: CircularProgressIndicator(
                               backgroundColor: Colors.grey[700],
                             ))
                         : favoriteProvider.isFavorite(widget.business)
-                            ? Icon(Icons.star, size: 20, color: Colors.yellow)
+                            ? Icon(Icons.star, size: 30, color: Colors.yellow[700])
                             : Icon(Icons.star_border,
-                                size: 20, color: Colors.grey[700]),
+                                size: 30, color: Colors.grey[700]),
                   ),
                 ],
               ),

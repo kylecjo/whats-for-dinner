@@ -47,7 +47,7 @@ class _ExploreScreen extends State<ExploreScreen> {
           InkWell(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 7),
-                child: Icon(Icons.shuffle)),
+                child: Icon(Icons.casino)),
             onTap: () {
               final idx = DefaultTabController.of(context).index;
               switch (idx) {

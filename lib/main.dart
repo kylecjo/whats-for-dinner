@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           // theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
           theme: ThemeData(
             fontFamily: 'RobotoMono',
-            primaryColor: Colors.green,
+            primaryColor: Colors.deepOrange[500],
             accentColor: Colors.white,
             // cardColor: const Color(0xffDAA99B),
             backgroundColor: Colors.grey[200],

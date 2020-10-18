@@ -33,7 +33,7 @@ class ChooseOneButton extends StatelessWidget {
           Scaffold.of(context).showSnackBar(snackBar);
         }
       },
-      child: Icon(Icons.shuffle),
+      child: Icon(Icons.casino),
     );
   }
 }

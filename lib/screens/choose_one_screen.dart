@@ -114,7 +114,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.shuffle),
+                        Icon(Icons.casino),
                         Text(
                           'Reroll Restaurant',
                           style: Theme.of(context).textTheme.headline4,
