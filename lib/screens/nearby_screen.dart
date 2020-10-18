@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/data/repository.dart';
+import 'package:whats_for_dinner/models/business.dart';
 import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/providers/favorites.dart';
@@ -19,23 +21,70 @@ class NearbyScreen extends StatefulWidget {
 
 class _NearbyScreen extends State<NearbyScreen> {
   final Location location = Location();
+  LocationData _locationData;
   bool _isInit = true;
+  int _page = 1;
+  int _resultsPerPage = 30;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final businessProvider = Provider.of<Businesses>(context);
-    return Center(
-      child: businessProvider.nearby.length > 0
-          ? ListView.builder(
-              itemCount: businessProvider.nearby.length,
-              itemBuilder: (context, int index) {
-                return RestaurantCard(
-                    business: businessProvider.nearby[index],
-                    cardColor: Colors.white);
-              },
-            )
-          : CircularProgressIndicator(),
+    return Column(
+      children: [
+        Expanded(
+          child: businessProvider.nearby.length > 0
+              ? NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification scrollInfo) {
+                    if (!isLoading &&
+                        scrollInfo.metrics.pixels ==
+                            scrollInfo.metrics.maxScrollExtent) {
+                      _loadData();
+                      setState(() {
+                        isLoading = true;
+                      });
+                    }
+                  },
+                  child: ListView.builder(
+                    itemCount: businessProvider.nearby.length,
+                    itemBuilder: (context, int index) {
+                      return RestaurantCard(
+                          business: businessProvider.nearby[index],
+                          cardColor: Colors.white);
+                    },
+                  ),
+                )
+              : CircularProgressIndicator(),
+        ),
+        Container(
+            height: isLoading ? 50.0 : 0,
+            color: Colors.green,
+            child: Center(
+              child: new CircularProgressIndicator(),
+            ),
+          ),
+      ],
     );
+  }
+
+  Future<void> _loadData() async {
+    _locationData = await location.getLocation();
+    final repository = Provider.of<Repository>(
+      context,
+      listen: false,
+    );
+    List<Business> newPageNearby = await repository.getBusinessData(
+        lat: _locationData.latitude,
+        long: _locationData.longitude,
+        radius: 2000,
+        offset: _page * _resultsPerPage + 1);
+
+    final businessList = Provider.of<Businesses>(context, listen: false);
+    businessList.addNewPageNearby(newPageNearby);
+    setState(() {
+      _page += 1;
+      isLoading = false;
+    });
   }
 
   @override
@@ -49,5 +98,4 @@ class _NearbyScreen extends State<NearbyScreen> {
     _isInit = false;
     super.didChangeDependencies();
   }
-
 }

@@ -14,7 +14,8 @@ class APIService {
       double long,
       int radius,
       String attributes,
-      String sortBy}) async {
+      String sortBy,
+      int offset}) async {
     final uri = api.searchUri(
       term: term,
       lat: lat,
@@ -22,6 +23,7 @@ class APIService {
       radius: radius,
       attributes: attributes,
       sortBy: sortBy,
+      offset: offset,
     );
 
     final response = await http.get(uri.toString(),

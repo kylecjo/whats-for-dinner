@@ -60,7 +60,6 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                               new FlatButton(
                                 child: new Text('Submit'),
                                 onPressed: () {
-                                  print('${textController.text}');
                                   customListProvider.addCustomList(
                                       authProvider.uid, textController.text);
                                   textController.clear();

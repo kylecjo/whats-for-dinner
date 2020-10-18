@@ -14,7 +14,7 @@ class API {
   //   host, '/search', queries
   // );
 
-  Uri searchUri({String term, double lat, double long, int radius, String attributes, String sortBy}) {
+  Uri searchUri({String term, double lat, double long, int radius, String attributes, String sortBy, int offset}) {
     Uri uri = Uri.https(host, '/v3/businesses/search', {
       'term': term,
       'latitude': lat.toString(),
@@ -23,6 +23,7 @@ class API {
       'limit': '30',
       'attributes': attributes,
       'sortBy': sortBy,
+      'offset': offset != null ? offset.toString() : '0',
     });
     return uri;
   }
