@@ -44,6 +44,7 @@ class _NearbyScreen extends State<NearbyScreen> {
                         isLoading = true;
                       });
                     }
+                    return true;
                   },
                   child: ListView.builder(
                     itemCount: businessProvider.nearby.length,

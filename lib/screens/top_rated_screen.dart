@@ -36,6 +36,7 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
                         isLoading = true;
                       });
                     }
+                    return true;
                   },
                   child: ListView.builder(
                     itemCount: businessProvider.top.length,
@@ -59,7 +60,7 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
     );
   }
 
-   Future<void> _loadData() async {
+  Future<void> _loadData() async {
     _locationData = await location.getLocation();
     final repository = Provider.of<Repository>(
       context,

@@ -64,6 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   scrollInfo.metrics.maxScrollExtent) {
                             _loadData();
                           }
+                          return true;
                         },
                         child: ListView.builder(
                           itemCount: businessProvider.search.length,
