@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
   String _token;
+  String _email;
   DateTime _expiryDate;
   String _uid;
   Timer _authTimer;
@@ -31,6 +32,10 @@ class Auth with ChangeNotifier {
 
   String get uid {
     return _uid;
+  }
+
+  String get email {
+    return _email;
   }
 
   Future<void> _authenticate(
@@ -53,8 +58,19 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
+      _email = responseData['email'];
       _token = responseData['idToken'];
       _uid = responseData['localId'];
+
+      if (urlSegment == 'signUp') {
+        final res = await http.put(
+          '${APIKeys.firebase}/users/$uid.json?auth=$_token',
+          body: json.encode({
+            'email': email,
+          }),
+        );
+      }
+
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(responseData['expiresIn']),
@@ -64,6 +80,7 @@ class Auth with ChangeNotifier {
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
       final userData = json.encode({
+        'email': _email,
         'token': _token,
         'userId': _uid,
         'expiryDate': _expiryDate.toIso8601String()
@@ -101,7 +118,7 @@ class Auth with ChangeNotifier {
     return true;
   }
 
-  Future<void> logout()  async{
+  Future<void> logout() async {
     _token = null;
     _uid = null;
     _expiryDate = null;

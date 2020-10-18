@@ -23,7 +23,7 @@ class CustomListTile extends StatelessWidget {
                         color: Colors.black,
                         fontSize: 14,
                       ),),
-        subtitle: Text('$listLength items'),
+        subtitle: Text('$listLength restaurants'),
         trailing: GestureDetector(
           child: Icon(Icons.delete),
           onTap: () {

@@ -60,7 +60,7 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                                 child: new Text('Submit'),
                                 onPressed: () {
                                   customListProvider.addCustomList(
-                                      authProvider.uid, textController.text);
+                                      authProvider.uid, authProvider.email, textController.text);
                                   textController.clear();
                                   Navigator.of(context).pop();
                                 },

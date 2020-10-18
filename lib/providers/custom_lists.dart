@@ -19,10 +19,12 @@ class CustomLists with ChangeNotifier {
     return [..._customLists];
   }
 
-  Future<void> addCustomList(String uid, String listName) async {
+  Future<void> addCustomList(String uid, String email, String listName) async {
     // TODO need to do the error checking on this in the widget tree so you can throw an error
-    CustomList customList = CustomList(id: uuid.v4(), name: listName, businesses: []);
-    final url = '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
+    CustomList customList = CustomList(
+        id: uuid.v4(), uid: uid, email: email, name: listName, businesses: []);
+    final url =
+        '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
     try {
       await http.put(
         url,
@@ -37,10 +39,12 @@ class CustomLists with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addToCustomList(CustomList customList, Business business, String uid) async {
+Future<void> addToCustomList(
+      CustomList customList, Business business, String uid) async {
     try {
       customList.businesses.add(business);
-      String customListUrl = '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
+      String customListUrl =
+          '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
       await http.patch(customListUrl, body: json.encode(customList));
       notifyListeners();
     } on Exception catch (e) {
@@ -49,12 +53,13 @@ class CustomLists with ChangeNotifier {
     }
   }
 
-  Future<void> removeFromCustomList(String uid,
-      CustomList customList, Business business) async {
+  Future<void> removeFromCustomList(
+      String uid, CustomList customList, Business business) async {
     try {
       customList.businesses.removeWhere((element) => element.id == business.id);
       notifyListeners();
-      String customListUrl = '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
+      String customListUrl =
+          '${APIKeys.firebase}/customLists/$uid/${customList.id}.json?auth=$authToken';
       await http.patch(customListUrl, body: json.encode(customList));
     } on Exception catch (e) {
       print(e);
@@ -66,11 +71,35 @@ class CustomLists with ChangeNotifier {
     try {
       _customLists.removeWhere((element) => element.id == id);
       notifyListeners();
-      String customListUrl =  '${APIKeys.firebase}/customLists/$uid/$id.json?auth=$authToken';
+      String customListUrl =
+          '${APIKeys.firebase}/customLists/$uid/$id.json?auth=$authToken';
       await http.delete(customListUrl);
     } on Exception catch (e) {
       throw e;
     }
+  }
+
+    Future<void> shareList(String uid, CustomList myList, String email) async {
+    // first have to take email and find the correct userid on the server
+    // TODO filter on the server not locally
+    final url = '${APIKeys.firebase}/users.json?auth=$authToken';
+    try {
+      final response = await http.get(url);
+      final responseData = json.decode(response.body) as Map<String, dynamic>;
+      final shareUid = responseData.keys
+          .firstWhere((element) => responseData[element]['email'] == email, orElse: null);
+
+      if(shareUid != null){
+        await http.put(
+          '${APIKeys.firebase}/customLists/$uid/${myList.id}/members.json?auth=$authToken',
+          body: json.encode({'$shareUid': email})
+        );
+      }
+
+    } catch (e) {}
+
+    // add that user id to the lists' member thing
+    // give permission for all users in that member thing to read write onto that list
   }
 
   Future<void> fetchAndSetCustomLists(String uid) async {

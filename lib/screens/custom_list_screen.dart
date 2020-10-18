@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/models/business.dart';
 import 'package:whats_for_dinner/models/choose_one_arguments.dart';
 import 'package:whats_for_dinner/models/custom_list.dart';
+import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/screens/choose_one_screen.dart';
 import 'package:whats_for_dinner/widgets/custom_list_dismissible_card.dart';
@@ -10,6 +11,7 @@ import 'package:whats_for_dinner/widgets/custom_list_dismissible_card.dart';
 class CustomListScreen extends StatefulWidget {
   final CustomList customList;
   static const routeName = '/customList';
+  final TextEditingController textController = TextEditingController();
 
   CustomListScreen(this.customList);
 
@@ -23,8 +25,7 @@ class _CustomListScreenState extends State<CustomListScreen> {
       Navigator.pushNamed(
         context,
         ChooseOneScreen.routeName,
-        arguments:
-            ChooseOneArguments(businesses),
+        arguments: ChooseOneArguments(businesses),
       );
     } catch (_) {
       final snackBar = SnackBar(
@@ -36,32 +37,66 @@ class _CustomListScreenState extends State<CustomListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final customListProvider = Provider.of<CustomLists>(context);
+    final authProvider = Provider.of<Auth>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(widget.customList.name),
         actions: [
           InkWell(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 7),
-                child: Icon(Icons.casino)),
-            onTap: () {
-                chooseOne(widget.customList.businesses, 'There are no items in this custom list');
-              }
-          ),
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7),
+                  child: Icon(Icons.casino)),
+              onTap: () {
+                chooseOne(widget.customList.businesses,
+                    'There are no items in this custom list');
+              }),
         ],
       ),
       body: Consumer<CustomLists>(
-        builder: (ctx, data, child) => Center(
-          child: widget.customList.businesses.length > 0
-              ? ListView.builder(
-                  itemCount: widget.customList.businesses.length,
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return CustomListDismissibleCard(
-                        widget.customList.businesses[index], widget.customList);
-                  },
-                )
-              : Text('No restaurants in ${widget.customList.name} yet!'),
+        builder: (ctx, data, child) => Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: TextField(
+                        controller: widget.textController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'User email',
+                        ),
+                      ),
+                    ),
+                  ),
+                  RaisedButton(
+                    child: Text('Share'),
+                    color: Theme.of(context).accentColor,
+                    onPressed: () {
+                      customListProvider.shareList(
+                          authProvider.uid, widget.customList, widget.textController.text);
+                      widget.textController.clear();
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: widget.customList.businesses.length > 0
+                  ? ListView.builder(
+                      itemCount: widget.customList.businesses.length,
+                      itemBuilder: (BuildContext ctx, int index) {
+                        return CustomListDismissibleCard(
+                            widget.customList.businesses[index], widget.customList);
+                      },
+                    )
+                  : Text('No restaurants in ${widget.customList.name} yet!'),
+            ),
+          ],
         ),
       ),
     );
