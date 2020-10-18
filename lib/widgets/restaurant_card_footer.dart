@@ -14,66 +14,70 @@ class RestaurantCardFooter extends StatelessWidget {
         top: 5.0,
       ),
       height: 150,
-      child: Row(
+      child: Stack(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            width: 180,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: business.imageUrl != ''
-                    ? Image.network(business.imageUrl, fit: BoxFit.cover)
-                    : Icon(Icons.terrain, color: Colors.grey, size: 72)),
-          ),
-          Flexible(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                width: 180,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: business.imageUrl != ''
+                        ? Image.network(business.imageUrl, fit: BoxFit.cover)
+                        : Icon(Icons.terrain, color: Colors.grey, size: 72)),
+              ),
+              Flexible(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: 75,
-                        height: 20,
-                        child: Image.asset(RestaurantCardFooter
-                            .doubleRatingToImage[business.rating]),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: FittedBox(
-                          child: Text(
-                            '${business.reviewCount} reviews',
-                            style: Theme.of(context).textTheme.bodyText1,
+                      Row(
+                        children: [
+                          Container(
+                            width: 75,
+                            height: 20,
+                            child: Image.asset(RestaurantCardFooter
+                                .doubleRatingToImage[business.rating]),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: FittedBox(
+                              child: Text(
+                                '${business.reviewCount} reviews',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text('${business.address1}',
+                          style: Theme.of(context).textTheme.bodyText2,
+                          overflow: TextOverflow.fade),
+                      Text('${business.city} ${business.state}',
+                          style: Theme.of(context).textTheme.bodyText2,
+                          overflow: TextOverflow.fade),
+                      SizedBox(
+                        height: 20,
                       ),
                     ],
                   ),
-                  Text('${business.address1}',
-                      style: Theme.of(context).textTheme.bodyText2,
-                      overflow: TextOverflow.fade),
-                  Text('${business.city} ${business.state}',
-                      style: Theme.of(context).textTheme.bodyText2,
-                      overflow: TextOverflow.fade),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(width: MediaQuery.of(context).size.width / 4.2),
-                      GestureDetector(
-                        onTap: () => launchURL(business.url),
-                        child: Container(
-                          width: 75,
-                          child:
-                              Image.asset('assets/images/yelp_logo_medium.png'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
+              ),
+            ],
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: GestureDetector(
+                onTap: () => launchURL(business.url),
+                child: Container(
+                  width: 75,
+                  child: Image.asset('assets/images/yelp_logo_medium.png'),
+                ),
               ),
             ),
           ),
