@@ -5,9 +5,7 @@ import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
-import '../models/screen_type.dart';
 import '../providers/businesses.dart';
-import '../widgets/choose_one_button.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
@@ -21,6 +19,8 @@ class _SearchScreenState extends State<SearchScreen> {
   final Location _location = Location();
   LocationData _locationData;
   bool _isLoading = false;
+  int _page = 1;
+  int _resultsPerPage = 30;
 
   @override
   void dispose() {
@@ -51,29 +51,67 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           backgroundColor: Theme.of(context).primaryColor,
         ),
-        body: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.9,
-                      child: businessProvider.search.length > 0
-                          ? ListView.builder(
-                              itemCount: businessProvider.search.length,
-                              itemBuilder: (BuildContext ctx, int index) {
-                                return RestaurantCard(business: businessProvider.search[index], cardColor: Colors.white);
-                              },
-                            )
-                          : Center(child: Text('Search for something')),
-                    ),
-                  ],
-                ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.9,
+                child: businessProvider.search.length > 0
+                    ? NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (!_isLoading &&
+                              scrollInfo.metrics.pixels ==
+                                  scrollInfo.metrics.maxScrollExtent) {
+                            _loadData();
+                          }
+                        },
+                        child: ListView.builder(
+                          itemCount: businessProvider.search.length,
+                          itemBuilder: (BuildContext ctx, int index) {
+                            return RestaurantCard(
+                                business: businessProvider.search[index],
+                                cardColor: Colors.white);
+                          },
+                        ),
+                      )
+                    : Center(child: Text('Search for something')),
               ),
+            ),
+            Container(
+              height: _isLoading ? 50.0 : 0,
+              color: Colors.green,
+              child: Center(
+                child: new CircularProgressIndicator(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    _locationData = await _location.getLocation();
+    final repository = Provider.of<Repository>(
+      context,
+      listen: false,
+    );
+    List<Business> newPageSearch = await repository.getBusinessData(
+        term: _textController.text,
+        lat: _locationData.latitude,
+        long: _locationData.longitude,
+        radius: 30000,
+        offset: _page * _resultsPerPage + 1);
+
+    final businessList = Provider.of<Businesses>(context, listen: false);
+    businessList.addNewPageSearch(newPageSearch);
+    setState(() {
+      _page += 1;
+      _isLoading = false;
+    });
   }
 
   Future<void> _search() async {

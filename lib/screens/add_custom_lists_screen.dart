@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
-import 'package:whats_for_dinner/screens/custom_list_screen.dart';
-import 'package:whats_for_dinner/widgets/custom_list_tile.dart';
-import 'package:whats_for_dinner/widgets/favorite_list_tile.dart';
-import 'package:whats_for_dinner/widgets/text_field_alert_dialog.dart';
+import '../providers/auth.dart';
+import '../providers/custom_lists.dart';
+import '../screens/custom_list_screen.dart';
+import '../widgets/custom_list_tile.dart';
+import '../widgets/favorite_list_tile.dart';
 
 class AddCustomListsScreen extends StatefulWidget {
   final String title;
