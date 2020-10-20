@@ -26,7 +26,6 @@ class CustomList {
   factory CustomList.fromJson(Map<String, dynamic> data) {
     List<dynamic> list = json.decode(data['businesses']) as List<dynamic>;
     List<Business> businessList = list.map((i) => Business.fromJsonFireBase(i)).toList();
-
     return CustomList(
       id: data['id'],
       uid: data['uid'],
