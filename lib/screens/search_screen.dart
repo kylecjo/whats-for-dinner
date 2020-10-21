@@ -80,7 +80,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             Container(
               height: _isLoading ? 50.0 : 0,
-              color: Colors.green,
+              color: Theme.of(context).primaryColor,
               child: Center(
                 child: new CircularProgressIndicator(),
               ),
