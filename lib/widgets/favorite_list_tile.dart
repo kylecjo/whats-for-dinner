@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
-import 'package:whats_for_dinner/screens/favorites_screen.dart';
+
+import '../providers/auth.dart';
+import '../providers/favorites.dart';
+import '../screens/favorites_screen.dart';
 
 class FavoriteListTile extends StatelessWidget {
   @override

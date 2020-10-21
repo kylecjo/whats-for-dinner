@@ -3,9 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 import '../models/choose_one_arguments.dart';
-
 import '../widgets/restaurant_card.dart';
 
 class ChooseOneScreen extends StatefulWidget {
@@ -103,13 +101,13 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                   child: RaisedButton(
                     color: Theme.of(context).accentColor,
                     onPressed: () {
-                        Navigator.pushReplacementNamed(
-                          context,
-                          ChooseOneScreen.routeName,
-                          arguments: ChooseOneArguments(
-                              args.businesses,
-                              ),
-                        );
+                      Navigator.pushReplacementNamed(
+                        context,
+                        ChooseOneScreen.routeName,
+                        arguments: ChooseOneArguments(
+                          args.businesses,
+                        ),
+                      );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

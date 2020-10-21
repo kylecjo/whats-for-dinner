@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
 import '../providers/businesses.dart';
+import '../widgets/restaurant_card.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';

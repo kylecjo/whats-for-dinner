@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import 'package:whats_for_dinner/models/choose_one_arguments.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
+
+import '../models/business.dart';
+import '../models/choose_one_arguments.dart';
 import '../providers/favorites.dart';
+import '../widgets/restaurant_card.dart';
 import 'choose_one_screen.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -22,8 +23,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       Navigator.pushNamed(
         context,
         ChooseOneScreen.routeName,
-        arguments:
-            ChooseOneArguments(businesses),
+        arguments: ChooseOneArguments(businesses),
       );
     } catch (_) {
       final snackBar = SnackBar(
@@ -42,13 +42,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         title: Text(widget.title),
         actions: [
           InkWell(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 7),
-                child: Icon(Icons.shuffle)),
-            onTap: () {
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7),
+                  child: Icon(Icons.shuffle)),
+              onTap: () {
                 chooseOne(favs.favorites, 'You have no favorites');
-              }
-          ),
+              }),
         ],
       ),
       body: Center(
@@ -56,7 +55,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             ? ListView.builder(
                 itemCount: favs.favorites.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return RestaurantCard(business: favs.favorites[index], cardColor: Colors.white);
+                  return RestaurantCard(
+                      business: favs.favorites[index], cardColor: Colors.white);
                 },
               )
             : Text('You have no favorites!'),

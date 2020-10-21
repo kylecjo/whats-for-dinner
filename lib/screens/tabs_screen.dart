@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
-import 'package:whats_for_dinner/screens/explore.dart';
-import 'package:whats_for_dinner/screens/search_screen.dart';
+
+import '../screens/add_custom_lists_screen.dart';
+import '../screens/explore.dart';
+import '../screens/search_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   @override

@@ -1,16 +1,15 @@
 import 'dart:convert';
 
-import 'package:whats_for_dinner/models/custom_list.dart';
-import 'package:whats_for_dinner/models/http_exception.dart';
-import 'package:whats_for_dinner/services/api_keys.dart';
-
-import '../models/business.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
+import '../models/business.dart';
+import '../models/custom_list.dart';
+import '../models/http_exception.dart';
+import '../services/api_keys.dart';
+
 class CustomLists with ChangeNotifier {
-  // TODO loading screens on fetching favorites and custom lists
   // TODO drag down to update custom lists
   List<CustomList> _customLists;
   final String authToken;
@@ -38,7 +37,7 @@ class CustomLists with ChangeNotifier {
         '${APIKeys.firebase}/customLists/${customList.id}/members.json?auth=$authToken',
         body: json.encode({'admin': uid}),
       );
-      final response = await http.put(
+      await http.put(
         url,
         body: json.encode(customList),
       );

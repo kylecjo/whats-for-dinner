@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
-import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
-import 'package:whats_for_dinner/screens/splash_screen.dart';
-import 'package:whats_for_dinner/screens/tabs_screen.dart';
 
 import './data/repository.dart';
+import './providers/auth.dart';
 import './providers/businesses.dart';
+import './providers/custom_lists.dart';
+import './providers/favorites.dart';
+import './screens/auth_screen.dart';
 import './screens/choose_one_screen.dart';
 import './screens/favorites_screen.dart';
-
-import 'screens/nearby_screen.dart';
+import './screens/nearby_screen.dart';
 import './screens/search_screen.dart';
+import './screens/splash_screen.dart';
+import './screens/tabs_screen.dart';
 import './services/api.dart';
 import './services/api_service.dart';
-import './screens/auth_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/data/repository.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
+import '../data/repository.dart';
+import '../models/business.dart';
 import '../providers/businesses.dart';
+import '../widgets/restaurant_card.dart';
 
 class NearbyScreen extends StatefulWidget {
   final String title;
@@ -57,12 +54,12 @@ class _NearbyScreen extends State<NearbyScreen> {
               : CircularProgressIndicator(),
         ),
         Container(
-            height: isLoading ? 50.0 : 0,
-            color: Theme.of(context).primaryColor,
-            child: Center(
-              child: new CircularProgressIndicator(),
-            ),
+          height: isLoading ? 50.0 : 0,
+          color: Theme.of(context).primaryColor,
+          child: Center(
+            child: new CircularProgressIndicator(),
           ),
+        ),
       ],
     );
   }
@@ -86,5 +83,4 @@ class _NearbyScreen extends State<NearbyScreen> {
       isLoading = false;
     });
   }
-
 }

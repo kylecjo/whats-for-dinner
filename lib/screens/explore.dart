@@ -3,16 +3,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/models/choose_one_arguments.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/screens/choose_one_screen.dart';
-import 'package:whats_for_dinner/screens/hot&new_screen.dart';
-import 'package:whats_for_dinner/screens/nearby_screen.dart';
-import 'package:whats_for_dinner/screens/top_rated_screen.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
+import '../models/choose_one_arguments.dart';
+import '../providers/auth.dart';
 import '../providers/businesses.dart';
+import '../screens/choose_one_screen.dart';
+import '../screens/hot&new_screen.dart';
+import '../screens/nearby_screen.dart';
+import '../screens/top_rated_screen.dart';
 
 class ExploreScreen extends StatefulWidget {
   final String title;

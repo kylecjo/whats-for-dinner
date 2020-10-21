@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import 'package:whats_for_dinner/models/choose_one_arguments.dart';
-import 'package:whats_for_dinner/models/custom_list.dart';
-import 'package:whats_for_dinner/models/http_exception.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
-import 'package:whats_for_dinner/screens/choose_one_screen.dart';
-import 'package:whats_for_dinner/widgets/custom_list_dismissible_card.dart';
+
+import '../models/business.dart';
+import '../models/choose_one_arguments.dart';
+import '../models/custom_list.dart';
+import '../models/http_exception.dart';
+import '../providers/auth.dart';
+import '../providers/custom_lists.dart';
+import '../screens/choose_one_screen.dart';
+import '../widgets/custom_list_dismissible_card.dart';
 
 class CustomListScreen extends StatefulWidget {
   final CustomList customList;
@@ -62,8 +63,7 @@ class _CustomListScreenState extends State<CustomListScreen> {
         context: context,
         builder: (ctx) => AlertDialog(
           title: Text('Success'),
-          content: Text(
-              'Share was successful!'),
+          content: Text('Share was successful!'),
           actions: [
             FlatButton(
               child: Text('OK'),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
+
+import '../providers/auth.dart';
+import '../providers/custom_lists.dart';
 
 class CustomListTile extends StatelessWidget {
   final String name;

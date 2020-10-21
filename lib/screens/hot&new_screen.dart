@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
 import '../providers/businesses.dart';
-
+import '../widgets/restaurant_card.dart';
 
 class HotNewScreen extends StatefulWidget {
   @override
@@ -30,5 +29,4 @@ class _HotNewScreenState extends State<HotNewScreen> {
           : CircularProgressIndicator(),
     );
   }
-
 }
