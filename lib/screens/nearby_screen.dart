@@ -22,7 +22,6 @@ class NearbyScreen extends StatefulWidget {
 class _NearbyScreen extends State<NearbyScreen> {
   final Location location = Location();
   LocationData _locationData;
-  bool _isInit = true;
   int _page = 1;
   int _resultsPerPage = 30;
   bool isLoading = false;
@@ -88,14 +87,4 @@ class _NearbyScreen extends State<NearbyScreen> {
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      
-      // Provider.of<CustomLists>(context)
-      //     .fetchAndSetCustomLists(Provider.of<Auth>(context).uid);
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
 }

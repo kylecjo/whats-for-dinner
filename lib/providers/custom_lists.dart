@@ -176,11 +176,12 @@ class CustomLists with ChangeNotifier {
           final listData = json.decode(list.body) as Map<String, dynamic>;
           if (listData != null) {
             loadedCustomLists.add(CustomList.fromJson(listData));
+            _customLists = loadedCustomLists;
           }
         });
       }
 
-      _customLists = loadedCustomLists;
+      
       notifyListeners();
     } on Exception catch (e) {
       throw (e);
