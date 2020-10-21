@@ -51,7 +51,7 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
         ),
         Container(
           height: isLoading ? 50.0 : 0,
-          color: Colors.green,
+          color:  Theme.of(context).primaryColor,
           child: Center(
             child: new CircularProgressIndicator(),
           ),
