@@ -89,8 +89,14 @@ class CustomLists with ChangeNotifier {
       final members = await http.get(
         '${APIKeys.firebase}/customLists/$id/members.json?auth=$authToken'
       );
-      
-      final response = await http
+      print(members.body);
+      final membersData = json.decode(members.body) as Map<String, dynamic>;
+      membersData.keys.forEach((key) async {
+        await http.delete(
+          '${APIKeys.firebase}/users/$key/lists/$id.json?auth=$authToken',
+        );
+      });
+      await http
           .delete('${APIKeys.firebase}/customLists/$id.json?auth=$authToken');
       await http.delete(
           '${APIKeys.firebase}/users/$uid/lists/$id.json?auth=$authToken');
@@ -119,6 +125,7 @@ class CustomLists with ChangeNotifier {
         );
 
         //TODO if id is already in list then don't add again
+        //also check if user is admin and then in members
         await http.patch(
           '${APIKeys.firebase}/users/$shareUid/lists.json?auth=$authToken',
           body: json.encode({myList.id: true}),
