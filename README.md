@@ -31,7 +31,10 @@ Not yet available
 
 ## Todos
 
-- [ ] Firebase Integration
-- [ ] User Authentication
-- [ ] Share lists between users
+- [x] Firebase Integration
+- [x] User Authentication
+- [x] Share lists between users
+- [ ] Search improvements
+- [ ] Dark mode
 - [ ] IOS 
+- [ ] Improve readme
