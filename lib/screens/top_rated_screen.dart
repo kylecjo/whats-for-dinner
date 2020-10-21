@@ -47,7 +47,7 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
                     },
                   ),
                 )
-              : CircularProgressIndicator(),
+              : Center(child: CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor,)),
         ),
         Container(
           height: isLoading ? 50.0 : 0,

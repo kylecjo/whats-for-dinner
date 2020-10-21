@@ -51,7 +51,7 @@ class _NearbyScreen extends State<NearbyScreen> {
                     },
                   ),
                 )
-              : CircularProgressIndicator(),
+              : Center(child: CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor,)),
         ),
         Container(
           height: isLoading ? 50.0 : 0,

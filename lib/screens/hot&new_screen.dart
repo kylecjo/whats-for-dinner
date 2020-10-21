@@ -26,7 +26,7 @@ class _HotNewScreenState extends State<HotNewScreen> {
                     cardColor: Colors.white);
               },
             )
-          : CircularProgressIndicator(),
+          : Center(child: CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor,)),
     );
   }
 }
