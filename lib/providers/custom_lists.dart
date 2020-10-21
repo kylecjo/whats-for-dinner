@@ -35,7 +35,7 @@ class CustomLists with ChangeNotifier {
         body: json.encode({customList.id: true}),
       );
       await http.put(
-        '${APIKeys.firebase}/customLists/${customList.id}.json?auth=$authToken',
+        '${APIKeys.firebase}/customLists/${customList.id}/members.json?auth=$authToken',
         body: json.encode({'admin': uid}),
       );
       final response = await http.put(
@@ -91,12 +91,16 @@ class CustomLists with ChangeNotifier {
       if (authUid == listUid) {
         final members = await http.get(
             '${APIKeys.firebase}/customLists/$id/members.json?auth=$authToken');
-        final membersData = json.decode(members.body) as Map<String, dynamic>;
-        membersData.keys.forEach((key) async {
-          await http.delete(
-            '${APIKeys.firebase}/users/$key/lists/$id.json?auth=$authToken',
-          );
-        });
+        if(members.body != null){
+          final membersData = json.decode(members.body) as Map<String, dynamic>;
+          membersData.keys.forEach((key) async {
+            if(key != 'admin'){
+              await http.delete(
+                '${APIKeys.firebase}/users/$key/lists/$id.json?auth=$authToken',
+              );
+            }
+          });
+        }
         await http
             .delete('${APIKeys.firebase}/customLists/$id.json?auth=$authToken');
         await http.delete(
@@ -110,7 +114,7 @@ class CustomLists with ChangeNotifier {
 
       //otherwise just delete the list from the users lists and the user from members
 
-    } on Exception catch (e) {
+    } catch (e) {
       throw e;
     }
   }

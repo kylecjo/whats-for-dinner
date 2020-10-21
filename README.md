@@ -38,3 +38,4 @@ Not yet available
 - [ ] Dark mode
 - [ ] IOS 
 - [ ] Improve readme
+- [ ] Unit tests
