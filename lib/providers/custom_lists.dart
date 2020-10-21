@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
 class CustomLists with ChangeNotifier {
+  // TODO loading screens on fetching favorites and custom lists
+  // TODO drag down to update custom lists
   List<CustomList> _customLists;
   final String authToken;
   var uuid = Uuid();
@@ -27,18 +29,19 @@ class CustomLists with ChangeNotifier {
         '${APIKeys.firebase}/customLists/${customList.id}/items.json?auth=$authToken';
 
     try {
-      await http.put(
-        url,
-        body: json.encode(customList),
-      );
-      final response = await http.put(
-        '${APIKeys.firebase}/customLists/${customList.id}/members.json?auth=$authToken',
-        body: json.encode({'admin': uid}),
-      );
       await http.patch(
         '${APIKeys.firebase}/users/$uid/lists.json?auth=$authToken',
         body: json.encode({customList.id: true}),
       );
+      await http.put(
+        '${APIKeys.firebase}/customLists/${customList.id}.json?auth=$authToken',
+        body: json.encode({'admin': uid}),
+      );
+      final response = await http.put(
+        url,
+        body: json.encode(customList),
+      );
+      print(response.body);
     } on Exception catch (e) {
       print(e);
       throw e;
@@ -65,13 +68,12 @@ class CustomLists with ChangeNotifier {
   Future<void> removeFromCustomList(
       String uid, CustomList customList, Business business) async {
     try {
-
-      String customListUrl =
-          '${APIKeys.firebase}/customLists/${customList.id}/items.json?auth=$authToken';
-      await http.patch(customListUrl, body: json.encode(customList));
-
       customList.businesses.removeWhere((element) => element.id == business.id);
       notifyListeners();
+      String customListUrl =
+          '${APIKeys.firebase}/customLists/${customList.id}/items.json?auth=$authToken';
+      final response = await http.patch(customListUrl, body: json.encode(customList));
+      print(response.body);
     } on Exception catch (e) {
       print(e);
       throw e;
@@ -79,18 +81,20 @@ class CustomLists with ChangeNotifier {
   }
 
   Future<void> removeCustomList(String uid, String id) async {
-
     //TODO if list is not yours than it should just remove you from user/lists and from the members of the list
     try {
       _customLists.removeWhere((element) => element.id == id);
       notifyListeners();
-      String customListUrl =
-          '${APIKeys.firebase}/customLists/$id.json?auth=$authToken';
-      await http.delete(customListUrl);
-      final response = await http.delete(
+      //TODO on a delete you have to go through the owner and every member of the list and remove that member from user/lists
+      final members = await http.get(
+        '${APIKeys.firebase}/customLists/$id/members.json?auth=$authToken'
+      );
+      
+      final response = await http
+          .delete('${APIKeys.firebase}/customLists/$id.json?auth=$authToken');
+      await http.delete(
           '${APIKeys.firebase}/users/$uid/lists/$id.json?auth=$authToken');
 
-      //TODO on a delete you have to go through the owner and every member of the list and remove that member from user/lists
 
     } on Exception catch (e) {
       throw e;
@@ -125,7 +129,6 @@ class CustomLists with ChangeNotifier {
     // add that user id to the lists' member thing
     // give permission for all users in that member thing to read write onto that list
   }
-
 
   Future<void> fetchAndSetCustomLists(String uid) async {
     final url = '${APIKeys.firebase}/users/$uid/lists.json?auth=$authToken';
