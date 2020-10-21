@@ -44,7 +44,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           InkWell(
               child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7),
-                  child: Icon(Icons.shuffle)),
+                  child: Icon(Icons.casino)),
               onTap: () {
                 chooseOne(favs.favorites, 'You have no favorites');
               }),
