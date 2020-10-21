@@ -174,12 +174,13 @@ class CustomLists with ChangeNotifier {
           if (listData != null) {
             loadedCustomLists.add(CustomList.fromJson(listData));
             _customLists = loadedCustomLists;
+            notifyListeners();
           }
         });
       }
 
-      
-      notifyListeners();
+
+
     } on Exception catch (e) {
       throw (e);
     }
