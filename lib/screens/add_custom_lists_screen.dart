@@ -35,13 +35,18 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              child: InkWell(
+              child: RaisedButton(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.teal),
+                  ),
                   child: Text('+ New List',
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2
-                          .copyWith(fontSize: 13, color: Colors.teal)),
-                  onTap: () {
+                          .headline3
+                          .copyWith(fontSize: 13, color: Colors.teal,  fontWeight: FontWeight.bold)),
+                  onPressed: () {
                     return showDialog(
                         context: context,
                         builder: (context) {
@@ -60,7 +65,9 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                                 child: new Text('Submit'),
                                 onPressed: () {
                                   customListProvider.addCustomList(
-                                      authProvider.uid, authProvider.email, textController.text);
+                                      authProvider.uid,
+                                      authProvider.email,
+                                      textController.text);
                                   textController.clear();
                                   Navigator.of(context).pop();
                                 },
