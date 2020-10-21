@@ -91,10 +91,9 @@ class _NearbyScreen extends State<NearbyScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      Provider.of<Favorites>(context)
-          .fetchAndSetFavorites(Provider.of<Auth>(context).uid);
-      Provider.of<CustomLists>(context)
-          .fetchAndSetCustomLists(Provider.of<Auth>(context).uid);
+      
+      // Provider.of<CustomLists>(context)
+      //     .fetchAndSetCustomLists(Provider.of<Auth>(context).uid);
     }
     _isInit = false;
     super.didChangeDependencies();
