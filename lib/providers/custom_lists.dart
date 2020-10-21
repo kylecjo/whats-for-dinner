@@ -72,7 +72,8 @@ class CustomLists with ChangeNotifier {
       notifyListeners();
       String customListUrl =
           '${APIKeys.firebase}/customLists/${customList.id}/items.json?auth=$authToken';
-      final response = await http.patch(customListUrl, body: json.encode(customList));
+      final response =
+          await http.patch(customListUrl, body: json.encode(customList));
       print(response.body);
     } on Exception catch (e) {
       print(e);
@@ -80,27 +81,35 @@ class CustomLists with ChangeNotifier {
     }
   }
 
-  Future<void> removeCustomList(String uid, String id) async {
+  Future<void> removeCustomList(
+      String authUid, String id, String listUid) async {
     //TODO if list is not yours than it should just remove you from user/lists and from the members of the list
     try {
       _customLists.removeWhere((element) => element.id == id);
       notifyListeners();
-      //TODO on a delete you have to go through the owner and every member of the list and remove that member from user/lists
-      final members = await http.get(
-        '${APIKeys.firebase}/customLists/$id/members.json?auth=$authToken'
-      );
-      print(members.body);
-      final membersData = json.decode(members.body) as Map<String, dynamic>;
-      membersData.keys.forEach((key) async {
+      //TODO if a member of a list it deletes the list and from user's lists but not from admin's list because admin is not in members
+      //if user is owner of list then delete list from all users' lists and the list itself
+      if (authUid == listUid) {
+        final members = await http.get(
+            '${APIKeys.firebase}/customLists/$id/members.json?auth=$authToken');
+        final membersData = json.decode(members.body) as Map<String, dynamic>;
+        membersData.keys.forEach((key) async {
+          await http.delete(
+            '${APIKeys.firebase}/users/$key/lists/$id.json?auth=$authToken',
+          );
+        });
+        await http
+            .delete('${APIKeys.firebase}/customLists/$id.json?auth=$authToken');
         await http.delete(
-          '${APIKeys.firebase}/users/$key/lists/$id.json?auth=$authToken',
-        );
-      });
-      await http
-          .delete('${APIKeys.firebase}/customLists/$id.json?auth=$authToken');
-      await http.delete(
-          '${APIKeys.firebase}/users/$uid/lists/$id.json?auth=$authToken');
+            '${APIKeys.firebase}/users/$authUid/lists/$id.json?auth=$authToken');
+      } else {
+        await http.delete(
+            '${APIKeys.firebase}/customLists/$id/members/$authUid.json?auth=$authToken');
+        await http.delete(
+            '${APIKeys.firebase}/users/$authUid/lists/$id.json?auth=$authToken');
+      }
 
+      //otherwise just delete the list from the users lists and the user from members
 
     } on Exception catch (e) {
       throw e;

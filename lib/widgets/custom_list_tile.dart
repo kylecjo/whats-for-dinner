@@ -7,8 +7,9 @@ class CustomListTile extends StatelessWidget {
   final String name;
   final int listLength;
   final String id;
+  final String uid;
 
-  CustomListTile({@required this.name, @required this.listLength, @required  this.id});
+  CustomListTile({@required this.name, @required this.listLength, @required  this.id, @required this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class CustomListTile extends StatelessWidget {
                       FlatButton(
                           child: Text('Continue'),
                           onPressed: () {
-                            customListProvider.removeCustomList(authProvider.uid, id);
+                            customListProvider.removeCustomList(authProvider.uid, id, uid);
                             Navigator.of(context).pop();
                           }),
                     ],

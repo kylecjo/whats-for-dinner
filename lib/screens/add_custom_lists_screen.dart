@@ -90,6 +90,7 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
                       listLength:
                           customListProvider.customLists[idx].businesses.length,
                       id: customListProvider.customLists[idx].id,
+                      uid: customListProvider.customLists[idx].uid,
                     ),
                   );
                 },
