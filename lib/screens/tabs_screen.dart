@@ -12,7 +12,7 @@ class _TabsScreenState extends State<TabsScreen> {
   final List<Map<String, Object>> _pages = [
     {'page': DefaultTabController(length: 3, child:  ExploreScreen())},
     {'page': SearchScreen()},
-    {'page': AddCustomListsScreen('Your Lists')},
+    {'page': AddCustomListsScreen()},
   ];
 
   int _selectedPageIndex = 0;

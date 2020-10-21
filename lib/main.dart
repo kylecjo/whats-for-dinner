@@ -107,8 +107,6 @@ class MyApp extends StatelessWidget {
             FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
             ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
             SearchScreen.routeName: (ctx) => SearchScreen(),
-            AddCustomListsScreen.routeName: (ctx) =>
-                AddCustomListsScreen('Custom lists'),
           },
           debugShowCheckedModeBanner: false,
         ),

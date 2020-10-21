@@ -6,18 +6,8 @@ import '../screens/custom_list_screen.dart';
 import '../widgets/custom_list_tile.dart';
 import '../widgets/favorite_list_tile.dart';
 
-class AddCustomListsScreen extends StatefulWidget {
-  final String title;
-  static const routeName = '/addCustomLists';
-
-  AddCustomListsScreen(this.title);
-
-  @override
-  _AddCustomListsScreenState createState() => _AddCustomListsScreenState();
-}
-
-class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
-  TextEditingController textController = TextEditingController();
+class AddCustomListsScreen extends StatelessWidget {
+  final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +17,7 @@ class _AddCustomListsScreenState extends State<AddCustomListsScreen> {
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text('Your lists'),
         ),
         body: FutureBuilder(
             future: Provider.of<CustomLists>(context, listen: false)

@@ -42,7 +42,6 @@ class CustomLists with ChangeNotifier {
         url,
         body: json.encode(customList),
       );
-      print(response.body);
     } on Exception catch (e) {
       print(e);
       throw e;
@@ -75,7 +74,6 @@ class CustomLists with ChangeNotifier {
           '${APIKeys.firebase}/customLists/${customList.id}/items.json?auth=$authToken';
       final response =
           await http.patch(customListUrl, body: json.encode(customList));
-      print(response.body);
     } on Exception catch (e) {
       print(e);
       throw e;
