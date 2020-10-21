@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:whats_for_dinner/models/custom_list.dart';
+import 'package:whats_for_dinner/models/http_exception.dart';
 import 'package:whats_for_dinner/services/api_keys.dart';
 
 import '../models/business.dart';
@@ -83,11 +84,9 @@ class CustomLists with ChangeNotifier {
 
   Future<void> removeCustomList(
       String authUid, String id, String listUid) async {
-    //TODO if list is not yours than it should just remove you from user/lists and from the members of the list
     try {
       _customLists.removeWhere((element) => element.id == id);
       notifyListeners();
-      //TODO if a member of a list it deletes the list and from user's lists but not from admin's list because admin is not in members
       //if user is owner of list then delete list from all users' lists and the list itself
       if (authUid == listUid) {
         final members = await http.get(
@@ -118,7 +117,6 @@ class CustomLists with ChangeNotifier {
 
   Future<void> shareList(String uid, CustomList myList, String email) async {
     // first have to take email and find the correct userid on the server
-    // TODO filter on the server not locally
     final url = '${APIKeys.firebase}/users.json?auth=$authToken';
     try {
       final response = await http.get(url);
@@ -126,21 +124,33 @@ class CustomLists with ChangeNotifier {
       final shareUid = responseData.keys.firstWhere(
           (element) => responseData[element]['email'] == email,
           orElse: null);
-
+      print(shareUid);
       if (shareUid != null) {
-        await http.patch(
+        final members = await http.get(
           '${APIKeys.firebase}/customLists/${myList.id}/members.json?auth=$authToken',
-          body: json.encode({'$shareUid': true}),
         );
+        final membersData = json.decode(members.body) as Map<String, dynamic>;
 
-        //TODO if id is already in list then don't add again
-        //also check if user is admin and then in members
-        await http.patch(
-          '${APIKeys.firebase}/users/$shareUid/lists.json?auth=$authToken',
-          body: json.encode({myList.id: true}),
-        );
-      }
-    } catch (e) {}
+        // if the shareUid is not in members then add it otherwise, throw an exception
+        if (shareUid == myList.uid) {
+          throw HttpException('This list belongs to you');
+        } else if (membersData == null ||
+            !membersData.keys.contains(shareUid)) {
+          await http.patch(
+            '${APIKeys.firebase}/customLists/${myList.id}/members.json?auth=$authToken',
+            body: json.encode({'$shareUid': true}),
+          );
+          await http.patch(
+            '${APIKeys.firebase}/users/$shareUid/lists.json?auth=$authToken',
+            body: json.encode({myList.id: true}),
+          );
+        } else if(membersData.keys.contains(shareUid)) {
+          throw HttpException('List is already shared with $email');
+        }
+      } 
+    } catch (e) {
+      throw e;
+    }
 
     // add that user id to the lists' member thing
     // give permission for all users in that member thing to read write onto that list

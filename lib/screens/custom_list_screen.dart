@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/models/business.dart';
 import 'package:whats_for_dinner/models/choose_one_arguments.dart';
 import 'package:whats_for_dinner/models/custom_list.dart';
+import 'package:whats_for_dinner/models/http_exception.dart';
 import 'package:whats_for_dinner/providers/auth.dart';
 import 'package:whats_for_dinner/providers/custom_lists.dart';
 import 'package:whats_for_dinner/screens/choose_one_screen.dart';
@@ -35,10 +36,43 @@ class _CustomListScreenState extends State<CustomListScreen> {
     }
   }
 
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Error'),
+        content: Text(message),
+        actions: [
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _share() async {
+    final customListProvider = Provider.of<CustomLists>(context, listen: false);
+    final authProvider = Provider.of<Auth>(context, listen: false);
+    try {
+      await customListProvider.shareList(
+          authProvider.uid, widget.customList, widget.textController.text);
+    } on HttpException catch (e) {
+      _showErrorDialog(e.message);
+    } catch (e){
+      var errorMessage = e.toString();
+      if(e.toString().contains('No element')){
+        errorMessage = 'User not found';
+      }
+      _showErrorDialog(errorMessage);
+    }
+    widget.textController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final customListProvider = Provider.of<CustomLists>(context);
-    final authProvider = Provider.of<Auth>(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -76,11 +110,7 @@ class _CustomListScreenState extends State<CustomListScreen> {
                   RaisedButton(
                     child: Text('Share'),
                     color: Theme.of(context).accentColor,
-                    onPressed: () {
-                      customListProvider.shareList(
-                          authProvider.uid, widget.customList, widget.textController.text);
-                      widget.textController.clear();
-                    },
+                    onPressed: _share,
                   ),
                 ],
               ),
@@ -91,7 +121,8 @@ class _CustomListScreenState extends State<CustomListScreen> {
                       itemCount: widget.customList.businesses.length,
                       itemBuilder: (BuildContext ctx, int index) {
                         return CustomListDismissibleCard(
-                            widget.customList.businesses[index], widget.customList);
+                            widget.customList.businesses[index],
+                            widget.customList);
                       },
                     )
                   : Text('No restaurants in ${widget.customList.name} yet!'),

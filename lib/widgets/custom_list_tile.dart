@@ -42,7 +42,7 @@ class CustomListTile extends StatelessWidget {
                       ),
                     ),
                     content: Text(
-                      'You are about to delete $name and all of its contents',
+                      authProvider.uid == uid ? 'You are about to delete $name and all of its contents' : 'After deleting $name you will not be able to view its contents',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         color: Colors.black,

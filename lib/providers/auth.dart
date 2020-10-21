@@ -63,7 +63,7 @@ class Auth with ChangeNotifier {
       _uid = responseData['localId'];
 
       if (urlSegment == 'signUp') {
-        final res = await http.put(
+        await http.put(
           '${APIKeys.firebase}/users/$uid.json?auth=$_token',
           body: json.encode({
             'email': email,
