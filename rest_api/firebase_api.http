@@ -1,0 +1,9 @@
+
+### 
+GET {{firebaseUrl}}/customLists.json
+# ?orderBy="uid"
+# &equalTo="QkkVSyt13vVcF4iDRTMe1lEHHHK2"
+?auth={{firebaseAuth}}
+
+
+

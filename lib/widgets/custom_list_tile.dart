@@ -7,8 +7,9 @@ class CustomListTile extends StatelessWidget {
   final String name;
   final int listLength;
   final String id;
+  final String uid;
 
-  CustomListTile({@required this.name, @required this.listLength, @required  this.id});
+  CustomListTile({@required this.name, @required this.listLength, @required  this.id, @required this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class CustomListTile extends StatelessWidget {
                         color: Colors.black,
                         fontSize: 14,
                       ),),
-        subtitle: Text('$listLength items'),
+        subtitle: Text('$listLength restaurants'),
         trailing: GestureDetector(
           child: Icon(Icons.delete),
           onTap: () {
@@ -41,7 +42,7 @@ class CustomListTile extends StatelessWidget {
                       ),
                     ),
                     content: Text(
-                      'You are about to delete $name and all of its contents',
+                      authProvider.uid == uid ? 'You are about to delete $name and all of its contents' : 'After deleting $name you will not be able to view its contents',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         color: Colors.black,
@@ -55,7 +56,7 @@ class CustomListTile extends StatelessWidget {
                       FlatButton(
                           child: Text('Continue'),
                           onPressed: () {
-                            customListProvider.removeCustomList(authProvider.uid, id);
+                            customListProvider.removeCustomList(authProvider.uid, id, uid);
                             Navigator.of(context).pop();
                           }),
                     ],

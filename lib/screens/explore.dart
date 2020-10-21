@@ -123,9 +123,7 @@ class _ExploreScreen extends State<ExploreScreen> {
         sortBy: 'rating',
       );
       businessList.initTop(top);
-    } catch (e) {
-      throw e;
-    }
+    } catch (e) {}
   }
 
   void chooseOne(List<Business> businesses, String errorText) {
@@ -133,8 +131,7 @@ class _ExploreScreen extends State<ExploreScreen> {
       Navigator.pushNamed(
         context,
         ChooseOneScreen.routeName,
-        arguments:
-            ChooseOneArguments(businesses),
+        arguments: ChooseOneArguments(businesses),
       );
     } catch (_) {
       final snackBar = SnackBar(
