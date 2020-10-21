@@ -58,21 +58,35 @@ class _CustomListScreenState extends State<CustomListScreen> {
     try {
       await customListProvider.shareList(
           authProvider.uid, widget.customList, widget.textController.text);
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Success'),
+          content: Text(
+              'Share was successful!'),
+          actions: [
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
     } on HttpException catch (e) {
       _showErrorDialog(e.message);
-    } catch (e){
+    } catch (e) {
       var errorMessage = e.toString();
-      if(e.toString().contains('No element')){
+      if (e.toString().contains('No element')) {
         errorMessage = 'User not found';
       }
       _showErrorDialog(errorMessage);
     }
+
     widget.textController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
