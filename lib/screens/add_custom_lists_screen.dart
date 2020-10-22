@@ -39,7 +39,7 @@ class AddCustomListsScreen extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 15),
+                              vertical: 5, horizontal: 15),
                           child: RaisedButton(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
