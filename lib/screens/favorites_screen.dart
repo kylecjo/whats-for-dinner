@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../widgets/reroll_icon.dart';
 
-import '../models/business.dart';
-import '../models/choose_one_arguments.dart';
 import '../providers/favorites.dart';
 import '../widgets/restaurant_card.dart';
-import 'choose_one_screen.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final String title;
@@ -18,20 +16,6 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  void chooseOne(List<Business> businesses, String errorText) {
-    try {
-      Navigator.pushNamed(
-        context,
-        ChooseOneScreen.routeName,
-        arguments: ChooseOneArguments(businesses),
-      );
-    } catch (_) {
-      final snackBar = SnackBar(
-        content: Text(errorText),
-      );
-      Scaffold.of(context).showSnackBar(snackBar);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +25,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          InkWell(
-              child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7),
-                  child: Icon(Icons.casino)),
-              onTap: () {
-                chooseOne(favs.favorites, 'You have no favorites');
-              }),
+          RerollIcon(favs.favorites, 'You have no favorites!'),
         ],
       ),
       body: Center(
