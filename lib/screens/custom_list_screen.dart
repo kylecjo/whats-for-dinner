@@ -13,7 +13,6 @@ import '../widgets/custom_list_dismissible_card.dart';
 class CustomListScreen extends StatefulWidget {
   final CustomList customList;
   static const routeName = '/customList';
-  final TextEditingController textController = TextEditingController();
 
   CustomListScreen(this.customList);
 
@@ -22,6 +21,8 @@ class CustomListScreen extends StatefulWidget {
 }
 
 class _CustomListScreenState extends State<CustomListScreen> {
+  final TextEditingController _textController = TextEditingController();
+
   void chooseOne(List<Business> businesses, String errorText) {
     try {
       Navigator.pushNamed(
@@ -58,7 +59,7 @@ class _CustomListScreenState extends State<CustomListScreen> {
     final authProvider = Provider.of<Auth>(context, listen: false);
     try {
       await customListProvider.shareList(
-          authProvider.uid, widget.customList, widget.textController.text);
+          authProvider.uid, widget.customList, _textController.text);
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -82,7 +83,7 @@ class _CustomListScreenState extends State<CustomListScreen> {
       _showErrorDialog(errorMessage);
     }
 
-    widget.textController.clear();
+    _textController.clear();
   }
 
   @override
@@ -100,35 +101,42 @@ class _CustomListScreenState extends State<CustomListScreen> {
                 chooseOne(widget.customList.businesses,
                     'There are no items in this custom list');
               }),
+          InkWell(
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7),
+                  child: Icon(Icons.share)),
+              onTap: () {
+                return showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Enter user email',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(fontSize: 15)),
+                        content: TextField(
+                          controller: _textController,
+                          textInputAction: TextInputAction.go,
+                        ),
+                        actions: <Widget>[
+                          new FlatButton(
+                            child: new Text('Submit'),
+                            onPressed: () {
+                              _share();
+                              _textController.clear();
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      );
+                    });
+              }),
         ],
       ),
       body: Consumer<CustomLists>(
         builder: (ctx, data, child) => Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: TextField(
-                        controller: widget.textController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'User email',
-                        ),
-                      ),
-                    ),
-                  ),
-                  RaisedButton(
-                    child: Text('Share'),
-                    color: Theme.of(context).accentColor,
-                    onPressed: _share,
-                  ),
-                ],
-              ),
-            ),
             Expanded(
               child: widget.customList.businesses.length > 0
                   ? ListView.builder(
@@ -139,7 +147,13 @@ class _CustomListScreenState extends State<CustomListScreen> {
                             widget.customList);
                       },
                     )
-                  : Text('No restaurants in ${widget.customList.name} yet!'),
+                  : Center(
+                      child: Text(
+                          'No restaurants in ${widget.customList.name} yet!',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .copyWith(fontSize: 14))),
             ),
           ],
         ),
