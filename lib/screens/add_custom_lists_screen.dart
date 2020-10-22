@@ -91,7 +91,6 @@ class AddCustomListsScreen extends StatelessWidget {
                         Expanded(
                           child: Consumer<CustomLists>(
                             builder: (ctx, customListProvider, _) =>
-                                // Center(child: Text('${customListProvider.customLists} ${customListProvider.customLists.length}'))
                                 ListView.builder(
                               itemCount: customListProvider.customLists.length,
                               itemBuilder: (BuildContext ctx, int idx) {

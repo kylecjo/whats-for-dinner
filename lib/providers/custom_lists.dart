@@ -169,7 +169,6 @@ class CustomLists with ChangeNotifier {
         allowedLists.keys.forEach((id) async {
           final list = await http.get(
               '${APIKeys.firebase}/customLists/$id/items.json?auth=$authToken');
-          // print(list.body);
           final listData = json.decode(list.body) as Map<String, dynamic>;
           if (listData != null) {
             loadedCustomLists.add(CustomList.fromJson(listData));
