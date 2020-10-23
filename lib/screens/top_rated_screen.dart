@@ -42,12 +42,15 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
                     itemCount: businessProvider.top.length,
                     itemBuilder: (BuildContext ctx, int index) {
                       return RestaurantCard(
-                          business: businessProvider.top[index],
-                          cardColor: Colors.white);
+                        business: businessProvider.top[index],
+                      );
                     },
                   ),
                 )
-              : Center(child: CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor,)),
+              : Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                )),
         ),
         Container(
           height: isLoading ? 50.0 : 0,

@@ -13,7 +13,7 @@ class RerollIcon extends StatelessWidget {
     return InkWell(
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 7),
-            child: Icon(Icons.casino)),
+            child: Icon(Icons.casino, color: Theme.of(context).primaryIconTheme.color)),
         onTap: () {
           if (businesses.length > 0) {
             Navigator.pushNamed(

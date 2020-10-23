@@ -46,12 +46,15 @@ class _NearbyScreen extends State<NearbyScreen> {
                     itemCount: businessProvider.nearby.length,
                     itemBuilder: (context, int index) {
                       return RestaurantCard(
-                          business: businessProvider.nearby[index],
-                          cardColor: Colors.white);
+                        business: businessProvider.nearby[index],
+                      );
                     },
                   ),
                 )
-              : Center(child: CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor,)),
+              : Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                )),
         ),
         Container(
           height: isLoading ? 50.0 : 0,

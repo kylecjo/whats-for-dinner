@@ -21,7 +21,7 @@ class _ShareIconState extends State<ShareIcon> {
     return InkWell(
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 7),
-            child: Icon(Icons.share)),
+            child: Icon(Icons.share, color: Theme.of(context).primaryIconTheme.color)),
         onTap: () {
           return showDialog(
               context: context,

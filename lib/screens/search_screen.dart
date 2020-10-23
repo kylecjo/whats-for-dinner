@@ -39,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
           title: TextFormField(
             controller: _textController,
             decoration: InputDecoration(
-              icon: Icon(Icons.search, color: Colors.black),
+              icon: Icon(Icons.search, color: Theme.of(context).textTheme.bodyText1.color),
               fillColor: Colors.white,
               filled: true,
             ),
@@ -70,8 +70,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           itemCount: businessProvider.search.length,
                           itemBuilder: (BuildContext ctx, int index) {
                             return RestaurantCard(
-                                business: businessProvider.search[index],
-                                cardColor: Colors.white);
+                              business: businessProvider.search[index],
+                            );
                           },
                         ),
                       )

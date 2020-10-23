@@ -69,8 +69,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
           SlideTransition(
             position: _offsetAnimation,
             child: RestaurantCard(
-                business: randomBusiness,
-                cardColor: Theme.of(context).accentColor),
+                business: randomBusiness,),
           ),
           SizedBox(height: 10),
           FadeTransition(
@@ -80,14 +79,14 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                 SizedBox(
                   width: 200,
                   child: RaisedButton(
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     onPressed: () {
                       launch("tel://${randomBusiness.phone}");
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.phone),
+                        Icon(Icons.phone, color: Theme.of(context).textTheme.bodyText1.color),
                         Text(
                           'Call Restaurant',
                           style: Theme.of(context).textTheme.headline4,
@@ -99,7 +98,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                 SizedBox(
                   width: 200,
                   child: RaisedButton(
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).cardColor,
                     onPressed: () {
                       Navigator.pushReplacementNamed(
                         context,
@@ -112,7 +111,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.casino),
+                        Icon(Icons.casino, color: Theme.of(context).textTheme.bodyText1.color),
                         Text(
                           'Reroll Restaurant',
                           style: Theme.of(context).textTheme.headline4,

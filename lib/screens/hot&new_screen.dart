@@ -22,8 +22,7 @@ class _HotNewScreenState extends State<HotNewScreen> {
               itemCount: businessProvider.hot.length,
               itemBuilder: (context, int index) {
                 return RestaurantCard(
-                    business: businessProvider.hot[index],
-                    cardColor: Colors.white);
+                    business: businessProvider.hot[index],);
               },
             )
           : Center(child: CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor,)),

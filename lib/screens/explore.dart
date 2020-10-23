@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/screens/settings_screen.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
@@ -70,10 +71,11 @@ class _ExploreScreen extends State<ExploreScreen> {
           GestureDetector(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 7),
-                child: Icon(Icons.exit_to_app),
+                child: Icon(Icons.settings, color: Theme.of(context).primaryIconTheme.color),
               ),
               onTap: () {
-                Provider.of<Auth>(context, listen: false).logout();
+                // Provider.of<Auth>(context, listen: false).logout();
+                Navigator.pushNamed(context, SettingsScreen.routeName);
               }),
         ],
       ),

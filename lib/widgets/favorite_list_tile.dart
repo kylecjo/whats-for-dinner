@@ -30,11 +30,7 @@ class FavoriteListTile extends StatelessWidget {
                   leading: Icon(Icons.favorite, color: Colors.red),
                   title: Text(
                     'Favorites',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: Colors.black,
-                      fontSize: 14,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 14),
                   ),
                   subtitle: Text('${favoritesProvider.favorites.length} items'),
                 ),
