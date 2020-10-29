@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
 import '../providers/businesses.dart';
-
+import '../widgets/restaurant_card.dart';
 
 class HotNewScreen extends StatefulWidget {
   @override
@@ -23,12 +22,10 @@ class _HotNewScreenState extends State<HotNewScreen> {
               itemCount: businessProvider.hot.length,
               itemBuilder: (context, int index) {
                 return RestaurantCard(
-                    business: businessProvider.hot[index],
-                    cardColor: Colors.white);
+                    business: businessProvider.hot[index],);
               },
             )
-          : CircularProgressIndicator(),
+          : Center(child: CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor,)),
     );
   }
-
 }

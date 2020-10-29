@@ -10,10 +10,6 @@ class API {
 
   static final String host = 'api.yelp.com';
 
-  // Uri searchUri(Map<String, dynamic> queries) => Uri.https(
-  //   host, '/search', queries
-  // );
-
   Uri searchUri({String term, double lat, double long, int radius, String attributes, String sortBy, int offset}) {
     Uri uri = Uri.https(host, '/v3/businesses/search', {
       'term': term,

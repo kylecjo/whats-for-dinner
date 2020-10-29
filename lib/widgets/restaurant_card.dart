@@ -6,9 +6,8 @@ import '../models/business.dart';
 
 class RestaurantCard extends StatefulWidget {
   final Business business;
-  final Color cardColor;
 
-  RestaurantCard({@required this.business, @required this.cardColor});
+  RestaurantCard({@required this.business});
 
   @override
   _RestaurantCardState createState() => _RestaurantCardState();
@@ -23,7 +22,6 @@ class _RestaurantCardState extends State<RestaurantCard> {
         child: Column(
           children: [
             RestaurantCardHeader(
-              color: widget.cardColor,
               business: widget.business,
             ),
             RestaurantCardFooter(

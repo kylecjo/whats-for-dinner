@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
-import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
-import 'package:whats_for_dinner/screens/splash_screen.dart';
-import 'package:whats_for_dinner/screens/tabs_screen.dart';
+import 'package:whats_for_dinner/screens/settings_screen.dart';
 
 import './data/repository.dart';
+import './providers/auth.dart';
 import './providers/businesses.dart';
+import './providers/custom_lists.dart';
+import './providers/favorites.dart';
+import './screens/auth_screen.dart';
 import './screens/choose_one_screen.dart';
 import './screens/favorites_screen.dart';
-
-import 'screens/nearby_screen.dart';
+import './screens/nearby_screen.dart';
 import './screens/search_screen.dart';
+import './screens/splash_screen.dart';
+import './screens/tabs_screen.dart';
 import './services/api.dart';
 import './services/api_service.dart';
-import './screens/auth_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,8 +24,13 @@ void main() {
       .then((_) => runApp(MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -56,12 +60,56 @@ class MyApp extends StatelessWidget {
       child: Consumer<Auth>(
         builder: (ctx, authData, _) => MaterialApp(
           title: 'Flutter Demo',
-          // theme: Theme.of(context).copyWith(primaryColor: const Color(0xff41B883)),
+          darkTheme: ThemeData(
+            fontFamily: 'RobotoMono',
+            primaryColor: Color(0xff121212),
+            accentColor: Colors.white,
+            cardColor: Color(0xff212121),
+            scaffoldBackgroundColor: Colors.grey[200],
+            backgroundColor: Color(0xff121212),
+            dividerColor: const Color(0xffDAA99B),
+            // accentColor: const Color(0xffb86f41),
+            textTheme: ThemeData.dark().textTheme.copyWith(
+                  headline6: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  headline5: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  headline4: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  bodyText2: TextStyle(
+                    fontSize: 11,
+                    color: Colors.grey[700],
+                  ),
+                  bodyText1: TextStyle(
+                    fontSize: 11,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  subtitle1: TextStyle(
+                    fontSize: 9,
+                    color: Colors.black,
+                  ),
+                ),
+            primaryIconTheme: IconThemeData(
+              color: Colors.white,
+            ),
+            accentIconTheme: IconThemeData(
+              color: Colors.white,
+            ),
+          ),
           theme: ThemeData(
             fontFamily: 'RobotoMono',
             primaryColor: Colors.deepOrange[500],
             accentColor: Colors.white,
-            // cardColor: const Color(0xffDAA99B),
+            cardColor: Colors.white,
+            scaffoldBackgroundColor: Colors.grey[200],
             backgroundColor: Colors.grey[200],
             dividerColor: const Color(0xffDAA99B),
             // accentColor: const Color(0xffb86f41),
@@ -92,6 +140,12 @@ class MyApp extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
+            primaryIconTheme: IconThemeData(
+              color: Colors.white,
+            ),
+            accentIconTheme: IconThemeData(
+              color: Colors.grey[700],
+            ),
           ),
           home: authData.isAuth
               ? TabsScreen()
@@ -107,12 +161,29 @@ class MyApp extends StatelessWidget {
             FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
             ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
             SearchScreen.routeName: (ctx) => SearchScreen(),
-            AddCustomListsScreen.routeName: (ctx) =>
-                AddCustomListsScreen('Custom lists'),
+            SettingsScreen.routeName: (ctx) => SettingsScreen(),
           },
           debugShowCheckedModeBanner: false,
         ),
       ),
     );
+  }
+
+  void initState() {
+    super.initState();
+     WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    final Brightness brightness = 
+    WidgetsBinding.instance.window.platformBrightness;
+    //inform listeners and rebuild widget tree
   }
 }

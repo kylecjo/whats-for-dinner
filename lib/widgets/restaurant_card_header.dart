@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/models/custom_list.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
+import '../models/custom_list.dart';
+import '../providers/auth.dart';
+import '../providers/custom_lists.dart';
 import '../providers/favorites.dart';
 import '../models/business.dart';
 
 class RestaurantCardHeader extends StatefulWidget {
-  final Color color;
   final Business business;
 
-  RestaurantCardHeader({@required this.color, @required this.business});
+  RestaurantCardHeader({@required this.business});
 
   @override
   _RestaurantCardHeaderState createState() => _RestaurantCardHeaderState();
@@ -30,7 +29,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
     return Container(
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-          color: widget.color,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(5.0), topRight: Radius.circular(5.0))),
       child: Column(
@@ -55,7 +54,7 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                     ),
                     child: PopupMenuButton<String>(
                         padding: EdgeInsets.all(0),
-                        icon: Icon(Icons.add, color: Colors.grey[700], size: 30),
+                        icon: Icon(Icons.add, color: Theme.of(context).accentIconTheme.color, size: 30),
                         onSelected: (name) {
                           int selectedListIndex = customListProvider.customLists
                               .indexWhere((element) => element.name == name);
@@ -148,12 +147,12 @@ class _RestaurantCardHeaderState extends State<RestaurantCardHeader> {
                             height: 30,
                             width: 30,
                             child: CircularProgressIndicator(
-                              backgroundColor: Colors.grey[700],
+                              backgroundColor: Theme.of(context).primaryColor,
                             ))
                         : favoriteProvider.isFavorite(widget.business)
                             ? Icon(Icons.star, size: 30, color: Colors.yellow[700])
                             : Icon(Icons.star_border,
-                                size: 30, color: Colors.grey[700]),
+                                size: 30, color: Theme.of(context).accentIconTheme.color),
                   ),
                 ],
               ),

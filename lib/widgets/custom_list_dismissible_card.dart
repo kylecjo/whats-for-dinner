@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/models/custom_list.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
 
 import '../models/business.dart';
+import '../models/custom_list.dart';
+import '../providers/auth.dart';
+import '../providers/custom_lists.dart';
 import '../widgets/restaurant_card.dart';
 
 class CustomListDismissibleCard extends StatelessWidget {
@@ -18,14 +18,15 @@ class CustomListDismissibleCard extends StatelessWidget {
     final authProvider = Provider.of<Auth>(context);
     return Consumer<CustomLists>(
       builder: (context, customListProvider, child) => Dismissible(
-          key: Key(business.id.toString()),
-          background: Container(color: Theme.of(context).backgroundColor),
-          direction: DismissDirection.endToStart,
-          onDismissed: (direction) {
-            customListProvider.removeFromCustomList(authProvider.uid, customList, business);
-          },
-          child: RestaurantCard(
-              business: business, cardColor: Theme.of(context).accentColor)),
+        key: Key(business.id.toString()),
+        background: Container(color: Theme.of(context).backgroundColor),
+        direction: DismissDirection.endToStart,
+        onDismissed: (direction) {
+          customListProvider.removeFromCustomList(
+              authProvider.uid, customList, business);
+        },
+        child: RestaurantCard(business: business),
+      ),
     );
   }
 }

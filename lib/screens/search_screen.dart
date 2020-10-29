@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
 import '../providers/businesses.dart';
+import '../widgets/restaurant_card.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
@@ -39,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
           title: TextFormField(
             controller: _textController,
             decoration: InputDecoration(
-              icon: Icon(Icons.search, color: Colors.black),
+              icon: Icon(Icons.search, color: Theme.of(context).textTheme.bodyText1.color),
               fillColor: Colors.white,
               filled: true,
             ),
@@ -70,8 +70,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           itemCount: businessProvider.search.length,
                           itemBuilder: (BuildContext ctx, int index) {
                             return RestaurantCard(
-                                business: businessProvider.search[index],
-                                cardColor: Colors.white);
+                              business: businessProvider.search[index],
+                            );
                           },
                         ),
                       )

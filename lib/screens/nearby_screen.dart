@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/data/repository.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
 
+import '../data/repository.dart';
+import '../models/business.dart';
 import '../providers/businesses.dart';
+import '../widgets/restaurant_card.dart';
 
 class NearbyScreen extends StatefulWidget {
   final String title;
@@ -22,7 +19,6 @@ class NearbyScreen extends StatefulWidget {
 class _NearbyScreen extends State<NearbyScreen> {
   final Location location = Location();
   LocationData _locationData;
-  bool _isInit = true;
   int _page = 1;
   int _resultsPerPage = 30;
   bool isLoading = false;
@@ -50,20 +46,23 @@ class _NearbyScreen extends State<NearbyScreen> {
                     itemCount: businessProvider.nearby.length,
                     itemBuilder: (context, int index) {
                       return RestaurantCard(
-                          business: businessProvider.nearby[index],
-                          cardColor: Colors.white);
+                        business: businessProvider.nearby[index],
+                      );
                     },
                   ),
                 )
-              : CircularProgressIndicator(),
+              : Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                )),
         ),
         Container(
-            height: isLoading ? 50.0 : 0,
-            color: Theme.of(context).primaryColor,
-            child: Center(
-              child: new CircularProgressIndicator(),
-            ),
+          height: isLoading ? 50.0 : 0,
+          color: Theme.of(context).primaryColor,
+          child: Center(
+            child: new CircularProgressIndicator(),
           ),
+        ),
       ],
     );
   }
@@ -86,17 +85,5 @@ class _NearbyScreen extends State<NearbyScreen> {
       _page += 1;
       isLoading = false;
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      Provider.of<Favorites>(context)
-          .fetchAndSetFavorites(Provider.of<Auth>(context).uid);
-      Provider.of<CustomLists>(context)
-          .fetchAndSetCustomLists(Provider.of<Auth>(context).uid);
-    }
-    _isInit = false;
-    super.didChangeDependencies();
   }
 }

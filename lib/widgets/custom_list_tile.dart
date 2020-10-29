@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/auth.dart';
-import 'package:whats_for_dinner/providers/custom_lists.dart';
+
+import '../providers/auth.dart';
+import '../providers/custom_lists.dart';
 
 class CustomListTile extends StatelessWidget {
   final String name;
@@ -9,7 +10,11 @@ class CustomListTile extends StatelessWidget {
   final String id;
   final String uid;
 
-  CustomListTile({@required this.name, @required this.listLength, @required  this.id, @required this.uid});
+  CustomListTile(
+      {@required this.name,
+      @required this.listLength,
+      @required this.id,
+      @required this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +24,13 @@ class CustomListTile extends StatelessWidget {
       elevation: 1,
       child: ListTile(
         leading: Icon(Icons.list, color: Colors.teal),
-        title: Text(name, style: TextStyle(
-                        fontFamily: 'Roboto',
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),),
+        title: Text(
+          name,
+          style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 14),
+        ),
         subtitle: Text('$listLength restaurants'),
         trailing: GestureDetector(
-          child: Icon(Icons.delete),
+          child: Icon(Icons.delete, color: Theme.of(context).primaryIconTheme.color),
           onTap: () {
             return showDialog(
                 context: context,
@@ -42,7 +46,9 @@ class CustomListTile extends StatelessWidget {
                       ),
                     ),
                     content: Text(
-                      authProvider.uid == uid ? 'You are about to delete $name and all of its contents' : 'After deleting $name you will not be able to view its contents',
+                      authProvider.uid == uid
+                          ? 'You are about to delete $name and all of its contents'
+                          : 'After deleting $name you will not be able to view its contents',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         color: Colors.black,
@@ -56,7 +62,8 @@ class CustomListTile extends StatelessWidget {
                       FlatButton(
                           child: Text('Continue'),
                           onPressed: () {
-                            customListProvider.removeCustomList(authProvider.uid, id, uid);
+                            customListProvider.removeCustomList(
+                                authProvider.uid, id, uid);
                             Navigator.of(context).pop();
                           }),
                     ],
