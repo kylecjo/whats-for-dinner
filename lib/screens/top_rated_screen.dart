@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/data/repository.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
+import '../data/repository.dart';
+import '../models/business.dart';
+import '../widgets/restaurant_card.dart';
 
 import '../providers/businesses.dart';
 
@@ -42,16 +42,19 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
                     itemCount: businessProvider.top.length,
                     itemBuilder: (BuildContext ctx, int index) {
                       return RestaurantCard(
-                          business: businessProvider.top[index],
-                          cardColor: Colors.white);
+                        business: businessProvider.top[index],
+                      );
                     },
                   ),
                 )
-              : CircularProgressIndicator(),
+              : Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                )),
         ),
         Container(
           height: isLoading ? 50.0 : 0,
-          color:  Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColor,
           child: Center(
             child: new CircularProgressIndicator(),
           ),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/providers/favorites.dart';
-import 'package:whats_for_dinner/screens/favorites_screen.dart';
+
+import '../providers/auth.dart';
+import '../providers/favorites.dart';
+import '../screens/favorites_screen.dart';
 
 class FavoriteListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final favoritesProvider = Provider.of<Favorites>(context);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -16,21 +17,27 @@ class FavoriteListTile extends StatelessWidget {
           ),
         );
       },
-      child: Card(
-        elevation: 1,
-        child: ListTile(
-          leading: Icon(Icons.favorite, color: Colors.red),
-          title: Text(
-            'Favorites',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              color: Colors.black,
-              fontSize: 14,
-            ),
-          ),
-          subtitle: Text('${favoritesProvider.favorites.length} items'),
-        ),
-      ),
+      child: FutureBuilder(
+        future:  Provider.of<Favorites>(context, listen: false).fetchAndSetFavorites(Provider.of<Auth>(context, listen: false).uid),
+        builder: (ctx, snapshot) {
+          if (snapshot.error != null) {
+            return Center(child: Text('There was an error loading favorites'));
+          } else {
+            return Consumer<Favorites>(
+              builder: (ctx, favoritesProvider, _) => Card(
+                elevation: 1,
+                child: ListTile(
+                  leading: Icon(Icons.favorite, color: Colors.red),
+                  title: Text(
+                    'Favorites',
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 14),
+                  ),
+                  subtitle: Text('${favoritesProvider.favorites.length} items'),
+                ),
+              ),
+            );
+          }
+      }),
     );
   }
 }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_for_dinner/models/business.dart';
-import 'package:whats_for_dinner/models/choose_one_arguments.dart';
-import 'package:whats_for_dinner/widgets/restaurant_card.dart';
+import '../widgets/reroll_icon.dart';
+
 import '../providers/favorites.dart';
-import 'choose_one_screen.dart';
+import '../widgets/restaurant_card.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final String title;
@@ -17,22 +16,6 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  void chooseOne(List<Business> businesses, String errorText) {
-    try {
-      Navigator.pushNamed(
-        context,
-        ChooseOneScreen.routeName,
-        arguments:
-            ChooseOneArguments(businesses),
-      );
-    } catch (_) {
-      final snackBar = SnackBar(
-        content: Text(errorText),
-      );
-      Scaffold.of(context).showSnackBar(snackBar);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final favs = Provider.of<Favorites>(context);
@@ -41,14 +24,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          InkWell(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 7),
-                child: Icon(Icons.shuffle)),
-            onTap: () {
-                chooseOne(favs.favorites, 'You have no favorites');
-              }
-          ),
+          RerollIcon(favs.favorites, 'You have no favorites!'),
         ],
       ),
       body: Center(
@@ -56,7 +32,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             ? ListView.builder(
                 itemCount: favs.favorites.length,
                 itemBuilder: (BuildContext ctx, int index) {
-                  return RestaurantCard(business: favs.favorites[index], cardColor: Colors.white);
+                  return RestaurantCard(
+                    business: favs.favorites[index],
+                  );
                 },
               )
             : Text('You have no favorites!'),

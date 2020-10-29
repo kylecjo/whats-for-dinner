@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:whats_for_dinner/screens/add_custom_lists_screen.dart';
-import 'package:whats_for_dinner/screens/explore.dart';
-import 'package:whats_for_dinner/screens/search_screen.dart';
+
+import '../screens/add_custom_lists_screen.dart';
+import '../screens/explore.dart';
+import '../screens/search_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class _TabsScreenState extends State<TabsScreen> {
   final List<Map<String, Object>> _pages = [
     {'page': DefaultTabController(length: 3, child:  ExploreScreen())},
     {'page': SearchScreen()},
-    {'page': AddCustomListsScreen('Your Lists')},
+    {'page': AddCustomListsScreen()},
   ];
 
   int _selectedPageIndex = 0;
@@ -29,8 +30,8 @@ class _TabsScreenState extends State<TabsScreen> {
         body: _pages[_selectedPageIndex]['page'],
         bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,
-          backgroundColor: Colors.white,
-          unselectedItemColor: Colors.grey[600],
+          backgroundColor: Theme.of(context).cardColor,
+          unselectedItemColor: Theme.of(context).textTheme.bodyText2.color,
           selectedItemColor: Theme.of(context).primaryColor,
           currentIndex: _selectedPageIndex,
           items: [
