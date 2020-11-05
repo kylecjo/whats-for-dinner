@@ -37,10 +37,12 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: TextFormField(
+            style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white, fontWeight: FontWeight.normal,),
             controller: _textController,
             decoration: InputDecoration(
-              icon: Icon(Icons.search, color: Theme.of(context).textTheme.bodyText1.color),
-              fillColor: Colors.white,
+              hintText: 'Search',
+              icon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
+              fillColor: Theme.of(context).primaryColor,
               filled: true,
             ),
             textInputAction: TextInputAction.done,
