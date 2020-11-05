@@ -38,7 +38,6 @@ class _SearchScreenState extends State<SearchScreen> {
         appBar: AppBar(
           title: TextFormField(
             style: Theme.of(context).textTheme.headline5.copyWith(
-                  color: Colors.white,
                   fontWeight: FontWeight.normal,
                 ),
             controller: _textController,
