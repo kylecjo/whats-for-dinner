@@ -136,7 +136,7 @@ class _SearchScreenState extends State<SearchScreen> {
       context,
       listen: false,
     );
-    if (_modalLocationTextController.text == 'Current Location') {
+    if (_modalLocationTextController.text == 'Current Location' || _modalLocationTextController.text == '' ) {
       businesses = await repository.getBusinessData(
         term: _modalSearchTextController.text,
         lat: _locationData.latitude,

@@ -8,12 +8,11 @@ class BottomSearchModal extends StatelessWidget {
   final _search;
 
   BottomSearchModal(
-    this._textModalSearchNode,
-    this._modalSearchTextController,
-    this._modalLocationTextController,
-    this._textModalLocationNode,
-    this._search
-  );
+      this._textModalSearchNode,
+      this._modalSearchTextController,
+      this._modalLocationTextController,
+      this._textModalLocationNode,
+      this._search);
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +32,10 @@ class BottomSearchModal extends StatelessWidget {
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 40.0),
                 hintText: 'Search',
-                prefixIcon:
-                    Icon(Icons.search, color: Theme.of(context).primaryColor),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Theme.of(context).primaryColor,
+                ),
                 fillColor: Colors.white,
                 filled: true,
                 border: new OutlineInputBorder(
@@ -53,8 +54,8 @@ class BottomSearchModal extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              onTap: (){
-                if(_modalLocationTextController.text == 'Current Location'){
+              onTap: () {
+                if (_modalLocationTextController.text == 'Current Location') {
                   _modalLocationTextController.text = '';
                 }
               },
@@ -65,8 +66,10 @@ class BottomSearchModal extends StatelessWidget {
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 40.0),
                 hintText: 'Location',
-                prefixIcon: Icon(Icons.location_on,
-                    color: Theme.of(context).primaryColor),
+                prefixIcon: Icon(
+                  Icons.location_on,
+                  color: Theme.of(context).primaryColor,
+                ),
                 fillColor: Colors.white,
                 filled: true,
                 border: new OutlineInputBorder(
