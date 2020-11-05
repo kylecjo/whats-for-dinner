@@ -42,13 +42,17 @@ class _NearbyScreen extends State<NearbyScreen> {
                     }
                     return true;
                   },
-                  child: ListView.builder(
-                    itemCount: businessProvider.nearby.length,
-                    itemBuilder: (context, int index) {
-                      return RestaurantCard(
-                        business: businessProvider.nearby[index],
-                      );
-                    },
+                  child: MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,
+                    child: ListView.builder(
+                      itemCount: businessProvider.nearby.length,
+                      itemBuilder: (context, int index) {
+                        return RestaurantCard(
+                          business: businessProvider.nearby[index],
+                        );
+                      },
+                    ),
                   ),
                 )
               : Center(
