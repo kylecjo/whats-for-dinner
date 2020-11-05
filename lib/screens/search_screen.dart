@@ -6,6 +6,7 @@ import '../data/repository.dart';
 import '../models/business.dart';
 import '../providers/businesses.dart';
 import '../widgets/restaurant_card.dart';
+import '../widgets/bottom_search_sheet.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
@@ -16,7 +17,13 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final _textController = TextEditingController();
+  final _modalSearchTextController = TextEditingController();
+  final _modalLocationTextController =
+      TextEditingController(text: 'Current Location');
   final Location _location = Location();
+  FocusNode _textModalSearchNode = new FocusNode();
+  FocusNode _textModalLocationNode = new FocusNode();
+
   LocationData _locationData;
   bool _isLoading = false;
   int _page = 1;
@@ -36,30 +43,23 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: TextFormField(
-            style: Theme.of(context).textTheme.headline5.copyWith(
-                  fontWeight: FontWeight.normal,
-                ),
-            controller: _textController,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 40.0),
-              hintText: 'Search',
-              prefixIcon: Icon(Icons.search,
-                  color: Theme.of(context).primaryColor),
-              fillColor: Colors.white,
-              filled: true,
-              border: new OutlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(10.0),
-                ),
-              ),
+          title: Text('Search'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => BottomSearchModal(
+                      _textModalSearchNode,
+                      _modalSearchTextController,
+                      _modalLocationTextController,
+                      _textModalLocationNode,
+                      _search),
+                );
+              },
             ),
-            textInputAction: TextInputAction.done,
-            onEditingComplete: () {
-              _search();
-              FocusScope.of(context).unfocus();
-            },
-          ),
+          ],
           backgroundColor: Theme.of(context).primaryColor,
         ),
         body: Column(
@@ -130,17 +130,26 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       _isLoading = true;
     });
+    List<Business> businesses;
     _locationData = await _location.getLocation();
     final repository = Provider.of<Repository>(
       context,
       listen: false,
     );
-    List<Business> businesses = await repository.getBusinessData(
-      term: _textController.text,
-      lat: _locationData.latitude,
-      long: _locationData.longitude,
-      radius: 30000,
-    );
+    if (_modalLocationTextController.text == 'Current Location') {
+      businesses = await repository.getBusinessData(
+        term: _modalSearchTextController.text,
+        lat: _locationData.latitude,
+        long: _locationData.longitude,
+        radius: 30000,
+      );
+    } else{
+        businesses = await repository.getBusinessData(
+        term: _modalSearchTextController.text,
+        location: _modalLocationTextController.text,
+        radius: 30000,
+      );
+    }
     final businessList = Provider.of<Businesses>(context, listen: false);
     businessList.initSearch(businesses);
     setState(() {

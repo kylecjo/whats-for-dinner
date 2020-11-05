@@ -11,6 +11,7 @@ class Business {
 
   final double latitude;
   final double longitude;
+  final String location;
   final double distance;
 
   final String alias;
@@ -37,6 +38,7 @@ class Business {
       this.name,
       this.latitude,
       this.longitude,
+      this.location,
       this.distance,
       this.alias,
       this.isClosed,
