@@ -34,57 +34,67 @@ class _ExploreScreen extends State<ExploreScreen> {
     final businessProvider = Provider.of<Businesses>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text('Explore'),
-        backgroundColor: Theme.of(context).primaryColor,
-        bottom: TabBar(
-          tabs: [
-            Tab(text: 'Nearby'),
-            Tab(text: 'Hot & New'),
-            Tab(text: 'Top Rated')
+      body: new NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            new SliverAppBar(
+              title: Text('Explore'),
+              pinned: true,
+              floating: true,
+              forceElevated: innerBoxIsScrolled,
+              backgroundColor: Theme.of(context).primaryColor,
+              bottom: TabBar(
+                tabs: [
+                  Tab(text: 'Nearby'),
+                  Tab(text: 'Hot & New'),
+                  Tab(text: 'Top Rated')
+                ],
+              ),
+              actions: [
+                InkWell(
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 7),
+                      child: Icon(Icons.casino)),
+                  onTap: () {
+                    final idx = DefaultTabController.of(context).index;
+                    switch (idx) {
+                      case 0:
+                        chooseOne(businessProvider.nearby,
+                            'There are no nearby businesses!');
+                        break;
+                      case 1:
+                        chooseOne(businessProvider.hot,
+                            'There are no new restaurants!');
+                        break;
+                      case 2:
+                        chooseOne(businessProvider.top,
+                            'There are no top restaurants!');
+                        break;
+                      default:
+                    }
+                  },
+                ),
+                GestureDetector(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 7),
+                      child: Icon(Icons.settings,
+                          color: Theme.of(context).primaryIconTheme.color),
+                    ),
+                    onTap: () {
+                      // Provider.of<Auth>(context, listen: false).logout();
+                      Navigator.pushNamed(context, SettingsScreen.routeName);
+                    }),
+              ],
+            ),
+          ];
+        },
+        body: TabBarView(
+          children: [
+            NearbyScreen(),
+            HotNewScreen(),
+            TopRatedScreen(),
           ],
         ),
-        actions: [
-          InkWell(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 7),
-                child: Icon(Icons.casino)),
-            onTap: () {
-              final idx = DefaultTabController.of(context).index;
-              switch (idx) {
-                case 0:
-                  chooseOne(businessProvider.nearby,
-                      'There are no nearby businesses!');
-                  break;
-                case 1:
-                  chooseOne(
-                      businessProvider.hot, 'There are no new restaurants!');
-                  break;
-                case 2:
-                  chooseOne(
-                      businessProvider.top, 'There are no top restaurants!');
-                  break;
-                default:
-              }
-            },
-          ),
-          GestureDetector(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 7),
-                child: Icon(Icons.settings, color: Theme.of(context).primaryIconTheme.color),
-              ),
-              onTap: () {
-                // Provider.of<Auth>(context, listen: false).logout();
-                Navigator.pushNamed(context, SettingsScreen.routeName);
-              }),
-        ],
-      ),
-      body: TabBarView(
-        children: [
-          NearbyScreen(),
-          HotNewScreen(),
-          TopRatedScreen(),
-        ],
       ),
     );
   }
