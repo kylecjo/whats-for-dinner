@@ -37,13 +37,23 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: TextFormField(
-            style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white, fontWeight: FontWeight.normal,),
+            style: Theme.of(context).textTheme.headline5.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                ),
             controller: _textController,
             decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 40.0),
               hintText: 'Search',
-              icon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
-              fillColor: Theme.of(context).primaryColor,
+              prefixIcon: Icon(Icons.search,
+                  color: Theme.of(context).primaryColor),
+              fillColor: Colors.white,
               filled: true,
+              border: new OutlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(10.0),
+                ),
+              ),
             ),
             textInputAction: TextInputAction.done,
             onEditingComplete: () {
