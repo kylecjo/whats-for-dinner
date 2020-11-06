@@ -254,6 +254,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.4"
+  sensors:
+    dependency: transitive
+    description:
+      name: sensors
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.2+6"
+  shake:
+    dependency: "direct main"
+    description:
+      name: shake
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   shared_preferences:
     dependency: "direct main"
     description:

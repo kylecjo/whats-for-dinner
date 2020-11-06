@@ -140,10 +140,11 @@ class _ExploreScreen extends State<ExploreScreen> {
 
   void chooseOne(List<Business> businesses, String errorText) {
     try {
-      Navigator.pushNamed(
+      Navigator.push(
         context,
-        ChooseOneScreen.routeName,
-        arguments: ChooseOneArguments(businesses),
+        MaterialPageRoute(
+          builder: (context) => ChooseOneScreen(businesses),
+        ),
       );
     } catch (_) {
       final snackBar = SnackBar(
