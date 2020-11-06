@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/models/choose_one_arguments.dart';
 import 'package:whats_for_dinner/screens/settings_screen.dart';
@@ -19,10 +20,12 @@ import './screens/tabs_screen.dart';
 import './services/api.dart';
 import './services/api_service.dart';
 
-void main() {
+void main() async{
+ 
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) => runApp(MyApp()));
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await GlobalConfiguration().loadFromAsset("app_settings");
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {

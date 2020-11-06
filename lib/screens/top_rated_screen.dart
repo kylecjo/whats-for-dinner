@@ -72,7 +72,7 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
     List<Business> newPageTop = await repository.getBusinessData(
         lat: _locationData.latitude,
         long: _locationData.longitude,
-        radius: 2000,
+        radius: 5000,
         offset: _page * _resultsPerPage + 1);
 
     final businessList = Provider.of<Businesses>(context, listen: false);

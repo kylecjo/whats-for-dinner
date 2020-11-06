@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shake/shake.dart';
 
@@ -27,14 +28,16 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
   void initState() {
     super.initState();
     ShakeDetector.autoStart(onPhoneShake: () {
-      setState(() {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChooseOneScreen(widget.businesses),
-          ),
-        );
-      });
+      if (mounted && GlobalConfiguration().getValue<bool>("shakeToRoll")) {
+        setState(() {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChooseOneScreen(widget.businesses),
+            ),
+          );
+        });
+      }
     });
 
     // detector.startListening();
