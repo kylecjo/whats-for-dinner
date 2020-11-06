@@ -10,7 +10,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _isSwitched = false;
+  // bool _isSwitched = false;
 
   @override
   Widget build(BuildContext context) {

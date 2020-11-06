@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/choose_one_arguments.dart';
 import '../screens/choose_one_screen.dart';
 
 class RerollIcon extends StatelessWidget {

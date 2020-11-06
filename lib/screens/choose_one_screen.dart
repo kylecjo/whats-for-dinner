@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shake/shake.dart';
 
-import '../models/choose_one_arguments.dart';
 import '../widgets/restaurant_card.dart';
 
 class ChooseOneScreen extends StatefulWidget {
@@ -27,7 +26,7 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
   @override
   void initState() {
     super.initState();
-    ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
+    ShakeDetector.autoStart(onPhoneShake: () {
       setState(() {
         Navigator.pushReplacement(
           context,
