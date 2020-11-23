@@ -10,7 +10,7 @@ Not yet available
 
 <p float="left">
   <img src="./images/nearby.png" width="200" />
-  <img src="./images/nav_drawer.png" width="200" /> 
+  <img src="./images/search.png" width="200" /> 
   <img src="./images/favorites.png" width="200"/>
 </p>
 
@@ -34,8 +34,8 @@ Not yet available
 - [x] Firebase Integration
 - [x] User Authentication
 - [x] Share lists between users
-- [ ] Search improvements
-- [ ] Dark mode
+- [x] Search improvements
+- [x] Dark mode
 - [ ] IOS 
-- [ ] Improve readme
+- [x] Improve readme
 - [ ] Unit tests
