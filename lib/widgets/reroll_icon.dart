@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/choose_one_arguments.dart';
 import '../screens/choose_one_screen.dart';
 
 class RerollIcon extends StatelessWidget {
@@ -13,13 +12,15 @@ class RerollIcon extends StatelessWidget {
     return InkWell(
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 7),
-            child: Icon(Icons.casino, color: Theme.of(context).primaryIconTheme.color)),
+            child: Icon(Icons.casino,
+                color: Theme.of(context).primaryIconTheme.color)),
         onTap: () {
           if (businesses.length > 0) {
-            Navigator.pushNamed(
+            Navigator.push(
               context,
-              ChooseOneScreen.routeName,
-              arguments: ChooseOneArguments(businesses),
+              MaterialPageRoute(
+                builder: (context) => ChooseOneScreen(businesses),
+              ),
             );
           } else {
             final snackBar = SnackBar(

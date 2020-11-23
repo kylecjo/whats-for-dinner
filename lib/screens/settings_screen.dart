@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
 import 'package:whats_for_dinner/providers/auth.dart';
 
@@ -10,7 +11,8 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _isSwitched = false;
+  // bool _isSwitched = false;
+  bool _isShake = GlobalConfiguration().getValue<bool>("shakeToRoll");
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             //   },
             //   activeTrackColor: Colors.green,
             // ),
+            SwitchListTile(
+                title: Text(
+                  'Shake to reroll',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      .copyWith(fontWeight: FontWeight.normal),
+                ),
+                value: _isShake,
+                onChanged: (value) {
+                  setState(() {
+                    _isShake = !_isShake;
+                    GlobalConfiguration().updateValue("shakeToRoll", _isShake);
+                  });
+                },
+                activeTrackColor: Colors.green),
             ListTile(
                 leading: Text('Log out',
                     style: Theme.of(context)

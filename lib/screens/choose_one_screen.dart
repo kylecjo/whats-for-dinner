@@ -1,13 +1,18 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shake/shake.dart';
 
-import '../models/choose_one_arguments.dart';
 import '../widgets/restaurant_card.dart';
 
 class ChooseOneScreen extends StatefulWidget {
   static const routeName = '/chooseOne';
+
+  final businesses;
+
+  ChooseOneScreen(this.businesses);
 
   @override
   _ChooseOneScreenState createState() => _ChooseOneScreenState();
@@ -22,6 +27,20 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
   @override
   void initState() {
     super.initState();
+    ShakeDetector.autoStart(onPhoneShake: () {
+      if (mounted && GlobalConfiguration().getValue<bool>("shakeToRoll")) {
+        setState(() {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChooseOneScreen(widget.businesses),
+            ),
+          );
+        });
+      }
+    });
+
+    // detector.startListening();
     _controller = AnimationController(
         duration: const Duration(milliseconds: 2500), vsync: this)
       ..repeat(reverse: true);
@@ -56,8 +75,8 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
   @override
   Widget build(BuildContext context) {
     final rnd = new Random();
-    final ChooseOneArguments args = ModalRoute.of(context).settings.arguments;
-    final randomBusiness = args.businesses[rnd.nextInt(args.businesses.length)];
+    final randomBusiness =
+        widget.businesses[rnd.nextInt(widget.businesses.length)];
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -69,7 +88,8 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
           SlideTransition(
             position: _offsetAnimation,
             child: RestaurantCard(
-                business: randomBusiness,),
+              business: randomBusiness,
+            ),
           ),
           SizedBox(height: 10),
           FadeTransition(
@@ -86,7 +106,8 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.phone, color: Theme.of(context).textTheme.bodyText1.color),
+                        Icon(Icons.phone,
+                            color: Theme.of(context).textTheme.bodyText1.color),
                         Text(
                           'Call Restaurant',
                           style: Theme.of(context).textTheme.headline4,
@@ -100,18 +121,17 @@ class _ChooseOneScreenState extends State<ChooseOneScreen>
                   child: RaisedButton(
                     color: Theme.of(context).cardColor,
                     onPressed: () {
-                      Navigator.pushReplacementNamed(
-                        context,
-                        ChooseOneScreen.routeName,
-                        arguments: ChooseOneArguments(
-                          args.businesses,
-                        ),
-                      );
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ChooseOneScreen(widget.businesses)));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.casino, color: Theme.of(context).textTheme.bodyText1.color),
+                        Icon(Icons.casino,
+                            color: Theme.of(context).textTheme.bodyText1.color),
                         Text(
                           'Reroll Restaurant',
                           style: Theme.of(context).textTheme.headline4,

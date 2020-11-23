@@ -9,14 +9,14 @@ Not yet available
 ## App Preview
 
 <p float="left">
-  <img src="./images/nearby.png" width="200" />
-  <img src="./images/nav_drawer.png" width="200" /> 
-  <img src="./images/favorites.png" width="200"/>
+  <img src="./images/explore.png" width="200" />
+  <img src="./images/search.png" width="200" /> 
+  <img src="./images/favorite.png" width="200"/>
 </p>
 
 <p float="left">
-  <img src="./images/choose_one.png" width="200"/>
-  <img src="./images/custom_lists.png" width="200"/>
+  <img src="./images/chooseone.png" width="200"/>
+  <img src="./images/customlists.png" width="200"/>
 </p>
 
 
@@ -34,8 +34,8 @@ Not yet available
 - [x] Firebase Integration
 - [x] User Authentication
 - [x] Share lists between users
-- [ ] Search improvements
-- [ ] Dark mode
+- [x] Search improvements
+- [x] Dark mode
 - [ ] IOS 
-- [ ] Improve readme
+- [x] Improve readme
 - [ ] Unit tests

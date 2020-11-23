@@ -71,8 +71,7 @@ class CustomLists with ChangeNotifier {
       notifyListeners();
       String customListUrl =
           '${APIKeys.firebase}/customLists/${customList.id}/items.json?auth=$authToken';
-      final response =
-          await http.patch(customListUrl, body: json.encode(customList));
+      await http.patch(customListUrl, body: json.encode(customList));
     } on Exception catch (e) {
       print(e);
       throw e;

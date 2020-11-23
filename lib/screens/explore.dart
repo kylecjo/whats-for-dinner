@@ -7,8 +7,6 @@ import 'package:whats_for_dinner/screens/settings_screen.dart';
 
 import '../data/repository.dart';
 import '../models/business.dart';
-import '../models/choose_one_arguments.dart';
-import '../providers/auth.dart';
 import '../providers/businesses.dart';
 import '../screens/choose_one_screen.dart';
 import '../screens/hot&new_screen.dart';
@@ -140,10 +138,11 @@ class _ExploreScreen extends State<ExploreScreen> {
 
   void chooseOne(List<Business> businesses, String errorText) {
     try {
-      Navigator.pushNamed(
+      Navigator.push(
         context,
-        ChooseOneScreen.routeName,
-        arguments: ChooseOneArguments(businesses),
+        MaterialPageRoute(
+          builder: (context) => ChooseOneScreen(businesses),
+        ),
       );
     } catch (_) {
       final snackBar = SnackBar(

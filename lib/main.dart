@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_for_dinner/models/choose_one_arguments.dart';
 import 'package:whats_for_dinner/screens/settings_screen.dart';
 
 import './data/repository.dart';
@@ -18,10 +20,12 @@ import './screens/tabs_screen.dart';
 import './services/api.dart';
 import './services/api_service.dart';
 
-void main() {
+void main() async{
+ 
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) => runApp(MyApp()));
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await GlobalConfiguration().loadFromAsset("app_settings");
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -30,7 +34,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -159,9 +163,20 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
           routes: {
             NearbyScreen.routeName: (ctx) => NearbyScreen(),
             FavoritesScreen.routeName: (ctx) => FavoritesScreen('Favorites'),
-            ChooseOneScreen.routeName: (ctx) => ChooseOneScreen(),
             SearchScreen.routeName: (ctx) => SearchScreen(),
             SettingsScreen.routeName: (ctx) => SettingsScreen(),
+          },
+          onGenerateRoute: (settings) {
+            if (settings.name == ChooseOneScreen.routeName) {
+              final ChooseOneArguments args = settings.arguments;
+              return MaterialPageRoute(
+                builder: (context) {
+                  return ChooseOneScreen(
+                    args.businesses,
+                  );
+                },
+              );
+            }
           },
           debugShowCheckedModeBanner: false,
         ),
@@ -171,7 +186,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
   void initState() {
     super.initState();
-     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -182,8 +197,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
   @override
   void didChangePlatformBrightness() {
-    final Brightness brightness = 
-    WidgetsBinding.instance.window.platformBrightness;
+    final Brightness brightness =
+        WidgetsBinding.instance.window.platformBrightness;
     //inform listeners and rebuild widget tree
   }
 }
