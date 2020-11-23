@@ -30,7 +30,7 @@ class CustomListTile extends StatelessWidget {
         ),
         subtitle: Text('$listLength restaurants'),
         trailing: GestureDetector(
-          child: Icon(Icons.delete, color: Theme.of(context).primaryIconTheme.color),
+          child: Icon(Icons.delete, color: Theme.of(context).accentIconTheme.color),
           onTap: () {
             return showDialog(
                 context: context,
